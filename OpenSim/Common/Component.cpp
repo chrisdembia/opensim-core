@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- *
- *                            OpenSim: Component.cpp                        *
+ *                            OpenSim: Component.cpp                          *
  * -------------------------------------------------------------------------- *
  * The OpenSim API is a toolkit for musculoskeletal modeling and simulation.  *
  * See http://opensim.stanford.edu and the NOTICE file for more information.  *
@@ -331,11 +331,19 @@ void Component::addStateVariable(Component::StateVariable*  stateVariable) const
 	const AddedStateVariable* asv =
 		dynamic_cast<const Component::AddedStateVariable *>(stateVariable);
 	// Now automatically add a cache variable to hold the derivative
-	// to enable a similar interface for setting and geting the derivatives
+	// to enable a similar interface for setting and getting the derivatives
 	// based on the creator specified state name
 	if(asv){
 		addCacheVariable(stateVariableName+"_deriv", 0.0, Stage::Dynamics);
 	}
+
+    // If the StateVariable is not hidden, create an Output for this
+    // StateVariable's value.
+    if (!stateVariable->isHidden()){
+        constructOutput<double>(stateVariableName),
+            std::bind(&Component::StateVariable::getValue, stateVariable,
+                    std::placeholders::_1);
+    }
 }
 
 

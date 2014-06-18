@@ -1071,10 +1071,13 @@ template <class T> friend class ComponentMeasure;
 
 	/** The above method provides a convenient interface to this method, which
 	automatically creates an 'AddedStateVariable' and allocates resources in the
-	SimTK::State for thsi variable.  This interface allows the creator to add/expose
-	state variables that are allocated by underlying Simbody components and 
-	specifying how the state variable value is accessed by implementing a 
-	concrete StateVariable and adding it to the component using this method.*/
+    SimTK::State for this variable.  This interface allows the creator to
+    add/expose state variables that are allocated by underlying Simbody
+    components and specifying how the state variable value is accessed by
+    implementing a concrete StateVariable and adding it to the component using
+    this method. This also creates an Output in this Component with the same
+    name as the StateVariable. Reporters should use this Output to get the
+    StateVariable's value. */
 	void addStateVariable(Component::StateVariable*  stateVariable) const;
 
     /** Add a system discrete variable belonging to this Component, give
