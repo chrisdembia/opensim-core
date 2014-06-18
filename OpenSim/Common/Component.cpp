@@ -938,6 +938,7 @@ getStateVariablesNamesAddedByComponent() const
 // ComponentMeasures, so we do not need to forward to subcomponents here.
 void Component::realizeTopology(SimTK::State& s) const
 {
+
     const SimTK::Subsystem& subSys = getSystem().getDefaultSubsystem();
     
     Component *mutableThis = const_cast<Component*>(this);
@@ -1055,7 +1056,7 @@ double Component::AddedStateVariable::getValue(const SimTK::State& state) const
 	}
 
     std::stringstream msg;
-    msg << "Component::AddedStateVariable::getValue: ERR- variable name '" 
+    msg << "Component::AddedStateVariable::getValue: ERR- variable '" 
 		<< getName() << "' is invalid for component " << getOwner().getName() 
 		<< " of type " << getOwner().getConcreteClassName() <<".";
     throw Exception(msg.str(),__FILE__,__LINE__);
@@ -1072,7 +1073,7 @@ void Component::AddedStateVariable::setValue(SimTK::State& state, double value) 
 	}
 
     std::stringstream msg;
-    msg << "Component::AddedStateVariable::setValue: ERR- variable name '" 
+    msg << "Component::AddedStateVariable::setValue: ERR- variable '" 
 		<< getName() << "' is invalid for component " << getOwner().getName() 
 		<< " of type " << getOwner().getConcreteClassName() <<".";
     throw Exception(msg.str(),__FILE__,__LINE__);
