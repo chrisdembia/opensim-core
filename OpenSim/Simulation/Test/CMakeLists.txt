@@ -7,6 +7,8 @@ LINK_LIBRARIES( debug osimCommon${CMAKE_DEBUG_POSTFIX} optimized osimCommon
 		debug osimAnalyses${CMAKE_DEBUG_POSTFIX} optimized osimAnalyses
 		debug osimActuators${CMAKE_DEBUG_POSTFIX} optimized osimActuators
 		debug osimLepton${CMAKE_DEBUG_POSTFIX} optimized osimLepton
+        debug osimAuxiliaryTestFunctions${CMAKE_DEBUG_POSTFIX} optimized
+            osimAuxiliaryTestFunctions
 		${SIMTK_ALL_LIBS})
 
 ADD_CUSTOM_TARGET(copyTestFiles)

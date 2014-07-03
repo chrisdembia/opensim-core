@@ -7,6 +7,8 @@ LINK_LIBRARIES( debug osimCommon${CMAKE_DEBUG_POSTFIX} optimized osimCommon
 		debug osimActuators${CMAKE_DEBUG_POSTFIX} optimized osimActuators
 		debug osimTools${CMAKE_DEBUG_POSTFIX} optimized osimTools
 		debug osimAnalyses${CMAKE_DEBUG_POSTFIX} optimized osimAnalyses
+        debug osimAuxiliaryTestFunctions${CMAKE_DEBUG_POSTFIX} optimized
+            osimAuxiliaryTestFunctions
 		${SIMTK_ALL_LIBS}
 		)
 

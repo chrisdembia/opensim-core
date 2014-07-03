@@ -21,19 +21,14 @@
  * -------------------------------------------------------------------------- */
 
 #include "auxiliaryTestFunctions.h"
-#include <OpenSim/OpenSim.h>
+#include <OpenSim/Common/Exception.h>
+#include <OpenSim/Common/Array.h>
+#include <OpenSim/Common/Object.h>
+#include <OpenSim/Common/Storage.h>
 
 using namespace OpenSim;
 using namespace std;
 
-template <typename T>
-void ASSERT_EQUAL(T expected, T found, T tolerance, std::string file, int line, std::string message) {
-	if (found < expected - tolerance || found > expected + tolerance)
-		throw OpenSim::Exception(message, file, line);
-}
-inline void ASSERT(bool cond, std::string file, int line, std::string message) {
-	if (!cond) throw OpenSim::Exception(message, file, line);
-}
 /**
  * Check this storage object against a standard storage object using the
  * specified tolerances. If RMS error for any column is outside the
@@ -77,7 +72,7 @@ do { \
     } \
 } while(false) 
 
-static OpenSim::Object* randomize(OpenSim::Object* obj)
+OpenSim::Object* randomize(OpenSim::Object* obj)
 {
     if (obj==0) return 0; // maybe empty tag
     std::stringstream stream;

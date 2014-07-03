@@ -3,6 +3,8 @@
 FILE(GLOB TEST_PROGS "*est*.cpp")
 
 LINK_LIBRARIES(debug osimCommon${CMAKE_DEBUG_POSTFIX}	optimized osimCommon
+               debug osimAuxiliaryTestFunctions${CMAKE_DEBUG_POSTFIX} optimized
+                    osimAuxiliaryTestFunctions
                ${SIMTK_ALL_LIBS}
 )
 
@@ -10,7 +12,7 @@ FOREACH(TEST_PROG ${TEST_PROGS})
     GET_FILENAME_COMPONENT(TEST_ROOT ${TEST_PROG} NAME_WE)
 
     # Link with shared library
-    ADD_EXECUTABLE(${TEST_ROOT} ${TEST_PROG})
+    ADD_EXECUTABLE(${TEST_ROOT} ${TEST_PROG} ${AUXILIARY_TEST_FUNCTIONS})
     TARGET_LINK_LIBRARIES(${TEST_ROOT} ${LINK_LIBRARIES} )
     ADD_TEST(${TEST_ROOT} ${EXECUTABLE_OUTPUT_PATH}/${TEST_ROOT})
     SET_TARGET_PROPERTIES(${TEST_ROOT} 
