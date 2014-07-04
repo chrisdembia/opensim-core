@@ -18,8 +18,10 @@ examples, command-line applications (inverse kinematics, computed muscle
 control, etc.), and Java and Python wrapping. This repository does *not*
 include source code for the OpenSim GUI.
 
+
 Simple example
 --------------
+Let's simulate a simple arm whose elbow is actuated by a muscle:
 ```cpp
 #include <OpenSim/OpenSim.h>
 using namespace SimTK;
@@ -49,9 +51,10 @@ int main() {
     muscle->addNewPathPoint("point2", *link2, Vec3(0, 0.7, 0));
 
     // A controller that specifies the excitation of the biceps muscle.
-    PrescribedController* controller = new PrescribedController();
-    controller->addActuator(*muscle);
-    controller->prescribeControlForActuator("biceps",
+    PrescribedController* brain = new PrescribedController();
+    brain->addActuator(*muscle);
+    // Muscle excitation is 0.3 for the first 0.5 seconds, and 1.0 thereafter.
+    brain->prescribeControlForActuator("biceps",
             new StepFunction(0.5, 3.0, 0.3, 1.0));
 
     // Add bodies and joints to the model.
@@ -80,6 +83,10 @@ int main() {
 };
 ```
 
+This code produces the following animation:
+
+![Simulation of an arm actuated by a muscle][simple_example_gif]
+
 ---
 
 
@@ -98,10 +105,6 @@ Dependencies
 
 Building from the source code
 -----------------------------
-
-
-Build Instructions
-------------------
 Building from source is difficult and we have limited resource to support 
 it. Instructions can be found online at:
 http://simtk-confluence.stanford.edu:8080/display/OpenSim/Building+OpenSim+from+Source
@@ -110,3 +113,4 @@ http://simtk-confluence.stanford.edu:8080/display/OpenSim/Building+OpenSim+from+
 [travisci]: https://magnum.travis-ci.com/opensim-org/opensim-core
 [buildstatus_image]: https://travis-ci.org/opensim-org/opensim-core.png?branch=master
 [running_gif]: OpenSim/doc/images/opensim_running.gif
+[simple_example_gif]: OpenSim/doc/images/opensim_double_pendulum_muscle.gif
