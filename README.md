@@ -2,7 +2,7 @@ OpenSim Core [![Build Status][buildstatus_image]][travisci]
 ============ 
 
 OpenSim is software that lets users develop models of musculoskeletal
-structures and create dynamic simulations of movement.
+structures and create dynamic simulations of movement, such as this one:
 
 ![Simulation of human running by Sam Hamner (doi:
 10.1016/j.jbiomech.2010.06.025)][running_gif]
@@ -10,7 +10,7 @@ structures and create dynamic simulations of movement.
 More information can be found at our websites:
 
 * [OpenSim website](http://opensim.stanford.edu); in particular, the [support
-  page](http://opensim.stanford.edu/support/index.html)).
+  page](http://opensim.stanford.edu/support/index.html).
 * [SimTK project website](https://simtk.org/home/opensim)
 
 This repository contains the source code for OpenSim's C++ libraries, C++
@@ -98,7 +98,7 @@ Dependencies
     * [Microsoft Visual Studio](http://www.visualstudio.com) 2013 (Windows only).
     * [gcc](http://gcc.gnu.org), typically on Linux; or
       [Clang](http://clang.llvm.org) typically on Mac.
-* [Simbody](https:/github.com/simbody/simbody), our physics engine.
+* [Simbody](github.com/simbody/simbody), our physics engine.
 * API documentation (optional):
   [Doxygen](http://www.stack.nl/~dimitri/doxygen/) 1.8 or laterk
 
