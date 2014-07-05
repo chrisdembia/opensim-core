@@ -98,7 +98,7 @@ Dependencies
     * [Microsoft Visual Studio](http://www.visualstudio.com) 2013 (Windows only).
     * [gcc](http://gcc.gnu.org), typically on Linux; or
       [Clang](http://clang.llvm.org) typically on Mac.
-* [Simbody](github.com/simbody/simbody), our physics engine.
+* [Simbody](https://www.github.com/simbody/simbody), our physics engine.
 * API documentation (optional):
   [Doxygen](http://www.stack.nl/~dimitri/doxygen/) 1.8 or laterk
 
