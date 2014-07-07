@@ -1,5 +1,5 @@
 OpenSim Core [![Build Status][buildstatus_image]][travisci]
-============ 
+============
 
 OpenSim is software that lets users develop models of musculoskeletal
 structures and create dynamic simulations of movement, such as this one:
@@ -60,7 +60,7 @@ int main() {
     // Add bodies and joints to the model.
     model.addBody(link1); model.addBody(link2);
     model.addJoint(joint1); model.addJoint(joint2);
-    model.addForce(muscle); 
+    model.addForce(muscle);
     model.addController(controller);
 
     // Configure the model.
@@ -92,25 +92,406 @@ This code produces the following animation:
 
 Dependencies
 ------------
+* Operating system: Windows 7 or 8 or later; OS X 10.8 or later; Ubuntu 13.10
+  or later.
 * Cross-platform build system:
-  [CMake](http://www.cmake.org/cmake/resources/software.html) 2.8 or greater
+  [CMake](http://www.cmake.org/cmake/resources/software.html) 2.8 or later.
 * Compiler.
-    * [Microsoft Visual Studio](http://www.visualstudio.com) 2013 (Windows only).
-    * [gcc](http://gcc.gnu.org), typically on Linux; or
-      [Clang](http://clang.llvm.org) typically on Mac.
+    * Windows: [Visual Studio](http://www.visualstudio.com) 2013.
+    * Mac: [Xcode](https://developer.apple.com/xcode/) 5 or later.
+    * Ubuntu or Mac: [gcc](http://gcc.gnu.org) 4.8 or later;
+      [Clang](http://clang.llvm.org) 3.4 or later.
 * [Simbody](https://www.github.com/simbody/simbody), our physics engine.
 * API documentation (optional):
-  [Doxygen](http://www.stack.nl/~dimitri/doxygen/) 1.8 or laterk
+  [Doxygen](http://www.stack.nl/~dimitri/doxygen/) 1.8.
+* Version control (optional): [git](http://git-scm.com).
+* MATLAB scripting (optional): [Java development kit][java]
+* Python scripting (optional): Python libraries and headers.
+    * Windows: Enthought Canopy or Anaconda
+    * Mac: you already have it
+    * Ubuntu: `sudo apt-get install python-dev`
 
 
 Building from the source code
 -----------------------------
-Building from source is difficult and we have limited resource to support 
-it. Instructions can be found online at:
-http://simtk-confluence.stanford.edu:8080/display/OpenSim/Building+OpenSim+from+Source
+
+We support a few ways of building OpenSim:
+
+1. [On Windows using Microsoft Visual Studio](#on-windows-using-visual-studio).
+2. [On Mac using Xcode](#on-mac-using-xcode).
+3. [On Ubuntu using Unix Makefiles](#on-ubuntu-using-using-makefiles).
+
+
+On Windows using Visual Studio
+------------------------------
+
+#### Get the dependencies
+
+* **operating system**: Windows 7 or 8.
+* **cross-platform build system**:
+  [CMake](http://www.cmake.org/cmake/resources/software.html) >= 2.8
+* **compiler / IDE**: Visual Studio 2013. We recommended either:
+    * *Visual Studio Express 2013 for Windows Desktop*, which is free, or
+    * *Visual Studio Professional 2013* through
+      [Dreamspark](https://www.dreamspark.com) if you are at an academic
+      institution.
+* **physics engine**:
+  [Simbody](https://github.com/simbody/simbody#windows-and-visual-studio) >= 3.4
+* **API documentation** (optional):
+  [Doxygen](http://www.stack.nl/~dimitri/doxygen/download.html) >= 1.8
+* **version control** (optional): git. There are many options:
+    * [Git for Windows](http://msysgit.github.io/), most advanced;
+    * [TortoiseGit](https://code.google.com/p/tortoisegit/wiki/Download),
+      intermediate; good for TortoiseSVN users;
+    * [GitHub for Windows](https://windows.github.com/), easiest.
+* **MATLAB scripting** (optional): [Java development kit][java] 1.6.
+* **python scripting** (optional):
+    * [Enthought Canopy](https://www.enthought.com/products/canopy/), or
+    * [Anaconda](https://store.continuum.io/cshop/anaconda/)
+
+#### Download the OpenSim-Core source code
+
+* Method 1; If you want to get going quickly, download the source code from
+  https://github.com/opensim-org/opensim-core/releases, for the version of
+  OpenSim you want. We'll assume you unzipped the source code into
+  `C:/opensim-core-source`.
+* Method 2: If you plan on updating your OpenSim installation or you want to
+  contribute back to the project, clone the opensim-core git repository into
+  `C:/opensim-core-source`. If using TortoiseGit, open Windows Explorer,
+  right-click in the window, select **Git Clone...**, and provide the
+  following:
+    * **URL**: `https://github.com/opensim-org/opensim-core.git`.
+    * **Directory**: `C:/opensim-core-source`.
+  If using a Git Bash or Git Shell, run the following:
+
+        $ git clone https://github.com/opensim-org/opensim-core.git C:/opensim-core-source
+
+  This will give you a bleeding-edge version of OpenSim-Core.
+
+#### Configure and generate project files
+
+1. Open CMake.
+2. In the field **Where is the source code**, specify `C:/opensim-core-source`.
+3. In the field **Where to build the binaries**, specify something like
+   `C:/opensim-core-build`, or some other path that is not inside your source
+   directory. This is *not* where we are installing OpenSim-Core; see below.
+4. Click the **Configure** button.
+    1. Choose the *Visual Studio 12* generator (for Visual Studio 2013). To
+       build as 64-bit, select *Visual Studio 12 Win64*.
+    2. Click **Finish**.
+5. Where do you want to install OpenSim-Core on your computer? Set this by
+   changing the `CMAKE_INSTALL_PREFIX` variable. We'll assume you set it to
+   `C:/opensim-core`. If you choose a different installation location, make
+   sure to use *yours* where we use `C:/opensim-core` below.
+6. Tell CMake where you installed Simbody by setting the `SimTK_INSTALL_DIR`
+   variable to where you installed Simbody (e.g., `C:/Simbody`).
+7. Set the remaining configuration options.
+    * `BUILD_EXAMPLES` to compile C++ API examples.
+    * `BUILD_TESTING` to ensure that OpenSim works correctly. The tests take a
+      hile to build; if you want to build OpenSim quickly, you can turn this
+      off.
+    * `BUILD_JAVA_WRAPPING` if you want to access OpenSim through MATLAB or
+      Java; see dependencies above.
+    * `BUILD_PYTHON_WRAPPING` if you want to access OpenSim through Python; see
+      dependencies above.
+    * `BUILD_API_ONLY` if you don't want to build the command-line applications.
+8. Click the **Configure** button again. Then, click **Generate** to make
+   Visual Studio project files in the build directory.
+
+#### Build and install
+
+1. Open `C:/opensim-core-build/OpenSim.sln` in Visual Studio.
+2. Select your desired *Solution configuration* from the drop-down at the top.
+    * **Debug**: debugger symbols; no optimizations (more than 10x slower).
+      Library names end with `_d`.
+    * **Release**: no debugger symbols; optimized.
+    * **RelWithDebInfo**: debugger symbols; optimized. Bigger but not slower
+      than Release; choose this if unsure.
+    * **MinSizeRel**: minimum size; optimized.
+
+    You at least want release libraries (the last 3 count as release), but you
+    can have debug libraries coexist with them. To do this, go through the
+    installation process twice, once for each of the two configurations. You
+    should install the release configuration *last* to ensure that you use the
+    release version of the command-line applications instead of the slow debug
+    versions.
+3. Build the API documentation. This is optional, and you can only do this if
+   you have Doxygen. Build the project **doxygen** by right-clicking it and
+   selecting **Build**.
+4. Build the project **ALL_BUILD** by right-clicking it and selecting **Build**.
+5. Run the tests by right-clicking **RUN_TESTS_PARALLEL** and selecting
+   **Build**.
+6. Install OpenSim-Core by right-clicking **INSTALL** and selecting **Build**.
+
+#### Set environment variables
+
+In order to use the OpenSim-Core command-line applications or use OpenSim-Core
+libraries in your own application, you must add the OpenSim-Core `bin/`
+directory to your `PATH` environment variable.
+
+1. In the Start menu (Windows 7) or screen (Windows 8), search `environment`.
+2. Select **Edit the system environment variables**.
+3. Click **Environment Variables...**.
+4. Under **System variables**, click **Path**, then click **Edit**.
+5. Add **C:/opensim-core/bin;** to the front of of the text field. Don't forget
+   the semicolon!
+
+
+On Mac using Xcode
+==================
+
+#### Get the dependencies
+
+* **operating system**: OS X 10.8 or later.
+* **cross-platform build system**:
+  [CMake](http://www.cmake.org/cmake/resources/software.html) >= 2.8
+* **compiler / IDE**: [Xcode](https://developer.apple.com/xcode/) >= 5, through
+  the Mac App Store.
+* **physics engine**:
+  [Simbody](https://github.com/simbody/simbody#installing) >= 3.4.
+  **Important**: If installing Simbody using Makefile's, make sure
+  `SIMBODY_STANDARD_11` is turned on in CMake when building Simbody.
+* **API documentation** (optional):
+  [Doxygen](http://www.stack.nl/~dimitri/doxygen/download.html) >= 1.8
+* **version control** (optional): git.
+    * Xcode Command Line Tools gives you git on the command line.
+    * [GitHub for Mac](https://mac.github.com), easiest.
+* **MATLAB scripting** (optional): [Java development kit][java] 1.6.
+* **python scripting** (optional):
+    * Mac's come with python, but you could also install:
+    * [Enthought Canopy](https://www.enthought.com/products/canopy/), or
+    * [Anaconda](https://store.continuum.io/cshop/anaconda/)
+
+#### Download the OpenSim-Core source code
+
+* Method 1; If you want to get going quickly, download the source code from
+  https://github.com/opensim-org/opensim-core/releases, for the version of
+  OpenSim you want. We'll assume you unzipped the source code into
+  `~/opensim-core-source`.
+* Method 2: If you plan on updating your OpenSim installation or you want to
+  contribute back to the project, clone the opensim-core git repository into
+  `~/opensim-core-source`. Run the following in a terminal, or
+  find a way to run the equivalent commands in a GUI client:
+
+        $ git clone https://github.com/opensim-org/opensim-core.git ~/opensim-core-source
+
+  This will give you a bleeding-edge version of OpenSim-Core.
+
+#### Configure and generate project files
+
+1. Open CMake.
+2. In the field **Where is the source code**, specify `~/opensim-core-source`.
+3. In the field **Where to build the binaries**, specify something like
+   `~/opensim-core-build`, or some other path that is not inside your source
+   directory. This is *not* where we are installing OpenSim-Core; see below.
+4. Click the **Configure** button. Choose **Xcode**. Click **Finish**.
+5. Where do you want to install OpenSim-Core on your computer? Set this by
+   changing the `CMAKE_INSTALL_PREFIX` variable. We'll assume you set it to
+   `~/opensim-core`. If you choose a different installation location, make
+   sure to use *yours* where we use `~/opensim-core` below. You should *not*
+   use `/usr/`, `/usr/local/`, or any typical system paths.
+6. Tell CMake where you installed Simbody by setting the `SimTK_INSTALL_DIR`
+   variable to where you installed Simbody (e.g., `~/simbody`). If you
+   installed Simbody using `brew`, then CMake will find Simbody automatically.
+7. Set the remaining configuration options.
+    * `BUILD_EXAMPLES` to compile C++ API examples.
+    * `BUILD_TESTING` to ensure that OpenSim works correctly. The tests take a
+      hile to build; if you want to build OpenSim quickly, you can turn this
+      off.
+    * `BUILD_JAVA_WRAPPING` if you want to access OpenSim through MATLAB or
+      Java; see dependencies above.
+    * `BUILD_PYTHON_WRAPPING` if you want to access OpenSim through Python; see
+      dependencies above.
+    * `BUILD_API_ONLY` if you don't want to build the command-line applications.
+8. Click the **Configure** button again. Then, click **Generate** to create
+   Xcode project files in the build directory.
+
+#### Build and install
+
+1. Open `~/opensim-core-build/OpenSim.xcodeproj` in Xcode.
+2. Choose your **Build Configuration** by pressing `Command-Shift ,` (or,
+   `Command-LessThan`). or navigating to **Product -> Scheme -> Edit
+   Scheme...**. and changing the **Build Configuration** field.
+    * *Debug*: debugger symbols; no optimizations (more than 10x slower).
+    Library names end with `_d`.
+    * *Release*: no debugger symbols; optimized.
+    * *RelWithDebInfo*: debugger symbols; optimized. Bigger but not slower
+    than Release; choose this if unsure.
+    * *MinSizeRel*: minimum size; optimized.
+
+    You at least want release libraries (the last 3 count as release), but you
+    can have debug libraries coexist with them. To do this, go through the
+    installation process twice, once for each of the two configurations. You
+    should install the release configuration *last* to ensure that you use the
+    release version of the command-line applications instead of the slow debug
+    versions.
+
+3. Compile. Run the Scheme **ALL_BUILD** by clicking the play button in the
+   upper left.
+4. Test.
+    1. Click on **ALL_BUILD** in the upper left, and select
+       **RUN_TESTS_PARALLEL**.
+    2. Click the play button.
+5. Build the API documentation. This is optional, and you can only do this if
+   you have Doxygen. Click on the currente Scheme (**RUN_TESTS_PARALLEL**) and
+   select **doxygen**. Click the play button.
+6. Install. Click on the current Scheme (**RUN_TESTS_PARALLEL** or
+   **doxygen**), and select **install**. Click the play button.
+
+#### Set environment variables
+
+1. Allow executables to find OpenSim-Core libraries by adding the OpenSim-Core
+   `lib/` directory to your linker path.
+
+        $ echo `export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/opensim-core/lib` > ~/.bashrc
+
+2. Add OpenSim-Core's executables to the path so you can access them from any
+   directory on your computer. NOTE that some of the names of OpenSim-Core
+   executables conflict with some UNIX commands (e.g., `id`). To give
+   preference to OpenSim-Core's executables, we must *prepend* OpenSim-Core's
+   `bin/` directory to the path.
+
+        $ echo `export PATH=~/opensim-core/bin:$PATH` > ~/.bashrc
+
+3. Your changes will only take effect in new terminal windows.
+
+
+On Ubuntu using Unix Makefiles
+==============================
+
+#### Get the dependencies
+
+Most dependencies can be obtained via the Ubuntu software repositories.
+
+* **operating system**: Ubuntu 13.10 or later.
+* **cross-platform build system**:
+  [CMake](http://www.cmake.org/cmake/resources/software.html) >= 2.8;
+  `cmake-gui`.
+* **compiler**: [gcc](http://gcc.gnu.org) >= 4.8; `g++-4.8`, or
+      [Clang](http://clang.llvm.org) >= 3.4; `clang-3.4`.
+* **physics engine**:
+  [Simbody](https://github.com/simbody/simbody#installing) >= 3.4.
+  **Important**: If installing Simbody using Makefile's, make sure
+  `SIMBODY_STANDARD_11` is turned on in CMake when building Simbody.
+* **API documentation** (optional):
+  [Doxygen](http://www.stack.nl/~dimitri/doxygen/download.html) >= 1.8;
+  `doxygen`.
+* **version control** (optional): git; `git`.
+* **MATLAB scripting** (optional): [Java development kit][java] >= 1.6;
+  `openjdk-6-jdk` or `openjdk-7-jdk`.
+* **python scripting** (optional): `python-dev`.
+
+For example, you could get all the required dependencies (except Simbody) via:
+
+    $ sudo apt-get install cmake-gui g++-4.8
+
+And you could get all the optional dependencies via:
+
+    $ sudo apt-get install doxygen git openjdk-7-jdk python-dev
+
+#### Download the OpenSim-Core source code
+
+* Method 1; If you want to get going quickly, download the source code from
+  https://github.com/opensim-org/opensim-core/releases, for the version of
+  OpenSim you want. We'll assume you unzipped the source code into
+  `~/opensim-core-source`.
+* Method 2: If you plan on updating your OpenSim installation or you want to
+  contribute back to the project, clone the opensim-core git repository into
+  `C:/opensim-core-source`. Run the following in a terminal:
+
+        $ git clone https://github.com/opensim-org/opensim-core.git ~/opensim-core-source
+
+  This will give you a bleeding-edge version of OpenSim-Core.
+
+#### Configure and generate project files
+
+1. Open CMake.
+2. In the field **Where is the source code**, specify `~/opensim-core-source`.
+3. In the field **Where to build the binaries**, specify something like
+   `~/opensim-core-build`, or some other path that is not inside your source
+   directory. This is *not* where we are installing OpenSim-Core; see below.
+4. Click the **Configure** button. Choose *Unix Makefiles*. Click **Finish**.
+5. Where do you want to install OpenSim-Core on your computer? Set this by
+   changing the `CMAKE_INSTALL_PREFIX` variable. We'll assume you set it to
+   `~/opensim-core`. If you choose a different installation location, make
+   sure to use *yours* where we use `~/opensim-core` below. You should *not*
+   use `/usr/`, `/usr/local/`, or any typical system path.
+6. Tell CMake where you installed Simbody by setting the `SimTK_INSTALL_DIR`
+   variable to where you installed Simbody (e.g., `~/simbody`). If you
+   installed Simbody using `brew`, then CMake will find Simbody automatically.
+7. Choose your build type by setting `CMAKE_BUILD_TYPE` to one of the following:
+    * *Debug*: debugger symbols; no optimizations (more than 10x slower).
+    Library names end with `_d`.
+    * *Release*: no debugger symbols; optimized.
+    * *RelWithDebInfo*: debugger symbols; optimized. Bigger but not slower
+    than Release; choose this if unsure.
+    * *MinSizeRel*: minimum size; optimized.
+
+    You at least want release libraries (the last 3 count as release), but you
+    can have debug libraries coexist with them. To do this, go through the
+    installation process twice, once for each of the two configurations. It is
+    typical to use a different build directory for each build type (e.g.,
+    `~/opensim-core-build-debug` and `~/opensim-core-build-release`). You
+    should install the release configuration *last* to ensure that you use the
+    release version of the command-line applications instead of the slow debug
+    versions.
+8. Set the remaining configuration options.
+    * `BUILD_EXAMPLES` to compile C++ API examples.
+    * `BUILD_TESTING` to ensure that OpenSim works correctly. The tests take a
+      hile to build; if you want to build OpenSim quickly, you can turn this
+      off.
+    * `BUILD_JAVA_WRAPPING` if you want to access OpenSim through MATLAB or
+      Java; see dependencies above.
+    * `BUILD_PYTHON_WRAPPING` if you want to access OpenSim through Python; see
+      dependencies above.
+    * `BUILD_API_ONLY` if you don't want to build the command-line applications.
+9. Click the **Configure** button again. Then, click **Generate** to create
+   Makefiles in the build directory.
+
+#### Build and install
+
+1. Open a terminal and navigate to the build directory.
+
+        $ cd ~/opensim-core-build
+
+2. Build the API documentation. This is optional, and you can only do this if
+   you have Doxygen.
+
+        $ make doxygen
+
+3. Compile. Use the `-jn` flag to build using `n` concurrent jobs (potentially
+   in parallel); this will greatly speed up your build. For example:
+
+        $ make -j8
+
+4. Run the tests.
+
+        $ ctest -j8
+
+5. Install (to `~/opensim-core`).
+
+        $ make -j8 install
+
+#### Set environment variables
+
+1. Allow executables to find OpenSim-Core libraries by adding the OpenSim-Core
+   `lib/` directory to your linker path.
+
+        $ echo `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/opensim-core/lib` > ~/.bashrc
+
+2. Add OpenSim-Core's executables to the path so you can access them from any
+   directory on your computer. NOTE that some of the names of OpenSim-Core
+   executables conflict with some UNIX commands (e.g., `id`). To give
+   preference to OpenSim-Core's executables, we must *prepend* OpenSim-Core's
+   `bin/` directory to the path.
+
+        $ echo `export PATH=~/opensim-core/bin:$PATH` > ~/.bashrc
+
+3. Your changes will only take effect in new terminal windows.
 
 
 [travisci]: https://magnum.travis-ci.com/opensim-org/opensim-core
 [buildstatus_image]: https://travis-ci.org/opensim-org/opensim-core.png?branch=master
 [running_gif]: OpenSim/doc/images/opensim_running.gif
 [simple_example_gif]: OpenSim/doc/images/opensim_double_pendulum_muscle.gif
+[java]: http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase6-419409.html
