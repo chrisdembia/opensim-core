@@ -471,8 +471,8 @@ And you could get all the optional dependencies via:
 Your changes will only take effect in new terminal windows.
 
 
-[travisci]: https://magnum.travis-ci.com/opensim-org/opensim-core
-[buildstatus_image]: https://travis-ci.org/opensim-org/opensim-core.png?branch=master
+[travisci]: https://travis-ci.org/opensim-org/opensim-core
+[buildstatus_image]: https://travis-ci.org/opensim-org/opensim-core.svg
 [running_gif]: OpenSim/doc/images/opensim_running.gif
 [simple_example_gif]: OpenSim/doc/images/opensim_double_pendulum_muscle.gif
 [java]: http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase6-419409.html
