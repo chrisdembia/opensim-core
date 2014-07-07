@@ -61,7 +61,7 @@ int main() {
     model.addBody(link1); model.addBody(link2);
     model.addJoint(joint1); model.addJoint(joint2);
     model.addForce(muscle);
-    model.addController(controller);
+    model.addController(brain);
 
     // Configure the model.
     State& state = model.initSystem();
@@ -90,28 +90,6 @@ This code produces the following animation:
 ---
 
 
-Dependencies
-------------
-* Operating system: Windows 7 or 8 or later; OS X 10.8 or later; Ubuntu 13.10
-  or later.
-* Cross-platform build system:
-  [CMake](http://www.cmake.org/cmake/resources/software.html) 2.8 or later.
-* Compiler.
-    * Windows: [Visual Studio](http://www.visualstudio.com) 2013.
-    * Mac: [Xcode](https://developer.apple.com/xcode/) 5 or later.
-    * Ubuntu or Mac: [gcc](http://gcc.gnu.org) 4.8 or later;
-      [Clang](http://clang.llvm.org) 3.4 or later.
-* [Simbody](https://www.github.com/simbody/simbody), our physics engine.
-* API documentation (optional):
-  [Doxygen](http://www.stack.nl/~dimitri/doxygen/) 1.8.
-* Version control (optional): [git](http://git-scm.com).
-* MATLAB scripting (optional): [Java development kit][java]
-* Python scripting (optional): Python libraries and headers.
-    * Windows: Enthought Canopy or Anaconda
-    * Mac: you already have it
-    * Ubuntu: `sudo apt-get install python-dev`
-
-
 Building from the source code
 -----------------------------
 
@@ -119,7 +97,7 @@ We support a few ways of building OpenSim:
 
 1. [On Windows using Microsoft Visual Studio](#on-windows-using-visual-studio).
 2. [On Mac using Xcode](#on-mac-using-xcode).
-3. [On Ubuntu using Unix Makefiles](#on-ubuntu-using-using-makefiles).
+3. [On Ubuntu using Unix Makefiles](#on-ubuntu-using-unix-makefiles).
 
 
 On Windows using Visual Studio
@@ -162,6 +140,7 @@ On Windows using Visual Studio
   following:
     * **URL**: `https://github.com/opensim-org/opensim-core.git`.
     * **Directory**: `C:/opensim-core-source`.
+
   If using a Git Bash or Git Shell, run the following:
 
         $ git clone https://github.com/opensim-org/opensim-core.git C:/opensim-core-source
@@ -216,9 +195,10 @@ On Windows using Visual Studio
     release version of the command-line applications instead of the slow debug
     versions.
 3. Build the API documentation. This is optional, and you can only do this if
-   you have Doxygen. Build the project **doxygen** by right-clicking it and
+   you have Doxygen. Build the documentation by right-clicking **doxygen** and
    selecting **Build**.
-4. Build the project **ALL_BUILD** by right-clicking it and selecting **Build**.
+4. Build the libraries, etc. by right-clicking  **ALL_BUILD** and selecting
+   **Build**.
 5. Run the tests by right-clicking **RUN_TESTS_PARALLEL** and selecting
    **Build**.
 6. Install OpenSim-Core by right-clicking **INSTALL** and selecting **Build**.
@@ -249,8 +229,8 @@ On Mac using Xcode
   the Mac App Store.
 * **physics engine**:
   [Simbody](https://github.com/simbody/simbody#installing) >= 3.4.
-  **Important**: If installing Simbody using Makefile's, make sure
-  `SIMBODY_STANDARD_11` is turned on in CMake when building Simbody.
+  **Important**: If installing Simbody using Makefile's, make sure Simbody's
+  CMake variable `SIMBODY_STANDARD_11` is turned on.
 * **API documentation** (optional):
   [Doxygen](http://www.stack.nl/~dimitri/doxygen/download.html) >= 1.8
 * **version control** (optional): git.
@@ -309,15 +289,15 @@ On Mac using Xcode
 #### Build and install
 
 1. Open `~/opensim-core-build/OpenSim.xcodeproj` in Xcode.
-2. Choose your **Build Configuration** by pressing `Command-Shift ,` (or,
-   `Command-LessThan`). or navigating to **Product -> Scheme -> Edit
-   Scheme...**. and changing the **Build Configuration** field.
-    * *Debug*: debugger symbols; no optimizations (more than 10x slower).
+2. Choose your **Build Configuration** for the **ALL_BUILD** Scheme by pressing
+   `Command-Shift ,` (or, `Command-LessThan`), or navigating to **Product ->
+   Scheme -> Edit Scheme...**; and changing the **Build Configuration** field.
+    * **Debug**: debugger symbols; no optimizations (more than 10x slower).
     Library names end with `_d`.
-    * *Release*: no debugger symbols; optimized.
-    * *RelWithDebInfo*: debugger symbols; optimized. Bigger but not slower
+    * **Release**: no debugger symbols; optimized.
+    * **RelWithDebInfo**: debugger symbols; optimized. Bigger but not slower
     than Release; choose this if unsure.
-    * *MinSizeRel*: minimum size; optimized.
+    * **MinSizeRel**: minimum size; optimized.
 
     You at least want release libraries (the last 3 count as release), but you
     can have debug libraries coexist with them. To do this, go through the
@@ -328,12 +308,12 @@ On Mac using Xcode
 
 3. Compile. Run the Scheme **ALL_BUILD** by clicking the play button in the
    upper left.
-4. Test.
-    1. Click on **ALL_BUILD** in the upper left, and select
-       **RUN_TESTS_PARALLEL**.
-    2. Click the play button.
+4. Test. Click on **ALL_BUILD** in the upper left, and select
+   **RUN_TESTS_PARALLEL**. Change the **Build Configuration** of this Scheme to
+   the same as you used for **ALL_BUILD** (using the same instructions as
+   above). Click the play button.
 5. Build the API documentation. This is optional, and you can only do this if
-   you have Doxygen. Click on the currente Scheme (**RUN_TESTS_PARALLEL**) and
+   you have Doxygen. Click on the current Scheme (**RUN_TESTS_PARALLEL**) and
    select **doxygen**. Click the play button.
 6. Install. Click on the current Scheme (**RUN_TESTS_PARALLEL** or
    **doxygen**), and select **install**. Click the play button.
@@ -346,14 +326,14 @@ On Mac using Xcode
         $ echo `export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/opensim-core/lib` > ~/.bashrc
 
 2. Add OpenSim-Core's executables to the path so you can access them from any
-   directory on your computer. NOTE that some of the names of OpenSim-Core
+   directory on your computer. *Note* some of the names of OpenSim-Core
    executables conflict with some UNIX commands (e.g., `id`). To give
    preference to OpenSim-Core's executables, we must *prepend* OpenSim-Core's
    `bin/` directory to the path.
 
         $ echo `export PATH=~/opensim-core/bin:$PATH` > ~/.bashrc
 
-3. Your changes will only take effect in new terminal windows.
+Your changes will only take effect in new terminal windows.
 
 
 On Ubuntu using Unix Makefiles
@@ -361,7 +341,8 @@ On Ubuntu using Unix Makefiles
 
 #### Get the dependencies
 
-Most dependencies can be obtained via the Ubuntu software repositories.
+Most dependencies can be obtained via the Ubuntu software repositories. On each
+line below, we show the corresponding package.
 
 * **operating system**: Ubuntu 13.10 or later.
 * **cross-platform build system**:
@@ -371,8 +352,8 @@ Most dependencies can be obtained via the Ubuntu software repositories.
       [Clang](http://clang.llvm.org) >= 3.4; `clang-3.4`.
 * **physics engine**:
   [Simbody](https://github.com/simbody/simbody#installing) >= 3.4.
-  **Important**: If installing Simbody using Makefile's, make sure
-  `SIMBODY_STANDARD_11` is turned on in CMake when building Simbody.
+  **Important**: If installing Simbody using Makefile's, make sure Simbody's
+  CMake variable `SIMBODY_STANDARD_11` is turned on.
 * **API documentation** (optional):
   [Doxygen](http://www.stack.nl/~dimitri/doxygen/download.html) >= 1.8;
   `doxygen`.
@@ -381,7 +362,7 @@ Most dependencies can be obtained via the Ubuntu software repositories.
   `openjdk-6-jdk` or `openjdk-7-jdk`.
 * **python scripting** (optional): `python-dev`.
 
-For example, you could get all the required dependencies (except Simbody) via:
+For example, you could get the required dependencies (except Simbody) via:
 
     $ sudo apt-get install cmake-gui g++-4.8
 
@@ -487,7 +468,7 @@ And you could get all the optional dependencies via:
 
         $ echo `export PATH=~/opensim-core/bin:$PATH` > ~/.bashrc
 
-3. Your changes will only take effect in new terminal windows.
+Your changes will only take effect in new terminal windows.
 
 
 [travisci]: https://magnum.travis-ci.com/opensim-org/opensim-core
