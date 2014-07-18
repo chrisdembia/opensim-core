@@ -27,10 +27,8 @@
 // INCLUDES
 #include "osimCommonDLL.h"
 #include <string>
+#include "PropertyArrayDouble.h"
 #include "Array.h"
-#include "PropertyInt.h"
-#include "PropertyDbl.h"
-#include "PropertyDblArray.h"
 #include "Function.h"
 
 
@@ -56,15 +54,17 @@ OpenSim_DECLARE_CONCRETE_OBJECT(SimmSpline, Function);
 // MEMBER VARIABLES
 //=============================================================================
 protected:
-	// PROPERTIES
-	/** Array of values for the independent variables (i.e., the spline knot
-	sequence).  This array must be monotonically increasing. */
-	PropertyDblArray _propX;
-	Array<double> &_x;
+	/** @name Property declarations
+	These are the serializable properties associated with a SimmSpline. **/
+	/**@{**/
+    OpenSim_DECLARE_PROPERTY(x, Array<double>,
+            "Array of values for the independent variable (i.e., the spline "
+            "knot sequence). This array must be monotonically increasing.")
 
-	/** Y values. */
-	PropertyDblArray _propY;
-	Array<double> &_y;
+    OpenSim_DECLARE_PROPERTY(y, Array<double>,
+            "Array of values of the dependent variable corresponding to the "
+            "x values.")
+	/**@}**/
 
 private:
 	Array<double> _b;
@@ -79,35 +79,36 @@ public:
 	// CONSTRUCTION
 	//--------------------------------------------------------------------------
 	SimmSpline();
-	SimmSpline(int aN,const double *aTimes,const double *aValues,
+	SimmSpline(int numPoints, const double* x, const double* y,
 		const std::string &aName="");
-	SimmSpline(const SimmSpline &aSpline);
-	virtual ~SimmSpline();
 
+    /**
+     * Initialize the spline with X and Y values.
+     *
+     * @param aN the number of X and Y values
+     * @param aXValues the X values
+     * @param aYValues the Y values
+     */
 	virtual void init(Function* aFunction);
 
 private:
-	void setNull();
-	void setupProperties();
+    void constructProperties();
 	void setEqual(const SimmSpline &aSpline);
 
-	//--------------------------------------------------------------------------
-	// OPERATORS
-	//--------------------------------------------------------------------------
-public:
-#ifndef SWIG
-	SimmSpline& operator=(const SimmSpline &aSpline);
-#endif
 	//--------------------------------------------------------------------------
 	// SET AND GET
 	//--------------------------------------------------------------------------
 public:
+    /**
+     * Number of independent data points (or number of coefficients)
+     * used to construct the spline.
+     */
 	int getSize() const;
 	const Array<double>& getX() const;
 	const Array<double>& getY() const;
 	virtual const double* getXValues() const;
 	virtual const double* getYValues() const;
-	virtual int getNumberOfPoints() const { return _x.getSize(); }
+	virtual int getNumberOfPoints() const { return get_x().getSize(); }
 	virtual double getX(int aIndex) const;
 	virtual double getY(int aIndex) const;
 	virtual double getZ(int aIndex) const { return 0.0; }

@@ -46,34 +46,22 @@ using SimTK::Vector;
 //=============================================================================
 // DESTRUCTOR AND CONSTRUCTORS
 //=============================================================================
-//_____________________________________________________________________________
-/**
- * Destructor.
- */
-SimmSpline::~SimmSpline()
-{
-}
+
 //_____________________________________________________________________________
 /**
  * Default constructor.
  */
 SimmSpline::SimmSpline() :
-	_x(_propX.getValueDblArray()),
-	_y(_propY.getValueDblArray()),
 	_b(0.0), _c(0.0), _d(0.0)
 {
-	setNull();
+	constructProperties();
 }
-//_____________________________________________________________________________
-/**
- */
+
 SimmSpline::SimmSpline(int aN,const double *aX,const double *aY,
 	const string &aName) :
-	_x(_propX.getValueDblArray()),
-	_y(_propY.getValueDblArray()),
 	_b(0.0), _c(0.0), _d(0.0)
 {
-	setNull();
+	constructProperties();
 
 	// OBJECT TYPE AND NAME
 	setName(aName);
@@ -93,92 +81,44 @@ SimmSpline::SimmSpline(int aN,const double *aX,const double *aY,
 	}
 
 	// INDEPENDENT VALUES (KNOT SEQUENCE)
-	_x.setSize(0);
-	_x.append(aN,aX);
+	upd_x().setSize(0);
+	upd_x().append(aN,aX);
 
-	_y.setSize(0);
-	_y.append(aN,aY);
+	upd_y().setSize(0);
+	upd_y().append(aN,aY);
 
 	// FIT THE SPLINE
 	calcCoefficients();
-}
-//_____________________________________________________________________________
-/**
- * Copy constructor.
- * All data members of the specified spline are copied.
- *
- * @param aSpline SimmSpline object to be copied.
- */
-SimmSpline::SimmSpline(const SimmSpline &aSpline) :
-	Function(aSpline),
-	_x(_propX.getValueDblArray()),
-	_y(_propY.getValueDblArray()),
-	_b(0.0), _c(0.0), _d(0.0)
-{
-	setEqual(aSpline);
 }
 
 
 //=============================================================================
 // CONSTRUCTION
 //=============================================================================
-//_____________________________________________________________________________
-/**
- * Set all member variables to their NULL or default values.
- */
-void SimmSpline::setNull()
-{
-	setupProperties();
-}
-//_____________________________________________________________________________
-/**
- * Set up the serialized member variables.  This involves both generating
- * the properties and connecting them to the local pointers used to access
- * the serialized member variables.
- */
-void SimmSpline::setupProperties()
-{
-	// X- INDEPENDENT VARIABLES
-	_propX.setName("x");
-	Array<double> x(0.0);
-	_propX.setValue(x);
-	_propertySet.append( &_propX );
 
-	// Y- DEPENDENT VARIABLES
-	_propY.setName("y");
-	Array<double> y(0.0);
-	_propY.setValue(y);
-	_propertySet.append( &_propY );
+void SimmSpline::constructProperties()
+{
+    constructProperty_x(Array<double>(0.0));
+    constructProperty_y(Array<double>(0.0));
 }
-//_____________________________________________________________________________
-/**
- * Set all member variables equal to the members of another object.
- * Note that this method is private.  It is only meant for copying the data
- * members defined in this class.  It does not, for example, make any changes
- * to data members of base classes.
- */
+
+// Set all member variables equal to the members of another object.
+// Note that this method is private.  It is only meant for copying the data
+// members defined in this class.  It does not, for example, make any changes
+// to data members of base classes.
 void SimmSpline::setEqual(const SimmSpline &aSpline)
 {
-	setNull();
-
 	// CHECK ARRAY SIZES
 	if(aSpline.getSize()<=0) return;
 
 	// ALLOCATE ARRAYS
-	_x = aSpline._x;
-	_y = aSpline._y;
+	upd_x() = aSpline.get_x();
+	upd_y() = aSpline.get_y();
 	_b = aSpline._b;
 	_c = aSpline._c;
 	_d = aSpline._d;
 }
-//_____________________________________________________________________________
-/**
- * Initialize the spline with X and Y values.
- *
- * @param aN the number of X and Y values
- * @param aXValues the X values
- * @param aYValues the Y values
- */
+
 void SimmSpline::init(Function* aFunction)
 {
 	if (aFunction == NULL)
@@ -214,27 +154,6 @@ void SimmSpline::init(Function* aFunction)
 	}
 }
 
-//=============================================================================
-// OPERATORS
-//=============================================================================
-//_____________________________________________________________________________
-/**
- * Assignment operator.
- * Note that data members of the base class are also assigned.
- *
- * @return Reference to this object.
- */
-SimmSpline& SimmSpline::operator=(const SimmSpline &aSpline)
-{
-	// BASE CLASS
-	Function::operator=(aSpline);
-
-	// DATA
-	setEqual(aSpline);
-
-	return(*this);
-}
-
 
 //=============================================================================
 // SET AND GET
@@ -243,75 +162,38 @@ SimmSpline& SimmSpline::operator=(const SimmSpline &aSpline)
 // NUMBER OF DATA POINTS (N)
 //-----------------------------------------------------------------------------
 //_____________________________________________________________________________
-/**
- * Get size or number of independent data points (or number of coefficients)
- * used to construct the spline.
- *
- * @return Number of data points (or number of coefficients).
- */
 int SimmSpline::getSize() const
 {
-	return(_x.getSize());
+	return(get_x().getSize());
 }
 
 //-----------------------------------------------------------------------------
 // X AND COEFFICIENTS
 //-----------------------------------------------------------------------------
-//_____________________________________________________________________________
-/**
- * Get the array of independent variables used to construct the spline.
- * For the number of independent variable data points use getN().
- *
- * @return Pointer to the independent variable data points.
- * @see getN();
- */
 const Array<double>& SimmSpline::getX() const
 {
-	return(_x);
-}
-//_____________________________________________________________________________
-/**
- * Get the array of Y values for the spline.
- * For the number of Y values use getNX().
- *
- * @return Pointer to the coefficients.
- * @see getCoefficients();
- */
-const Array<double>& SimmSpline::getY() const
-{
-	return(_y);
-}
-//_____________________________________________________________________________
-/**
- * Get the array of independent variables used to construct the spline.
- * For the number of independent variable data points use getN().
- *
- * @return Pointer to the independent variable data points.
- * @see getN();
- */
-const double* SimmSpline::getXValues() const
-{
-	return(&_x[0]);
-}
-//_____________________________________________________________________________
-/**
- * Get the array of dependent variables used to construct the spline.
- *
- * @return Pointer to the independent variable data points.
- */
-const double* SimmSpline::getYValues() const
-{
-	return(&_y[0]);
+	return(get_x());
 }
 
+const Array<double>& SimmSpline::getY() const
+{
+	return(get_y());
+}
+
+const double* SimmSpline::getXValues() const
+{
+	return(&get_x()[0]);
+}
+
+const double* SimmSpline::getYValues() const
+{
+	return(&get_y()[0]);
+}
 
 //-----------------------------------------------------------------------------
 // UPDATE FROM XML NODE
 //-----------------------------------------------------------------------------
-//_____________________________________________________________________________
-/**
- * Update this object based on its XML node.
- */
+
 void SimmSpline::updateFromXMLNode(SimTK::Xml::Element& aNode, int versionNumber)
 {
 	Function::updateFromXMLNode(aNode, versionNumber);
@@ -323,7 +205,7 @@ void SimmSpline::updateFromXMLNode(SimTK::Xml::Element& aNode, int versionNumber
 //=============================================================================
 void SimmSpline::calcCoefficients()
 {
-   int n = _x.getSize();
+   int n = get_x().getSize();
 	int nm1, nm2, i, j;
    double t;
 
@@ -336,8 +218,8 @@ void SimmSpline::calcCoefficients()
 
    if (n == 2)
    {
-      t = MAX(TINY_NUMBER,_x[1]-_x[0]);
-      _b[0] = _b[1] = (_y[1]-_y[0])/t;
+      t = MAX(TINY_NUMBER,get_x()[1]-get_x()[0]);
+      _b[0] = _b[1] = (get_y()[1]-get_y()[0])/t;
       _c[0] = _c[1] = 0.0;
       _d[0] = _d[1] = 0.0;
       return;
@@ -350,13 +232,13 @@ void SimmSpline::calcCoefficients()
     * b = diagonal, d = offdiagonal, c = right-hand side
     */
 
-   _d[0] = MAX(TINY_NUMBER,_x[1] - _x[0]);
-   _c[1] = (_y[1]-_y[0])/_d[0];
+   _d[0] = MAX(TINY_NUMBER,get_x()[1] - get_x()[0]);
+   _c[1] = (get_y()[1]-get_y()[0])/_d[0];
    for (i=1; i<nm1; i++)
    {
-      _d[i] = MAX(TINY_NUMBER,_x[i+1] - _x[i]);
+      _d[i] = MAX(TINY_NUMBER,get_x()[i+1] - get_x()[i]);
       _b[i] = 2.0*(_d[i-1]+_d[i]);
-      _c[i+1] = (_y[i+1]-_y[i])/_d[i];
+      _c[i+1] = (get_y()[i+1]-get_y()[i])/_d[i];
       _c[i] = _c[i+1] - _c[i];
    }
 
@@ -373,12 +255,12 @@ void SimmSpline::calcCoefficients()
    {
       double d1, d2, d3, d20, d30, d31;
 
-      d31 = MAX(TINY_NUMBER,_x[3] - _x[1]);
-      d20 = MAX(TINY_NUMBER,_x[2] - _x[0]);
-      d1 = MAX(TINY_NUMBER,_x[nm1]-_x[n-3]);
-      d2 = MAX(TINY_NUMBER,_x[nm2]-_x[n-4]);
-      d30 = MAX(TINY_NUMBER,_x[3] - _x[0]);
-      d3 = MAX(TINY_NUMBER,_x[nm1]-_x[n-4]);
+      d31 = MAX(TINY_NUMBER,get_x()[3] - get_x()[1]);
+      d20 = MAX(TINY_NUMBER,get_x()[2] - get_x()[0]);
+      d1 = MAX(TINY_NUMBER,get_x()[nm1]-get_x()[n-3]);
+      d2 = MAX(TINY_NUMBER,get_x()[nm2]-get_x()[n-4]);
+      d30 = MAX(TINY_NUMBER,get_x()[3] - get_x()[0]);
+      d3 = MAX(TINY_NUMBER,get_x()[nm1]-get_x()[n-4]);
       _c[0] = _c[2]/d31 - _c[1]/d20;
       _c[nm1] = _c[nm2]/d1 - _c[n-3]/d2;
       _c[0] = _c[0]*_d[0]*_d[0]/d30;
@@ -405,11 +287,11 @@ void SimmSpline::calcCoefficients()
 
    /* compute polynomial coefficients */
 
-   _b[nm1] = (_y[nm1]-_y[nm2])/_d[nm2] +
+   _b[nm1] = (get_y()[nm1]-get_y()[nm2])/_d[nm2] +
                _d[nm2]*(_c[nm2]+2.0*_c[nm1]);
    for (i=0; i<nm1; i++)
    {
-      _b[i] = (_y[i+1]-_y[i])/_d[i] - _d[i]*(_c[i+1]+2.0*_c[i]);
+      _b[i] = (get_y()[i+1]-get_y()[i])/_d[i] - _d[i]*(_c[i+1]+2.0*_c[i]);
       _d[i] = (_c[i+1]-_c[i])/_d[i];
       _c[i] *= 3.0;
    }
@@ -420,8 +302,8 @@ void SimmSpline::calcCoefficients()
 
 double SimmSpline::getX(int aIndex) const
 {
-	if (aIndex >= 0 && aIndex < _x.getSize())
-		return _x.get(aIndex);
+	if (aIndex >= 0 && aIndex < get_x().getSize())
+		return get_x().get(aIndex);
 	else {
 		throw Exception("SimmSpline::getX(): index out of bounds.");
 		return 0.0;
@@ -430,8 +312,8 @@ double SimmSpline::getX(int aIndex) const
 
 double SimmSpline::getY(int aIndex) const
 {
-	if (aIndex >= 0 && aIndex < _y.getSize())
-		return _y.get(aIndex);
+	if (aIndex >= 0 && aIndex < get_y().getSize())
+		return get_y().get(aIndex);
 	else {
 		throw Exception("SimmSpline::getY(): index out of bounds.");
 		return 0.0;
@@ -440,8 +322,8 @@ double SimmSpline::getY(int aIndex) const
 
 void SimmSpline::setX(int aIndex, double aValue)
 {
-	if (aIndex >= 0 && aIndex < _x.getSize()) {
-		_x[aIndex] = aValue;
+	if (aIndex >= 0 && aIndex < get_x().getSize()) {
+		upd_x()[aIndex] = aValue;
 	   calcCoefficients();
 	} else {
 		throw Exception("SimmSpline::setX(): index out of bounds.");
@@ -450,8 +332,8 @@ void SimmSpline::setX(int aIndex, double aValue)
 
 void SimmSpline::setY(int aIndex, double aValue)
 {
-	if (aIndex >= 0 && aIndex < _y.getSize()) {
-		_y[aIndex] = aValue;
+	if (aIndex >= 0 && aIndex < get_y().getSize()) {
+		upd_y()[aIndex] = aValue;
 	   calcCoefficients();
 	} else {
 		throw Exception("SimmSpline::setY(): index out of bounds.");
@@ -460,14 +342,14 @@ void SimmSpline::setY(int aIndex, double aValue)
 
 bool SimmSpline::deletePoint(int aIndex)
 {
-	if (_x.getSize() > 2 && _y.getSize() > 2 &&
-		 aIndex < _x.getSize() && aIndex < _y.getSize()) {
-	   _x.remove(aIndex);
-	   _y.remove(aIndex);
+	if (get_x().getSize() > 2 && get_y().getSize() > 2 &&
+		 aIndex < get_x().getSize() && aIndex < get_y().getSize()) {
+	   upd_x().remove(aIndex);
+	   upd_y().remove(aIndex);
 
 	   // Recalculate the coefficients
 	   calcCoefficients();
-		return true;
+       return true;
    }
 
    return false;
@@ -476,15 +358,15 @@ bool SimmSpline::deletePoint(int aIndex)
 bool SimmSpline::deletePoints(const Array<int>& indices)
 {
 	bool pointsDeleted = false;
-	int numPointsLeft = _x.getSize() - indices.getSize();
+	int numPointsLeft = get_x().getSize() - indices.getSize();
 
 	if (numPointsLeft >= 2) {
 		// Assume the indices are sorted highest to lowest
 		for (int i=0; i<indices.getSize(); i++) {
 			int index = indices.get(i);
-			if (index >= 0 && index < _x.getSize()) {
-	         _x.remove(index);
-	         _y.remove(index);
+			if (index >= 0 && index < get_x().getSize()) {
+	         upd_x().remove(index);
+	         upd_y().remove(index);
 				pointsDeleted = true;
 			}
 		}
@@ -498,12 +380,12 @@ bool SimmSpline::deletePoints(const Array<int>& indices)
 int SimmSpline::addPoint(double aX, double aY)
 {
 	int i=0;
-	for (i=0; i<_x.getSize(); i++)
-		if (_x[i] > aX)
+	for (i=0; i<get_x().getSize(); i++)
+		if (get_x()[i] > aX)
 			break;
 
-	_x.insert(i, aX);
-	_y.insert(i, aY);
+	upd_x().insert(i, aX);
+	upd_y().insert(i, aY);
 
 	// Recalculate the slopes
 	calcCoefficients();
@@ -514,7 +396,7 @@ int SimmSpline::addPoint(double aX, double aY)
 double SimmSpline::calcValue(const Vector& x) const
 {
 	// NOT A NUMBER
-	if(!_y.getSize()) return(SimTK::NaN);
+	if(!get_y().getSize()) return(SimTK::NaN);
 	if(!_b.getSize()) return(SimTK::NaN);
 	if(!_c.getSize()) return(SimTK::NaN);
 	if(!_d.getSize()) return(SimTK::NaN);
@@ -522,7 +404,7 @@ double SimmSpline::calcValue(const Vector& x) const
     int i, j, k;
     double dx;
 
-	int n = _x.getSize();
+	int n = get_x().getSize();
     double aX = x[0];
 
    /* Check if the abscissa is out of range of the function. If it is,
@@ -535,19 +417,19 @@ double SimmSpline::calcValue(const Vector& x) const
     * and the coordinate is still out of range, deal with it quietly.
     */
 
-   if (aX < _x[0])
-       return _y[0] + (aX - _x[0])*_b[0];
-   else if (aX > _x[n-1])
-       return _y[n-1] + (aX - _x[n-1])*_b[n-1];
+   if (aX < get_x()[0])
+       return get_y()[0] + (aX - get_x()[0])*_b[0];
+   else if (aX > get_x()[n-1])
+       return get_y()[n-1] + (aX - get_x()[n-1])*_b[n-1];
 
    /* Check to see if the abscissa is close to one of the end points
     * (the binary search method doesn't work well if you are at one of the
     * end points.
     */
-   if (EQUAL_WITHIN_ERROR(aX,_x[0]))
-       return _y[0];
-   else if (EQUAL_WITHIN_ERROR(aX,_x[n-1]))
-       return _y[n-1];
+   if (EQUAL_WITHIN_ERROR(aX,get_x()[0]))
+       return get_y()[0];
+   else if (EQUAL_WITHIN_ERROR(aX,get_x()[n-1]))
+       return get_y()[n-1];
 
 	if (n < 3)
 	{
@@ -565,23 +447,23 @@ double SimmSpline::calcValue(const Vector& x) const
 		while (1)
 		{
 			k = (i+j)/2;
-			if (aX < _x[k])
+			if (aX < get_x()[k])
 				j = k;
-			else if (aX > _x[k+1])
+			else if (aX > get_x()[k+1])
 				i = k;
 			else
 				break;
 		}
 	}
 
-   dx = aX - _x[k];
-   return _y[k] + dx*(_b[k] + dx*(_c[k] + dx*_d[k]));
+   dx = aX - get_x()[k];
+   return get_y()[k] + dx*(_b[k] + dx*(_c[k] + dx*_d[k]));
 }
 
 double SimmSpline::calcDerivative(const std::vector<int>& derivComponents, const Vector& x) const
 {
 	// NOT A NUMBER
-	if(!_y.getSize()) return(SimTK::NaN);
+	if(!get_y().getSize()) return(SimTK::NaN);
 	if(!_b.getSize()) return(SimTK::NaN);
 	if(!_c.getSize()) return(SimTK::NaN);
 	if(!_d.getSize()) return(SimTK::NaN);
@@ -589,7 +471,7 @@ double SimmSpline::calcDerivative(const std::vector<int>& derivComponents, const
     int i, j, k;
     double dx;
 
-	int n = _x.getSize();
+	int n = get_x().getSize();
     double aX = x[0];
     int aDerivOrder = (int)derivComponents.size();
     if (aDerivOrder < 1 || aDerivOrder > 2)
@@ -605,14 +487,14 @@ double SimmSpline::calcDerivative(const std::vector<int>& derivComponents, const
     * and the coordinate is still out of range, deal with it quietly.
     */
 
-   if (aX < _x[0])
+   if (aX < get_x()[0])
    {
       if (aDerivOrder == 1)
          return _b[0];
       else
          return 0;
    }
-   else if (aX > _x[n-1])
+   else if (aX > get_x()[n-1])
    {
       if (aDerivOrder == 1)
          return _b[n-1];
@@ -624,14 +506,14 @@ double SimmSpline::calcDerivative(const std::vector<int>& derivComponents, const
     * (the binary search method doesn't work well if you are at one of the
     * end points.
     */
-   if (EQUAL_WITHIN_ERROR(aX,_x[0]))
+   if (EQUAL_WITHIN_ERROR(aX,get_x()[0]))
    {
       if (aDerivOrder == 1)
          return _b[0];
       else
          return 2.0*_c[0];
    }
-   else if (EQUAL_WITHIN_ERROR(aX,_x[n-1]))
+   else if (EQUAL_WITHIN_ERROR(aX,get_x()[n-1]))
    {
       if (aDerivOrder == 1)
          return _b[n-1];
@@ -655,16 +537,16 @@ double SimmSpline::calcDerivative(const std::vector<int>& derivComponents, const
 		while (1)
 		{
 			k = (i+j)/2;
-			if (aX < _x[k])
+			if (aX < get_x()[k])
 				j = k;
-			else if (aX > _x[k+1])
+			else if (aX > get_x()[k+1])
 				i = k;
 			else
 				break;
 		}
 	}
 
-   dx = aX - _x[k];
+   dx = aX - get_x()[k];
 
    if (aDerivOrder == 1)
       return (_b[k] + dx*(2.0*_c[k] + 3.0*dx*_d[k]));
