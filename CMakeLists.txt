@@ -475,14 +475,7 @@ ELSE(WIN32)
 	ENDIF(APPLE)
 ENDIF(WIN32)
 
-SET(SIMTK_COMMON_LIB debug ${NameSpace}SimTKcommon${CMAKE_DEBUG_POSTFIX} optimized ${NameSpace}SimTKcommon)
-SET(SIMTK_MATH_LIB debug ${NameSpace}SimTKmath${CMAKE_DEBUG_POSTFIX} optimized ${NameSpace}SimTKmath)
-SET(SIMTK_SIMBODY_LIB debug ${NameSpace}SimTKsimbody${CMAKE_DEBUG_POSTFIX} optimized ${NameSpace}SimTKsimbody)
-
-SET(SIMTK_ALL_LIBS	${SIMTK_COMMON_LIB} 
-                    ${SIMTK_MATH_LIB} 
-                    ${SIMTK_SIMBODY_LIB} 
-                    ${MATH_LIBS_TO_USE})
+SET(SIMBODY_AND_MATH_LIBS ${SIMBODY_LIBRARIES} ${MATH_LIBS_TO_USE})
 
 # Now figure out which 3rd party files need to be installed in the /bin 
 # directory and which in the lib directory. Executables go in /bin on all 

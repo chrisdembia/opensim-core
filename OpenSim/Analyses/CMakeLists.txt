@@ -33,7 +33,7 @@ SET(EXPORT_MACRO OSIM${UKIT}_EXPORTS)
 LINK_LIBRARIES( debug osimCommon${CMAKE_DEBUG_POSTFIX} optimized osimCommon
 		debug osimSimulation${CMAKE_DEBUG_POSTFIX} optimized osimSimulation
 		debug osimActuators${CMAKE_DEBUG_POSTFIX} optimized osimActuators
-				${SIMTK_ALL_LIBS})
+		${SIMBODY_AND_MATH_LIBS})
 
 ADD_LIBRARY(osim${KIT} SHARED ${SOURCE_FILES} ${INCLUDE_FILES}) 
 
