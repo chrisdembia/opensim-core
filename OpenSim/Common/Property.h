@@ -28,8 +28,6 @@
 #include "Exception.h"
 
 #ifdef SWIG
-#undef override
-#define override
 #undef FINAL_11
 #define FINAL_11
 #endif
