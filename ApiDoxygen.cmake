@@ -54,6 +54,8 @@ ELSE(DOXYGEN_EXECUTABLE-NOTFOUND)
          DESTINATION "${PROJECT_BINARY_DIR}/")
     FILE(COPY "${CMAKE_CURRENT_SOURCE_DIR}/OpenSim/doc/images/"
          DESTINATION "${PROJECT_BINARY_DIR}/html/images/")
+    FILE(COPY "${CMAKE_CURRENT_SOURCE_DIR}/OpenSim/doc/libstdc++.tag"
+         DESTINATION "${PROJECT_BINARY_DIR}/")
 
     ################
     # INSTALLATION #
