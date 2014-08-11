@@ -680,10 +680,7 @@ private:
 // PRIVATE UTILITY CLASS MEMBERS
 //==============================================================================
 
-    // This object defines the pennation model used for this muscle model. Using
-    // a ClonePtr saves us from having to write a destructor, copy constructor,
-    // or copy assignment. This will be zeroed on construction, cleaned up on
-    // destruction, and cloned when copying.
+    // This object defines the pennation model used for this muscle model.
     MuscleFixedWidthPennationModel penMdl;
 
     // Singularity-free inverse of ForceVelocityCurve.

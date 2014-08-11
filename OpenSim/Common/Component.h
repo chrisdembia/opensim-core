@@ -394,7 +394,7 @@ public:
      * beginning of the map. This can be used in a loop as such:
      *
      *  @code
-     *  std::map<std::string, const AbstractOutput*>::const_iterator it;
+     *  std::map<std::string, std::unique_ptr<const AbstractOutput>>::const_iterator it;
      *  for (it = myComp.getOutputsBegin(); it != myComp.getOutputsEnd(); it++)
      *  { ... }
 	 *  @endcode
@@ -409,7 +409,7 @@ public:
     }
 
     /** An iterator for the map of Outputs of this component, pointing at the
-     * end of the map. This can be used in a loop as such:
+     * end of the map.
      *
      * @see getOutputsBegin()
      */
