@@ -400,7 +400,9 @@ int main() {
 		theWorld.add(&foo);
 		foo.set_mass(2.0);
 
+        foo.getInput("input1");
 		Foo* footTest = foo.clone();
+        footTest->getInput("input1");
 
 		Bar& bar = *new Bar();
 		bar.setName("Bar");

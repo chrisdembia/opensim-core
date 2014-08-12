@@ -206,12 +206,12 @@ public:
 	/** Copy Constructor. Required to perform custom handling of 
 	    internal references to subcomonents and system indices.
 		The copy has to be connected in order to function. */
-	Component(const Component& source);
+	// TODO Component(const Component& source);
 
 	/** Copy assignment.  Required to disconnect Connectors.
 	    and reset indices. Musct call connect() on Component
 		after is has been assigned to another. */
-	Component& operator=(const Component &component);
+	// TODO Component& operator=(const Component &component);
 	
     /** Destructor is virtual to allow concrete Component to cleanup. **/
 	virtual ~Component() {}
@@ -401,7 +401,7 @@ public:
      *
      * @see getOutputsEnd()
      */
-    std::map<std::string, std::unique_ptr<const AbstractOutput>
+    std::map<std::string, SimTK::ClonePtr<AbstractOutput>
         >::const_iterator
         getOutputsBegin() const
     {
@@ -413,7 +413,7 @@ public:
      *
      * @see getOutputsBegin()
      */
-    std::map<std::string, std::unique_ptr<const AbstractOutput>
+    std::map<std::string, SimTK::ClonePtr<AbstractOutput>
         >::const_iterator
         getOutputsEnd() const
     {
@@ -1047,7 +1047,7 @@ template <class T> friend class ComponentMeasure;
 	template <typename T>
 	void constructInput(const std::string& name,
 		const SimTK::Stage& requiredAtStage = SimTK::Stage::Instance) {
-		_inputsTable[name] = std::unique_ptr<AbstractInput>(new Input<T>(name, requiredAtStage));
+		_inputsTable[name] = SimTK::ClonePtr<AbstractInput>(new Input<T>(name, requiredAtStage));
 	}
 
     /**
@@ -1095,7 +1095,7 @@ template <class T> friend class ComponentMeasure;
 	void constructOutput(const std::string& name, 
 		const std::function<T(const SimTK::State&)> outputFunction, 
 		const SimTK::Stage& dependsOn = SimTK::Stage::Acceleration) {
-        _outputsTable[name] = std::unique_ptr<const AbstractOutput>(new
+        _outputsTable[name] = SimTK::ClonePtr<AbstractOutput>(new
                 Output<T>(name, outputFunction, dependsOn));
 	}
     
@@ -1428,10 +1428,10 @@ private:
 	std::map<std::string, int> _connectorsTable;
 
 	// Table of Component's Inputs indexed by name.
-    std::map<std::string, std::unique_ptr<const AbstractInput> > _inputsTable;
+    std::map<std::string, SimTK::ClonePtr<AbstractInput> > _inputsTable;
 
 	// Table of Component's Outputs indexed by name.
-    std::map<std::string, std::unique_ptr<const AbstractOutput> >
+    std::map<std::string, SimTK::ClonePtr<AbstractOutput> >
         _outputsTable;
 
     // Underlying SimTK custom measure ComponentMeasure, which implements

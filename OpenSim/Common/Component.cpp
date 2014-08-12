@@ -120,6 +120,7 @@ Component::Component(SimTK::Xml::Element& element)
 	finalizeFromProperties();
 }
 
+/*
 Component::Component(const Component& source) : Object(source)
 {
 	//Object copy will handle pthe propeties table.
@@ -135,6 +136,7 @@ Component& Component::operator=(const Component &component)
 	finalizeFromProperties();
 	return *this;
 }
+*/
 
 // Base class implementation of virtual method.
 // Call finalizeFromProperties on all components
