@@ -37,9 +37,9 @@
         openSimFolder = uigetdir(prospectiveOpenSimFolder,'Select the folder where OpenSim is installed.');
         if ~openSimFolder  % user cancelled process
             error('User cancelled function')
-        end
+        end TODO
         % Check if the correct OpenSim directory is selected
-        if ~exist(fullfile(openSimFolder, 'sdk', 'buildinfo.txt'))
+        if ~exist(fullfile(openSimFolder, '@CMAKE_INSTALL_SYSCONFDIR@', 'buildinfo.txt'))
             h = msgbox('Folder is not an OpenSim Install folder. Please select OpenSim Install folder','Error');
             uiwait(h)
         else

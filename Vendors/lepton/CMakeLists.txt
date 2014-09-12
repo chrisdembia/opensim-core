@@ -34,33 +34,21 @@ ADD_LIBRARY(osim${KIT} SHARED ${SOURCE_FILES} ${INCLUDE_FILES})
 
 SET_TARGET_PROPERTIES(osim${KIT} PROPERTIES PROJECT_LABEL "Vendor Libraries - osim${KIT}")
 
-# Shared libraries are needed at runtime for applications, so we put them
-# at the top level in OpenSim/bin/*.dll (Windows) or OpenSim/lib/*.so (Linux)
-# or OpemSim/lib/*.dylib (Mac). Windows .lib files, and Linux/Mac .a static
-# archives are only needed at link time so go in sdk/lib.
-IF(WIN32)
-    INSTALL(TARGETS osim${KIT}
-            EXPORT OpenSimTargets
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION sdk/lib
-            ARCHIVE DESTINATION sdk/lib)
-ELSE()
-    INSTALL(TARGETS osim${KIT}
-            EXPORT OpenSimTargets
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION lib
-            ARCHIVE DESTINATION sdk/lib)
-ENDIF()
+INSTALL(TARGETS osim${KIT}
+    EXPORT OpenSimTargets
+    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE DESTINATION "${OPENSIM_INSTALL_ARCHIVEDIR}")
 
 # To include it in public release. 
 
 INSTALL(FILES ${INCLUDE_FILES}
-        DESTINATION sdk/include/Vendors/lepton/include)
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME}")
 
 # Also need to grab all header files from sub dir /Vendors/lepton/include/lepton/		
 FILE(GLOB MORE_HEADERS include/lepton/*.h) 
 INSTALL(FILES ${MORE_HEADERS}
-	DESTINATION sdk/include/Vendors/lepton/include/lepton)
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME}/${KIT}")
 
 
 ENABLE_TESTING()
