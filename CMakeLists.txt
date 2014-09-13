@@ -581,18 +581,17 @@ FILE(APPEND  ${VERSION_FILE_PATH} "Platform=${Platform}-${PLATFORM_ABI}")
 FILE(APPEND  ${VERSION_FILE_PATH} "\n")
 INSTALL(FILES ${VERSION_FILE_PATH} DESTINATION sdk)
 
-#
-# Build the documentation
-#
-
 #-----------------------------------------------------------------------------
-SET(BUILD_API_ONLY OFF CACHE BOOL "Build/install only headers, libraries,
-    wrapping, tests; not applications (ik, rra, etc.).")
-MARK_AS_ADVANCED( BUILD_API_ONLY )
+SET(OPENSIM_BUILD_APPLICATIONS
+    ON CACHE BOOL "Build command-line applications (ik, rra, etc.).")
+MARK_AS_ADVANCED(OPENSIM_BUILD_APPLICATIONS)
 
-IF(BUILD_API_ONLY)
-	SUBDIRS(Vendors OpenSim)
-ELSE(BUILD_API_ONLY)
-	SUBDIRS(Vendors OpenSim Applications)
-ENDIF(BUILD_API_ONLY)
-
+ADD_SUBDIRECTORY(doc)
+ADD_SUBDIRECTORY(Examples)
+ADD_SUBDIRECTORY(OpenSim)
+ADD_SUBDIRECTORY(Tests)
+ADD_SUBDIRECTORY(Vendors)
+ADD_SUBDIRECTORY(Wrapping)
+IF(OPENSIM_BUILD_APPLICATIONS)
+    ADD_SUBDIRECTORY(Applications)
+ENDIF()
