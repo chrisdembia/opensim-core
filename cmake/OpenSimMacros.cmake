@@ -37,10 +37,11 @@ FUNCTION(OPENSIM_ADD_LIBRARY)
 
     STRING(TOUPPER "${OSIMADDLIB_KIT}" OSIMADDLIB_UKIT)
 
-
+    
     # Version stuff.
     # --------------
     SET(OSIMADDLIB_LIBRARY_NAME osim${OSIMADDLIB_KIT})
+    SET(COPYRIGHT_YEARS "2005-14")
 
     ADD_DEFINITIONS(
         -DOPENSIM_${OSIMADDLIB_UKIT}_LIBRARY_NAME=${OSIMADDLIB_LIBRARY_NAME}
@@ -51,29 +52,33 @@ FUNCTION(OPENSIM_ADD_LIBRARY)
         -DOPENSIM_${OSIMADDLIB_UKIT}_AUTHORS="${AUTHORS}"
         -DOPENSIM_${OSIMADDLIB_UKIT}_TYPE="Shared"
         )
-
+    
 
     # Add the library.
     # ----------------
-    # These next few lines are the most important:
-    # Specify the directories in OpenSim that contain header files.
     INCLUDE_DIRECTORIES(${OpenSim_SOURCE_DIR}/Vendors ${OpenSim_SOURCE_DIR})
+    
+    ADD_LIBRARY(osim${OSIMADDLIB_KIT} SHARED
+        ${OSIMADDLIB_SOURCES} ${OSIMADDLIB_INCLUDES}) 
 
-    # Create the library using the provided source and include files.
-    ADD_LIBRARY(${OSIMADDLIB_LIBRARY_NAME} SHARED
-        ${OSIMADDLIB_SOURCES} ${OSIMADDLIB_INCLUDES})
-
-    # This target links to the libraries provided as arguments to this func.
-    TARGET_LINK_LIBRARIES(${OSIMADDLIB_LIBRARY_NAME} ${OSIMADDLIB_LINKLIBS})
-
-    # This is for exporting classes on Windows.
+    TARGET_LINK_LIBRARIES(osim${OSIMADDLIB_KIT} ${OSIMADDLIB_LINKLIBS})
+    
     SET(EXPORT_MACRO OSIM${OSIMADDLIB_UKIT}_EXPORTS)
-    SET_TARGET_PROPERTIES(${OSIMADDLIB_LIBRARY_NAME} PROPERTIES
+    SET_TARGET_PROPERTIES(osim${OSIMADDLIB_KIT} PROPERTIES
        DEFINE_SYMBOL ${EXPORT_MACRO}
-       PROJECT_LABEL "Libraries - ${OSIMADDLIB_LIBRARY_NAME}"
+       PROJECT_LABEL "Libraries - osim${OSIMADDLIB_KIT}"
     )
+    
 
-
+    # Cotire.
+    # -------
+    IF(OPENSIM_USE_COTIRE)
+        # Create precompiled header targets.
+        COTIRE(osim${OSIMADDLIB_KIT})
+        TARGET_LINK_LIBRARIES(osim${OSIMADDLIB_KIT}_unity
+            ${OSIMADDLIB_LINKLIBS})
+    ENDIF()
+    
     # Install.
     # --------
     # Shared libraries are needed at runtime for applications, so we put them
@@ -81,14 +86,14 @@ FUNCTION(OPENSIM_ADD_LIBRARY)
     # (Linux) or OpemSim/lib/*.dylib (Mac). Windows .lib files, and Linux/Mac
     # .a static archives are only needed at link time so go in sdk/lib.
     IF(WIN32)
-        SET(OSIMADDLIB_LIBRARY_DESTINATION sdk/lib)
+        SET(OSIMLIB_LIBRARY_DESTINATION sdk/lib)
     ELSE()
-        SET(OSIMADDLIB_LIBRARY_DESTINATION lib)
+        SET(OSIMLIB_LIBRARY_DESTINATION lib)
     ENDIF()
-    INSTALL(TARGETS ${OSIMADDLIB_LIBRARY_NAME}
+    INSTALL(TARGETS osim${OSIMADDLIB_KIT}
         EXPORT OpenSimTargets
         RUNTIME DESTINATION bin
-        LIBRARY DESTINATION "${OSIMADDLIB_LIBRARY_DESTINATION}"
+        LIBRARY DESTINATION "${OSIMLIB_LIBRARY_DESTINATION}"
         ARCHIVE DESTINATION sdk/lib)
 
     # Install headers.
@@ -104,21 +109,21 @@ FUNCTION(OPENSIM_ADD_LIBRARY)
             DESTINATION sdk/include/OpenSim/${OSIMADDLIB_KIT})
     ENDIF()
 
-
+    
     # Testing.
     # --------
     ENABLE_TESTING()
-
-    IF(EXECUTABLE_OUTPUT_PATH)
-        SET(TEST_PATH ${EXECUTABLE_OUTPUT_PATH})
-    ELSE()
-        SET(TEST_PATH .)
-    ENDIF()
+    
+    IF (EXECUTABLE_OUTPUT_PATH)
+      SET (TEST_PATH ${EXECUTABLE_OUTPUT_PATH})
+    ELSE (EXECUTABLE_OUTPUT_PATH)
+      SET (TEST_PATH .)
+    ENDIF (EXECUTABLE_OUTPUT_PATH)
 
     IF(BUILD_TESTING)
         FOREACH(OSIMADDLIB_TESTDIR ${OSIMADDLIB_TESTDIRS})
             SUBDIRS("${OSIMADDLIB_TESTDIR}")
         ENDFOREACH()
-    ENDIF()
+    ENDIF(BUILD_TESTING)
 
 ENDFUNCTION()
