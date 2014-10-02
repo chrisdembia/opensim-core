@@ -12,9 +12,9 @@ LINK_LIBRARIES( debug osimCommon${CMAKE_DEBUG_POSTFIX} optimized osimCommon
 
 # Variable definitions
 SET(EXAMPLE_TARGET exampleOptimizationSimple)
-SET(EXAMPLE_DIR ${OpenSim_SOURCE_DIR}/OpenSim/Examples/SimpleOptimizationExample)
+SET(EXAMPLE_DIR ${OpenSim_SOURCE_DIR}/Examples/SimpleOptimizationExample)
 SET(TEST_TARGET testSimpleOptimizationExample)
-SET(TEST_DIR ${OpenSim_BINARY_DIR}/OpenSim/Tests/SimpleOptimizationExample)
+SET(TEST_DIR ${OpenSim_BINARY_DIR}/Tests/SimpleOptimizationExample)
 
 FILE(GLOB SOURCE_FILES ${EXAMPLE_DIR}/*.h ${EXAMPLE_DIR}/*.cpp)
 ADD_EXECUTABLE(${EXAMPLE_TARGET} ${SOURCE_FILES})

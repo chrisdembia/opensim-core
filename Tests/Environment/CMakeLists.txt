@@ -5,7 +5,7 @@ SET(TEST_ENVIRONMENT checkEnvironment)
 INCLUDE_DIRECTORIES(${OpenSim_SOURCE_DIR} 		 
                  ${OpenSim_SOURCE_DIR}/Vendors) 		 
  
-ADD_EXECUTABLE(${TEST_ENVIRONMENT} ${OpenSim_SOURCE_DIR}/OpenSim/Examples/checkEnvironment/test.cpp) 		 
+ADD_EXECUTABLE(${TEST_ENVIRONMENT} ${OpenSim_SOURCE_DIR}/Examples/checkEnvironment/test.cpp) 		 
 TARGET_LINK_LIBRARIES(${TEST_ENVIRONMENT} 		 
        debug osimSimulation${CMAKE_DEBUG_POSTFIX}    optimized osimSimulation 		 
        debug osimActuators${CMAKE_DEBUG_POSTFIX}     optimized osimActuators 		 

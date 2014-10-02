@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 
 # Variable definitions
 SET(EXAMPLE_TARGET exampleCoupledBushingForcePlugin)
-SET(EXAMPLE_DIR ${OpenSim_SOURCE_DIR}/OpenSim/Examples/Plugins/CoupledBushingForceExample)
+SET(EXAMPLE_DIR ${OpenSim_SOURCE_DIR}/Examples/Plugins/CoupledBushingForceExample)
 
 INCLUDE_DIRECTORIES(${OpenSim_SOURCE_DIR} 
 		    ${OpenSim_SOURCE_DIR}/Vendors)
