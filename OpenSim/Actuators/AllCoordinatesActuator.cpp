@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- *
- *                      OpenSim:  MultiCoordinateActuator.cpp                 *
+ *                      OpenSim:  AllCoordinatesActuator.cpp                  *
  * -------------------------------------------------------------------------- *
  * The OpenSim API is a toolkit for musculoskeletal modeling and simulation.  *
  * See http://opensim.stanford.edu and the NOTICE file for more information.  *
@@ -26,55 +26,26 @@
 // INCLUDES
 //==============================================================================
 
-#include "MultiCoordinateActuator.h"
+#include "AllCoordinatesActuator.h"
 #include <OpenSim/Simulation/Model/CoordinateSet.h>
 #include <OpenSim/Simulation/Model/Model.h>
 
 using namespace OpenSim;
 using namespace std;
 
-MultiCoordinateActuator::MultiCoordinateActuator() : Actuator_()
-{
-    constructInfrastructure();
-}
-
-void MultiCoordinateActuator::constructProperties()
-{
-}
-
-void MultiCoordinateActuator::computeForce( const SimTK::State& s, 
+void AllCoordinatesActuator::computeForce( const SimTK::State& s, 
 							   SimTK::Vector_<SimTK::SpatialVec>& bodyForces, 
 							   SimTK::Vector& mobilityForces) const
 {
-    if(!_model) return;
-
     mobilityForces = getControls(s);
-
-    /* TODO
-    SimTK::VectorView_<double> actuatorControls = getControls(s);
-    const CoordinateSet& coordSet = getModel().getCoordinateSet();
-    for (unsigned int iCoord = 0; iCoord < coordSet.getSize(); iCoord++)
-    {
-        applyGeneralizedForce(s, coordSet[iCoord],
-                actuatorControls[coordSet[iCoord].getMobilizerQIndex()],
-                mobilityForces);
-    }
-    */
 }
 
-int MultiCoordinateActuator::numControls() const 
+int AllCoordinatesActuator::numControls() const
 {
-    return getModel().getCoordinateSet().getSize();
+    return getModel().getMatterSubsystem().getNumMobilities();
 }
 
-void MultiCoordinateActuator::connectToModel(Model& aModel)
+double AllCoordinatesActuator::getPower(const SimTK::State& state) const
 {
-	Super::connectToModel(aModel);
+    return ~getControls(state) * state.getU();
 }
-
-void MultiCoordinateActuator::addToSystem(SimTK::MultibodySystem& system) const
-{
-     Super::addToSystem(system);
-}
-
-

@@ -28,7 +28,7 @@
 //    3. testClutchedPathSpring()
 //    4. testMcKibbenActuator()
 //	  5. testActuatorsCombination()
-//	  6. testMultiCoordinateActuator()
+//	  6. testAllCoordinatesActuator()
 //		
 // Add tests here as Actuators are added to OpenSim
 //
@@ -56,7 +56,7 @@ void testBodyActuator();
 void testClutchedPathSpring();
 void testMcKibbenActuator();
 void testActuatorsCombination();
-void testMultiCoordinateActuator();
+void testAllCoordinatesActuator();
 
 int main()
 {
@@ -82,9 +82,10 @@ int main()
 	catch (const std::exception& e) {
 		cout << e.what() << endl; failures.push_back("testActuatorsCombination");
 	}
-    try { testMultiCoordinateActuator(); }
+    try { testAllCoordinatesActuator(); }
     catch (const std::exception& e){
-        cout << e.what() << endl; failures.push_back("testMultiCoordinateActuator");
+        cout << e.what() << endl;
+        failures.push_back("testAllCoordinatesActuator");
     }
     if (!failures.empty()) {
         cout << "Done, with failure(s): " << failures << endl;
@@ -934,13 +935,14 @@ void testActuatorsCombination()
 		1.e3*(std::clock() - startTime) / CLOCKS_PER_SEC << "ms\n" << endl;
 }
 
-class MultiCoordinateController : public Controller
+class AllCoordinatesController : public Controller
 {
-    OpenSim_DECLARE_CONCRETE_OBJECT(MultiCoordinateController, Controller);
+    OpenSim_DECLARE_CONCRETE_OBJECT(AllCoordinatesController, Controller);
     void computeControls(const SimTK::State& s, SimTK::Vector& controls) const
         override
     {
-        const SimTK::SimbodyMatterSubsystem& smss = _model->getMatterSubsystem();
+        const SimTK::SimbodyMatterSubsystem& smss =
+            _model->getMatterSubsystem();
         SimTK::Vector A =  - 100 * s.getQ();
         SimTK::Vector MA;
         smss.multiplyByM(s, A, MA);
@@ -948,14 +950,13 @@ class MultiCoordinateController : public Controller
     }
 };
 
-void testMultiCoordinateActuator()
+void testAllCoordinatesActuator()
 {
-    Model model("gait10dof18musc_subject01.osim");
-    MultiCoordinateActuator* multiact = new MultiCoordinateActuator();
-    MultiCoordinateController* multicon = new MultiCoordinateController();
-    multicon->addActuator(*multiact);    
-    model.addForce(multiact);
-    model.addController(multicon);
+    AllCoordinatesActuator* allact = new AllCoordinatesActuator();
+    AllCoordinatesController* allcon = new AllCoordinatesController();
+    allcon->addActuator(*allact);    
+    model.addForce(allact);
+    model.addController(allcon);
     SimTK::State& state = model.initSystem();
     SimTK::RungeKuttaMersonIntegrator integrator(model.getSystem());
     Manager manager(model, integrator);

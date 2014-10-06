@@ -1,7 +1,7 @@
-#ifndef OPENSIM_MULTICOORDINATE_ACTUATOR_H_
-#define OPENSIM_MULTICOORDINATE_ACTUATOR_H_
+#ifndef OPENSIM_ALL_COORDINATES_ACTUATOR_H_
+#define OPENSIM_ALL_COORDINATES_ACTUATOR_H_
 /* -------------------------------------------------------------------------- *
- *                       OpenSim:  MultiCoordinateActuator.h                  *
+ *                       OpenSim:  AllCoordinatesActuator.h                   *
  * -------------------------------------------------------------------------- *
  * The OpenSim API is a toolkit for musculoskeletal modeling and simulation.  *
  * See http://opensim.stanford.edu and the NOTICE file for more information.  *
@@ -31,31 +31,27 @@
 namespace OpenSim { 
 
 //==============================================================================
-//                           MULTICOORDINATE ACTUATOR
+//                          ALL COORDINATES ACTUATOR
 //==============================================================================
 /**
  * An actuator that applies generalized forces for all coordinates (mobilities
  * in Simbody parlance) in the Model. This is more efficient than using a
  * separate CoordinateActuator for each coordinate, but is less flexible (can't
  * specify separate min/max control values for different coordinates). This
- * Actuator_ is particularly useful for controllers that apply generalized
- * forces to all/most coordinates.
+ * Actuator is particularly useful for controllers that apply generalized
+ * forces to all coordinates.
  */
-class OSIMACTUATORS_API MultiCoordinateActuator : public Actuator_ {
-OpenSim_DECLARE_CONCRETE_OBJECT(MultiCoordinateActuator, Actuator_);
+class OSIMACTUATORS_API AllCoordinatesActuator : public Actuator {
+OpenSim_DECLARE_CONCRETE_OBJECT(AllCoordinatesActuator, Actuator);
 public:
 //==============================================================================
 // PROPERTIES
 //==============================================================================
-    /** @name Property declarations
-    These are the serializable properties associated with this class. **/
-    /**@{**/
-    /**@}**/
 
 //==============================================================================
 // PUBLIC METHODS
 //==============================================================================
-	MultiCoordinateActuator();
+	AllCoordinatesActuator() {}
 
 //==============================================================================
 // PRIVATE
@@ -69,35 +65,18 @@ private:
 					  SimTK::Vector& mobilityForces) const override;
 
 	//--------------------------------------------------------------------------
-	// Implement Actuator_ interface (also see getOptimalForce() above)
+	// Implement Actuator interface
 	//--------------------------------------------------------------------------
     int numControls() const override;
-	double computeActuation(const SimTK::State& s) const override
-    {
-        throw Exception(
-                "MultiCoordinateActuator actuates multiple degrees of freedom; "
-                "this method returns a scalar and is meaningless for this "
-                "Actuator_.", __FILE__, __LINE__);
-    }
-
-	//--------------------------------------------------------------------------
-	// Implement ModelComponent interface
-	//--------------------------------------------------------------------------
-	void connectToModel(Model& aModel) override;
-	void addToSystem(SimTK::MultibodySystem& system) const override;
-
-	//--------------------------------------------------------------------------
-	// Implement Object interface.
-	//--------------------------------------------------------------------------
-	void constructProperties();
+    double getPower(const SimTK::State& state) const override;
 
 //==============================================================================
-};	// END of class MultiCoordinateActuator
+};	// END of class AllCoordinatesActuator
 
 }; //namespace
 //==============================================================================
 //==============================================================================
 
-#endif // OPENSIM_MULTICOORDINATE_ACTUATOR_H_
+#endif // OPENSIM_ALL_COORDINATES_ACTUATOR_H_
 
 
