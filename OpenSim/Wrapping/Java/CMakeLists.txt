@@ -36,6 +36,13 @@ IF ( JAVA_COMPILE )
 ENDIF ( JAVA_COMPILE )
 ENDIF(BUILD_JAVA_WRAPPING)
 
-INSTALL(DIRECTORY Matlab DESTINATION Scripts PATTERN ".svn" EXCLUDE 
-											 PATTERN "Matlab/Dynamic_Walker_Example" EXCLUDE)
+CONFIGURE_FILE(Matlab/configureOpenSim.m.in
+    "${CMAKE_CURRENT_BINARY_DIR}/configureOpenSim.m" @ONLY)
+INSTALL(DIRECTORY Matlab
+    DESTINATION "${CMAKE_INSTALL_MATLABDIR}" 
+    PATTERN "Matlab/Dynamic_Walker_Example" EXCLUDE
+    PATTERN "Matlab/configureOpenSim.m.in" EXCLUDE
+    )
+INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/configureOpenSim.m"
+    DESTINATION "${CMAKE_INSTALL_MATLABDIR}")
 

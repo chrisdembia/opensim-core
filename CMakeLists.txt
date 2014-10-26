@@ -97,6 +97,25 @@ SET(SimTKCOMMON_SHARED_LIBRARY ${SimTKCOMMON_LIBRARY_NAME})
 SET(SimTKMATH_SHARED_LIBRARY ${SimTKMATH_LIBRARY_NAME})
 SET(SimTKSIMBODY_SHARED_LIBRARY ${SimTKSIMBODY_LIBRARY_NAME})
 
+# Configure installation directories across platforms.
+# ----------------------------------------------------
+INCLUDE(GNUInstallDirs)
+# GNUInstalLDirs sets the variables CMAKE_INSTALL_*DIR; we modify them here.
+IF(UNIX)
+    SET(OPENSIM_INSTALL_ARCHIVEDIR "${CMAKE_INSTALL_LIBDIR}")
+    SET(OPENSIM_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/OpenSim")
+    SET(OPENSIM_INSTALL_MATLABDIR "${CMAKE_INSTALL_DOCDIR}/Scripts")
+ELSE()
+    # Windows.
+    SET(CMAKE_INSTALL_DOCDIR sdk/doc)
+    SET(CMAKE_INSTALL_SYSCONFDIR sdk)
+    SET(CMAKE_INSTALL_INCLUDEDIR sdk/include)
+    SET(CMAKE_INSTALL_LIBDIR sdk/lib)
+    SET(OPENSIM_INSTALL_ARCHIVEDIR sdk/lib)
+    SET(OPENSIM_INSTALL_CMAKEDIR cmake)
+    SET(OPENSIM_INSTALL_MATLABDIR Scripts)
+ENDIF()
+SET(OPENSIM_INSTALL_APIEXAMPLESDIR "${CMAKE_INSTALL_DOCDIR}/APIExamples")
 
 # Platform.
 # ---------
@@ -497,9 +516,8 @@ FOREACH(LIBF ${LIB_FILES})
 		VERBATIM)
 ENDFOREACH()
 
-INSTALL(DIRECTORY ${Simbody_INCLUDE_DIR} DESTINATION sdk/include/SimTK 
-			PATTERN ".svn" EXCLUDE)
-			
+INSTALL(DIRECTORY ${Simbody_INCLUDE_DIR} DESTINATION
+    "${CMAKE_INSTALL_INCLUDEDIR}/OpenSim/SimTK")
 
 IF(NOT LIBRARY_OUTPUT_PATH)
   SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/${VCVERSION} CACHE INTERNAL "Single output directory for building all libraries.")
@@ -567,10 +585,11 @@ ELSE(WIN32)
 ENDIF(WIN32)
 
 # Specify "PROGRAMS" rather than "FILES" so the execute bit gets set.
-INSTALL(PROGRAMS ${THIRDPARTY_BIN_FILES}    
-        DESTINATION bin)
-INSTALL(FILES ${THIRDPARTY_LIB_FILES}    DESTINATION lib)
-INSTALL(FILES ${THIRDPARTY_SDKLIB_FILES} DESTINATION sdk/lib)
+INSTALL(PROGRAMS ${THIRDPARTY_BIN_FILES}
+    DESTINATION "${CMAKE_INSTALL_BINDIR}")
+INSTALL(FILES ${THIRDPARTY_LIB_FILES}    DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+INSTALL(FILES ${THIRDPARTY_SDKLIB_FILES} DESTINATION
+    "${OPENSIM_INSTALL_ARCHIVEDIR}")
 
 
 ## The following are required to uses Dart and the Cdash dashboard per Jesse
@@ -589,7 +608,8 @@ ADD_CUSTOM_TARGET (RUN_TESTS_PARALLEL
 )
 
 
-# Create buildinfo.txt file and place under sdk to include product version, platform and compiler for troubleshooting purposes
+# Create buildinfo.txt file and place under sdk to include product version,
+# platform and compiler for troubleshooting purposes
 SET(VERSION_FILE_PATH ${CMAKE_BINARY_DIR}/buildinfo.txt)
 # MESSAGE("version file="${VERSION_FILE_PATH})
 FILE(WRITE ${VERSION_FILE_PATH} "Product Version=${OPENSIM_MAJOR_VERSION}.${OPENSIM_MINOR_VERSION}")
@@ -598,7 +618,7 @@ FILE(APPEND  ${VERSION_FILE_PATH} "Compiler=${CMAKE_GENERATOR}-${CMAKE_CXX_COMPI
 FILE(APPEND  ${VERSION_FILE_PATH} "\n")
 FILE(APPEND  ${VERSION_FILE_PATH} "Platform=${Platform}-${PLATFORM_ABI}")
 FILE(APPEND  ${VERSION_FILE_PATH} "\n")
-INSTALL(FILES ${VERSION_FILE_PATH} DESTINATION sdk)
+INSTALL(FILES ${VERSION_FILE_PATH} DESTINATION "${CMAKE_INSTALL_SYSCONFDIR}")
 
 
 #-----------------------------------------------------------------------------

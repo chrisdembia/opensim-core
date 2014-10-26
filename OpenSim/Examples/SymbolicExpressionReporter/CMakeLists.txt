@@ -37,8 +37,8 @@ Project(ExpressionReporterPlugin)
 
 cmake_minimum_required(VERSION 2.6)
 if(COMMAND cmake_policy)
-        cmake_policy(SET CMP0003 NEW)
-        cmake_policy(SET CMP0005 NEW)
+    cmake_policy(SET CMP0003 NEW)
+    cmake_policy(SET CMP0005 NEW)
 endif(COMMAND cmake_policy)
 
 SET(KIT plugin)
@@ -91,10 +91,7 @@ SET_TARGET_PROPERTIES(
 	DEFINE_SYMBOL ${EXPORT_MACRO}
 	PROJECT_LABEL "Libraries - ${PLUGIN_NAME}")
 
-IF(WIN32)
-	INSTALL_TARGETS(/sdk/lib/ RUNTIME_DIRECTORY /bin ${PLUGIN_NAME})
-ELSE(WIN32)
-	INSTALL_TARGETS(/bin/ RUNTIME_DIRECTORY /bin ${PLUGIN_NAME})
-ENDIF(WIN32)
+INSTALL_TARGETS("${CMAKE_INSTALL_LIBDIR}"
+    RUNTIME_DIRECTORY "${CMAKE_INSTALL_BINDIR}" ${PLUGIN_NAME})
 
 ENDIF(BUILD_API_EXAMPLES)

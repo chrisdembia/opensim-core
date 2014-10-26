@@ -76,28 +76,24 @@ FUNCTION(OPENSIM_ADD_LIBRARY)
     # at the top level in OpenSim/bin/*.dll (Windows) or OpenSim/lib/*.so
     # (Linux) or OpemSim/lib/*.dylib (Mac). Windows .lib files, and Linux/Mac
     # .a static archives are only needed at link time so go in sdk/lib.
-    IF(WIN32)
-        SET(OSIMLIB_LIBRARY_DESTINATION sdk/lib)
-    ELSE()
-        SET(OSIMLIB_LIBRARY_DESTINATION lib)
-    ENDIF()
     INSTALL(TARGETS osim${OSIMADDLIB_KIT}
         EXPORT OpenSimTargets
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION "${OSIMLIB_LIBRARY_DESTINATION}"
-        ARCHIVE DESTINATION sdk/lib)
+        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        ARCHIVE DESTINATION "${OPENSIM_INSTALL_ARCHIVEDIR}")
 
     # Install headers.
     # ----------------
+    SET(_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/OpenSim")
     IF(OSIMADDLIB_INCLUDEDIRS)
         FOREACH(dir ${OSIMADDLIB_INCLUDEDIRS})
             FILE(GLOB HEADERS ${dir}/*.h) # returns full pathnames
             INSTALL(FILES ${HEADERS}
-                DESTINATION sdk/include/OpenSim/${OSIMADDLIB_KIT}/${dir})
+                DESTINATION "${_INSTALL_INCLUDEDIR}/${OSIMADDLIB_KIT}/${dir}")
         ENDFOREACH(dir)
     ELSE()
         INSTALL(FILES ${OSIMADDLIB_INCLUDES}
-            DESTINATION sdk/include/OpenSim/${OSIMADDLIB_KIT})
+            DESTINATION "${_INSTALL_INCLUDEDIR}/${OSIMADDLIB_KIT}")
     ENDIF()
 
     
