@@ -69,6 +69,10 @@ MARK_AS_ADVANCED(PROCESSOR_COUNT)
 
 # Simbody libraries.
 # ------------------
+OPTION(OPENSIM_INSTALL_SIMBODY
+"Automatically installs the most recent Simbody from GitHub. Requires internet
+connection. If ON, then we install Simbody into SIMBODY_HOME." OFF)
+
 # This will be initialized to the environment variable of the same name
 # if it is set, otherwise it will be empty.
 SET(SIMBODY_HOME $ENV{SIMBODY_HOME} CACHE
@@ -367,6 +371,17 @@ SET(BUILD_USING_NAMESPACE "OpenSim")
 # NO_MODULE means we will not allow the use of a FindSimbody.cmake script.
 SET(SIMBODY_VERSION_TO_USE 3.5)
 
+IF(OPENSIM_INSTALL_SIMBODY)
+    INCLUDE(ExternalProject)
+    # http://www.cmake.org/cmake/help/v3.0/module/ExternalProject.html
+    ExternalProject_Add(Simbody
+        PREFIX Simbody
+        GIT_REPOSITORY https://github.com/simbody/simbody
+        CMAKE_GENERATOR "${CMAKE_GENERATOR}"
+        INSTALL_DIR "${SIMBODY_HOME}"
+        )
+ENDIF()
+
 # Find Simbody freshly by unsetting this CMake-generated variable.
 UNSET(Simbody_DIR CACHE)
 IF("${SIMBODY_HOME}" STREQUAL "")
@@ -390,7 +405,7 @@ ENDIF()
 MARK_AS_ADVANCED(Simbody_DIR)
 
 # If Simbody is not found, Simbody_FOUND is false.
-IF(NOT Simbody_FOUND)
+IF(NOT Simbody_FOUND AND NOT OPENSIM_INSTALL_SIMBODY)
     MESSAGE(FATAL_ERROR "
         Simbody ${SIMBODY_VERSION_TO_USE} not found. Install Simbody and set
         SIMBODY_HOME to the installation directory of Simbody.")
