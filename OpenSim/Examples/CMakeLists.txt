@@ -5,15 +5,14 @@ MARK_AS_ADVANCED(BUILD_API_EXAMPLES)
 SET(EXDIRS ExampleMain ControllerExample MuscleExample CustomActuatorExample
     OptimizationExample_Arm26 checkEnvironment)
 
-# This example handles the BUILD_API_EXAMPLES variable on its own.
-ADD_SUBDIRECTORY(SymbolicExpressionReporter)
-
 IF (BUILD_API_EXAMPLES)
 
-    FOREACH(dir EXDIRS SimpleOptimizationExample)
+    FOREACH(dir EXDIRS SimpleOptimizationExample SymbolicExpressionReporter)
         INSTALL(DIRECTORY ${dir}
                 DESTINATION "${OPENSIM_INSTALL_APIEXAMPLESDIR}")
     ENDFOREACH()
+    
+    ADD_SUBDIRECTORY(SymbolicExpressionReporter)
 
 ELSEIF (BUILD_API_EXAMPLES)
 
