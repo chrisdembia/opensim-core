@@ -56,9 +56,9 @@ ELSE(DOXYGEN_EXECUTABLE-NOTFOUND)
     # INSTALLATION #
     ################
     INSTALL(DIRECTORY "${PROJECT_BINARY_DIR}/html/"
-            DESTINATION "sdk/doc/html"
+            DESTINATION "${CMAKE_INSTALL_DOCDIR}/html"
             )
     # This is just a shortcut to the Doxygen index.html.
-    INSTALL(FILES "OpenSimAPI.html" DESTINATION "sdk/doc")
+    INSTALL(FILES "OpenSimAPI.html" DESTINATION "${CMAKE_INSTALL_DOCDIR}")
 
 ENDIF(DOXYGEN_EXECUTABLE-NOTFOUND)

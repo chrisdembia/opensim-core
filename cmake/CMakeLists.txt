@@ -1,8 +1,6 @@
 # CMake packaging so people can use OpenSim.
 # ------------------------------------------
 
-SET(OPENSIM_INSTALL_CMAKE_DIR cmake)
-
 CONFIGURE_FILE(OpenSimConfig.cmake.in
     "${CMAKE_CURRENT_BINARY_DIR}/OpenSimConfig.cmake" @ONLY)
 
@@ -19,7 +17,7 @@ INSTALL(
         "${CMAKE_CURRENT_BINARY_DIR}/OpenSimConfig.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/OpenSimConfigVersion.cmake"
     DESTINATION
-        "${OPENSIM_INSTALL_CMAKE_DIR}"
+        "${OPENSIM_INSTALL_CMAKEDIR}"
         )
 
-install(EXPORT OpenSimTargets DESTINATION "${OPENSIM_INSTALL_CMAKE_DIR}")
+install(EXPORT OpenSimTargets DESTINATION "${OPENSIM_INSTALL_CMAKEDIR}")

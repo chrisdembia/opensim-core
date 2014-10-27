@@ -15,4 +15,5 @@ ADD_DEFINITIONS(-DOSIM_SYS_INFO=${OPENSIM_SYSTEM_INFO}
 
 SUBDIRS(Common Simulation Actuators Analyses Utilities Tools Wrapping Examples Tests doc)
 
-INSTALL_FILES(/sdk/include/OpenSim .h OpenSim.h)
+INSTALL(FILES version.h OpenSim.h
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/OpenSim")

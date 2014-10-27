@@ -7,7 +7,7 @@ SET(EXDIRS ExampleMain ControllerExample MuscleExample CustomActuatorExample
 
 IF (BUILD_API_EXAMPLES)
 
-    FOREACH(dir EXDIRS SimpleOptimizationExample SymbolicExpressionReporter)
+    FOREACH(dir ${EXDIRS} SimpleOptimizationExample SymbolicExpressionReporter)
         INSTALL(DIRECTORY ${dir}
                 DESTINATION "${OPENSIM_INSTALL_APIEXAMPLESDIR}")
     ENDFOREACH()
@@ -16,7 +16,7 @@ IF (BUILD_API_EXAMPLES)
 
 ELSEIF (BUILD_API_EXAMPLES)
 
-    FOREACH(dir EXDIRS)
+    FOREACH(dir ${EXDIRS})
         ADD_SUBDIRECTORY(${dir})
     ENDFOREACH()
 
