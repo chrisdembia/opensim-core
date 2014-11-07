@@ -15,6 +15,7 @@ env:
 
 before_install:
   - ulimit -a
+  - free -m
   ## Get Simbody and its dependencies.
   - sudo apt-get update -qq
   - sudo apt-get install -qq liblapack-dev
@@ -61,6 +62,8 @@ install:
   - cmake . -DBUILD_JAVA_WRAPPING=$BUILD_WRAPPING -DBUILD_PYTHON_WRAPPING=$BUILD_WRAPPING -DSIMBODY_HOME=simbody-install -DCMAKE_CXX_FLAGS=-Werror -DCMAKE_INSTALL_PREFIX=$OPENSIM_HOME -DOPENSIM_USE_COTIRE=on
   # Build OpenSim.
   - make -j$NPROC
+  - free -m
+  - grep oom /var/log/*
 
 script:
   # Test OpenSim.
