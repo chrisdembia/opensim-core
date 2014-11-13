@@ -32,11 +32,12 @@ install:
   - cmake --build . --target install --config Release -- /maxcpucount /verbosity:quiet
 
 build_script:
-
+  - dir C:
   # Configure and build OpenSim.
   #- cd %APPVEYOR_BUILD_FOLDER%
   #- cmake . -DSIMBODY_HOME=C:/simbody
   #- MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
 test_script:
+  - dir
   #- ctest -j8 -C "Release" --output-on-failure
