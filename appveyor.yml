@@ -6,6 +6,9 @@
 # See http://msdn.microsoft.com/en-us/library/ms164311.aspx for
 # command-line options to MSBuild.
 
+# Speeding up a Visual Studio build.
+# http://blogs.msdn.com/b/vcblog/archive/2011/01/05/damn-my-vc-project-is-building-slower-in-vs2010-what-do-i-do-now-a-step-by-step-guide.aspx
+
 shallow_clone: true
 
 install:
@@ -20,9 +23,9 @@ install:
   - git clone https://github.com/simbody/simbody.git --depth 1 --branch master C:/simbody-src
   - cd C:/simbody-src
   - cmake . -DBUILD_EXAMPLES=OFF -DBUILD_VISUALIZER=OFF -DCMAKE_INSTALL_PREFIX=C:/simbody
-  - MSBuild Simbody.sln /maxcpucount /target:ALL_BUILD /p:Configuration=Release
+  - MSBuild Simbody.sln /maxcpucount /target:ALL_BUILD /p:Configuration=Release /verbosity:minimal
   - ctest -j8 -C "Release"
-  - MSBuild Simbody.sln /target:INSTALL /p:Configuration=Release
+  - MSBuild Simbody.sln /target:INSTALL /p:Configuration=Release /verbosity:minimal
 
 build_script:
 
