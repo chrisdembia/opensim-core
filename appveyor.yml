@@ -11,6 +11,9 @@
 
 shallow_clone: true
 
+cache:
+  - C:/simbody
+
 install:
 
   # Use Chocolatey to install SWIG 3.0.0.
