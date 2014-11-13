@@ -19,13 +19,18 @@ install:
   # Put MSBuild on the path.
   - SET PATH=C:\Program Files (x86)\MSBuild\12.0\bin\;%PATH%
   
-  # Simbody: download, configure, build, test, install.
+  # Simbody.
+  # Download.
   - git clone https://github.com/simbody/simbody.git --depth 1 --branch master C:/simbody-src
   - cd C:/simbody-src
+  # Configure.
   - cmake . -DBUILD_EXAMPLES=OFF -DBUILD_VISUALIZER=OFF -DCMAKE_INSTALL_PREFIX=C:/simbody
+  # Build.
   - MSBuild Simbody.sln /maxcpucount /target:ALL_BUILD /p:Configuration=Release /verbosity:quiet
+  # Test.
   - ctest -j8 -C "Release"
-  - cmake --build . --target install --config Debug
+  # Install. Pass native command after --
+  - cmake --build . --target install --config Release 
 
 build_script:
 
