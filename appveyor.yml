@@ -23,9 +23,9 @@ install:
   - git clone https://github.com/simbody/simbody.git --depth 1 --branch master C:/simbody-src
   - cd C:/simbody-src
   - cmake . -DBUILD_EXAMPLES=OFF -DBUILD_VISUALIZER=OFF -DCMAKE_INSTALL_PREFIX=C:/simbody
-  - MSBuild Simbody.sln /maxcpucount /target:ALL_BUILD /p:Configuration=Release /verbosity:minimal
+  - MSBuild Simbody.sln /maxcpucount /target:ALL_BUILD /p:Configuration=Release /verbosity:quiet
   - ctest -j8 -C "Release"
-  - MSBuild Simbody.sln /target:INSTALL /p:Configuration=Release /verbosity:minimal
+  - cmake --build . --target install --config Debug
 
 build_script:
 
