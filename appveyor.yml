@@ -28,7 +28,7 @@ install:
   - git clone https://github.com/simbody/simbody.git --depth 1 --branch master C:/simbody-src
   - cd C:/simbody-src
   # Configure.
-  - cmake . -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_VISUALIZER=OFF -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER%/simbody
+  - cmake . -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_VISUALIZER=OFF -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%/simbody"
   # Build and install. Pass MSBuild commands after the --
   - cmake --build . --target install --config Release -- /maxcpucount /verbosity:quiet
 
@@ -36,7 +36,7 @@ build_script:
   - dir
   # Configure and build OpenSim.
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cmake . -DSIMBODY_HOME=$APPVEYOR_BUILD_FOLDER%/simbody
+  - cmake . -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody
   - MSBuild OpenSim.sln /target:osimCommon /p:Configuration=Release /maxcpucount /verbosity:quiet
 
 test_script:
