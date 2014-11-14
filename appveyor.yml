@@ -34,7 +34,7 @@ install:
 build_script:
   - dir C:
   # Configure and build OpenSim.
-  #- cd %APPVEYOR_BUILD_FOLDER%
+  - cd %APPVEYOR_BUILD_FOLDER%
   - cmake . -DSIMBODY_HOME=C:/simbody
   - MSBuild OpenSim.sln /target:osimCommon /p:Configuration=Release /maxcpucount /verbosity:quiet
 
