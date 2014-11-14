@@ -37,7 +37,7 @@ build_script:
 
   # Configure and build OpenSim.
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cmake . -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody
+  - cmake . -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody -DOPENSIM_USE_COTIRE=on
   - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
 test_script:
