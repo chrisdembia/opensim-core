@@ -22,7 +22,7 @@ install:
   
   # Put MSBuild on the path.
   - SET PATH=C:\Program Files (x86)\MSBuild\12.0\bin\;%PATH%
-  - Get-Content -Path OpenSim/Common/Test/TRCFileWithNANs.trc
+  - ps: Get-Content -Path OpenSim/Common/Test/TRCFileWithNANs.trc
   
   # Simbody.
   # Download.
