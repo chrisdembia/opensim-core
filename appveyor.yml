@@ -37,12 +37,14 @@ build_script:
 
   # Configure and build OpenSim.
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cmake . -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody
+  # Must create separate build dir, otherwise can't read test files
+  # for some reason.
+  - mkdir build
+  - cd build
+  - cmake .. -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody
   - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
 test_script:
-  - dir
-  - echo %APPVEYOR_BUILD_FOLDER%
   - MSBuild RUN_TESTS.vcxproj /p:Configuration=Release
   #- cmake --build . --target RUN_TESTS --config Release
   #- MSBuild OpenSim.sln /target:RUN_TESTS /p:Configuration=Release /maxcpucount # /verbosity:quiet
