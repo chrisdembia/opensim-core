@@ -14,6 +14,8 @@ if(COMMAND cmake_policy)
         cmake_policy(SET CMP0005 NEW)
 endif(COMMAND cmake_policy)
 
+SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 SET(OPENSIM_MAJOR_VERSION 3)
 SET(OPENSIM_MINOR_VERSION 2)
 SET(OPENSIM_PATCH_VERSION 0)
@@ -38,7 +40,6 @@ OPTION(OPENSIM_USE_COTIRE
     OFF)
 MARK_AS_ADVANCED(OPENSIM_USE_COTIRE)
 IF(OPENSIM_USE_COTIRE)
-    SET(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_SOURCE_DIR}")
     INCLUDE(cotire)
     # By default, cotire also creates unity build targets. The line below
     # disables unity build targets across the project.
@@ -52,7 +53,6 @@ IF(OPENSIM_USE_COTIRE)
         ADD_DEFINITIONS(-DNOMINMAX -DWIN32_LEAN_AND_MEAN)
     ENDIF()
 ENDIF()
-message("DEBUG ${CMAKE_MODULE_PATH}")
 
 # Build using namespace.
 # ----------------------
@@ -359,8 +359,6 @@ IF(${CMAKE_C_COMPILER} MATCHES "cc" OR ${CMAKE_C_COMPILER} MATCHES "clang")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
     ENDIF()
 ENDIF()
-
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 SET(BUILD_USING_NAMESPACE "OpenSim")
 
