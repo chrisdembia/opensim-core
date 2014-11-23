@@ -75,8 +75,6 @@ FUNCTION(OPENSIM_ADD_LIBRARY)
     IF(OPENSIM_USE_COTIRE)
         # Create precompiled header targets.
         COTIRE(osim${OSIMADDLIB_KIT})
-        TARGET_LINK_LIBRARIES(osim${OSIMADDLIB_KIT}_unity
-            ${OSIMADDLIB_LINKLIBS})
     ENDIF()
     
     # Install.
