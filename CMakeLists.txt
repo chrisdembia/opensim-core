@@ -52,6 +52,7 @@ IF(OPENSIM_USE_COTIRE)
         ADD_DEFINITIONS(-DNOMINMAX -DWIN32_LEAN_AND_MEAN)
     ENDIF()
 ENDIF()
+message("DEBUG ${CMAKE_MODULE_PATH}")
 
 # Build using namespace.
 # ----------------------
