@@ -38,6 +38,7 @@ OPTION(OPENSIM_USE_COTIRE
     OFF)
 MARK_AS_ADVANCED(OPENSIM_USE_COTIRE)
 IF(OPENSIM_USE_COTIRE)
+    SET(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_SOURCE_DIR}")
     INCLUDE(cotire)
     # By default, cotire also creates unity build targets. The line below
     # disables unity build targets across the project.
