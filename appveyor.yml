@@ -9,7 +9,7 @@
 # Speeding up a Visual Studio build.
 # http://blogs.msdn.com/b/vcblog/archive/2011/01/05/damn-my-vc-project-is-building-slower-in-vs2010-what-do-i-do-now-a-step-by-step-guide.aspx
 
-# shallow_clone: true
+shallow_clone: true
 
 init:
   # Put MSBuild on the path.
@@ -35,7 +35,6 @@ install:
   #- cmake --build . --target install --config Release -- /maxcpucount /verbosity:quiet
 
 build_script:
-
   # Configure and build OpenSim.
   - cd %APPVEYOR_BUILD_FOLDER%
   # Must create separate build dir, otherwise can't read test files
