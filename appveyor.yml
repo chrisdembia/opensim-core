@@ -11,20 +11,21 @@
 
 # shallow_clone: true
 
-cache:
-  - simbody
+init:
+  # Put MSBuild on the path.
+  - SET PATH=C:\Program Files (x86)\MSBuild\12.0\bin\;%PATH%
+  
+nuget:
+  account_feed: true
 
 install:
 
   # Use Chocolatey to install SWIG 3.0.0.
   #- cinst swig
-  #- dir
   
-  # Put MSBuild on the path.
-  - SET PATH=C:\Program Files (x86)\MSBuild\12.0\bin\;%PATH%
-  - ps: Get-Content -Path OpenSim/Common/Test/TRCFileWithNANs.trc
-  
-  # Simbody.
+  ## Simbody.
+  # Simbody's installation is pushed to our Appveyor NuGet account feed.
+  - nuget install simbody
   # Download.
   #- git clone https://github.com/simbody/simbody.git --depth 1 --branch master C:/simbody-src
   #- cd C:/simbody-src
@@ -41,7 +42,7 @@ build_script:
   # for some reason.
   - mkdir build
   - cd build
-  - cmake .. -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody
+  - cmake .. -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody.0.0.0
   - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
 test_script:
