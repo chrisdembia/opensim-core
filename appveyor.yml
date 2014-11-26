@@ -41,7 +41,7 @@ build_script:
   # for some reason.
   - mkdir build
   - cd build
-  - cmake .. -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody.0.0.0
+  - cmake .. -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody.3.5.0
   - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
 test_script:
