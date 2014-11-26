@@ -26,6 +26,7 @@ install:
   ## Simbody.
   # Simbody's installation is pushed to our Appveyor NuGet account feed.
   - nuget install simbody
+  - dir
   # Download.
   #- git clone https://github.com/simbody/simbody.git --depth 1 --branch master C:/simbody-src
   #- cd C:/simbody-src
