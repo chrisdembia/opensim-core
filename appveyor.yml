@@ -25,8 +25,10 @@ install:
   
   ## Simbody.
   # Simbody's installation is pushed to our Appveyor NuGet account feed.
+  # Must use version 0.0.0, otherwise, nuget will use nuget.org, where
+  # Chris once created a simbody 3.5.0 nupkg.
   - nuget install simbody -Version 0.0.0
-  - dir
+  - dir simbody.0.0.0
   # Download.
   #- git clone https://github.com/simbody/simbody.git --depth 1 --branch master C:/simbody-src
   #- cd C:/simbody-src
@@ -42,7 +44,7 @@ build_script:
   # for some reason.
   - mkdir build
   - cd build
-  - cmake .. -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody.3.5.0
+  - cmake .. -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody.0.0.0
   - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
 test_script:
