@@ -29,23 +29,17 @@ install:
   # Chris once created a simbody 3.5.0 nupkg.
   - nuget install simbody -Version 0.0.0
   - dir simbody.0.0.0
-  # Download.
-  #- git clone https://github.com/simbody/simbody.git --depth 1 --branch master C:/simbody-src
-  #- cd C:/simbody-src
-  # Configure.
-  #- cmake . -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_VISUALIZER=OFF -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%/simbody"
-  # Build and install. Pass MSBuild commands after the --
-  #- cmake --build . --target install --config Release -- /maxcpucount /verbosity:quiet
 
 build_script:
-  # Configure and build OpenSim.
-  - cd %APPVEYOR_BUILD_FOLDER%
+  ## Configure and build OpenSim.
   # Must create separate build dir, otherwise can't read test files
   # for some reason.
   - mkdir build
   - cd build
+  # Configure.
   - cmake .. -DSIMBODY_HOME=%APPVEYOR_BUILD_FOLDER%/simbody.0.0.0
+  # Build.
   - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
 test_script:
-  - ctest -j8 -C Release --output-on-failure
+  - ctest -j8 --build-config Release --output-on-failure
