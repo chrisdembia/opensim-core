@@ -19,18 +19,16 @@ nuget:
   account_feed: true
 
 install:
-
   # Use Chocolatey to install SWIG 3.0.0.
   #- cinst swig
   
   ## Simbody.
   # Simbody's installation is pushed to our Appveyor NuGet account feed.
   # Must use version 0.0.0, otherwise, nuget will use nuget.org, where
-  # Chris once created a simbody 3.5.0 nupkg.
-  # Output directory must match how Simbody was packaged.
+  # chrisdembia once uploaded a simbody 3.5.0 nupkg.
+  # Output directory must match how Simbody was packaged, otherwise
+  # SimbodyConfig.cmake will have all the wrong paths.
   - nuget install simbody -Version 0.0.0 -ExcludeVersion -OutputDirectory C:\
-  - dir C:\simbody
-  - dir C:\simbody\cmake
 
 build_script:
   ## Configure and build OpenSim.
