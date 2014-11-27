@@ -38,8 +38,8 @@ build_script:
   - cd build
   # Configure.
   - cmake .. -DSIMBODY_HOME=C:\simbody
-  # Build.
-  - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
+  # Build. Treat warnings as errors.
+  - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet /WX
 
 test_script:
   - ctest -j8 --build-config Release --output-on-failure
