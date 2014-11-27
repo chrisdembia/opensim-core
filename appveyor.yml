@@ -29,6 +29,8 @@ install:
   - cinst wget
   - wget http://prdownloads.sourceforge.net/swig/swigwin-3.0.2.zip
   - jar xf swigwin-3.0.2.zip
+  - dir
+  - dir swigwin-3.0.2
   
   ## Simbody.
   # Simbody's installation is pushed to our Appveyor NuGet account feed.
