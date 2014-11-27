@@ -376,25 +376,18 @@ IF("${SIMBODY_HOME}" STREQUAL "")
     # we shouldn't let that fail silently and still search for 
     # Simbody elsewhere; they may never realize
     # we are not using their requested installation of Simbody.
-    FIND_PACKAGE(Simbody ${SIMBODY_VERSION_TO_USE} QUIET
+    FIND_PACKAGE(Simbody ${SIMBODY_VERSION_TO_USE}
         NO_MODULE)
 ELSE()
     # Find the package using the user-specified path.
     # NO_DEFAULT_PATH will cause find_package to only 
     # look in the provided PATHS.
-    FIND_PACKAGE(Simbody ${SIMBODY_VERSION_TO_USE} QUIET
+    FIND_PACKAGE(Simbody ${SIMBODY_VERSION_TO_USE}
         PATHS "${SIMBODY_HOME}" NO_MODULE NO_DEFAULT_PATH)
 ENDIF()
 # This variable appears in the CMake GUI and could confuse users,
 # since this variable can't be changed manually.
 MARK_AS_ADVANCED(Simbody_DIR)
-
-# If Simbody is not found, Simbody_FOUND is false.
-IF(NOT Simbody_FOUND)
-    MESSAGE(FATAL_ERROR "
-        Simbody ${SIMBODY_VERSION_TO_USE} not found. Install Simbody and set
-        SIMBODY_HOME to the installation directory of Simbody.")
-ENDIF()
 
 include_directories(${Simbody_INCLUDE_DIR})
 link_directories(${Simbody_LIB_DIR})
