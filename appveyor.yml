@@ -30,7 +30,6 @@ install:
   - wget http://prdownloads.sourceforge.net/swig/swigwin-3.0.2.zip
   - jar xf swigwin-3.0.2.zip
   - mv swigwin-3.0.2 C:\
-  - dir C:\swigwin-3.0.2
   
   ## Simbody.
   # Simbody's installation is pushed to our Appveyor NuGet account feed.
