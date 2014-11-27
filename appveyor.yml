@@ -30,6 +30,7 @@ install:
   # Output directory must match how Simbody was packaged.
   - nuget install simbody -Version 0.0.0 -ExcludeVersion -OutputDirectory C:\
   - dir C:\simbody
+  - ps: Get-Content -Path C:\simbody\cmake\SimbodyConfig.cmake
 
 build_script:
   ## Configure and build OpenSim.
