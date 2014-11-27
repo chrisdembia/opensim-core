@@ -3,9 +3,7 @@ SET(UKIT PYOPENSIM)
 
 IF(BUILD_PYTHON_WRAPPING)
 
-INCLUDE(${CMAKE_ROOT}/Modules/FindPythonLibs.cmake)
-INCLUDE(${CMAKE_ROOT}/Modules/FindPythonInterp.cmake)
-
+FIND_PACKAGE(PythonLibs 2.7)
 
 IF(NOT PYTHONLIBS_FOUND)
     MESSAGE(FATAL_ERROR "Cannot build Python wrapping because "
