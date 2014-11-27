@@ -47,7 +47,7 @@ build_script:
   - mkdir build
   - cd build
   # Configure.
-  - cmake .. -DSIMBODY_HOME=C:\simbody -DBUILD_JAVA_WRAPPING=ON -DBUILD_PYTHON_WRAPPING=ON -SWIG_DIR=C:\swigwin-3.0.2
+  - cmake .. -DSIMBODY_HOME=C:\simbody -DBUILD_JAVA_WRAPPING=ON -DBUILD_PYTHON_WRAPPING=ON -DSWIG_DIR=C:\swigwin-3.0.2
   # Build.
   - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
