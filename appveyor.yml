@@ -36,10 +36,10 @@ build_script:
   # for some reason.
   - mkdir build
   - cd build
-  # Configure.
-  - cmake .. -DSIMBODY_HOME=C:\simbody
-  # Build. Treat warnings as errors.
-  - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet /WX
+  # Configure. Treat warnings as errors.
+  - cmake .. -DSIMBODY_HOME=C:\simbody -DCMAKE_CXX_FLAGS="/Wx"
+  # Build.
+  - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
 test_script:
   - ctest -j8 --build-config Release --output-on-failure
