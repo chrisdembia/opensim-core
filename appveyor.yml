@@ -25,7 +25,7 @@ nuget:
 
 install:
   # Use Chocolatey to install SWIG 3.0.0.
-  #- cinst swig
+  - cinst swig
   
   ## Simbody.
   # Simbody's installation is pushed to our Appveyor NuGet account feed.
@@ -42,7 +42,7 @@ build_script:
   - mkdir build
   - cd build
   # Configure.
-  - cmake .. -DSIMBODY_HOME=C:\simbody 
+  - cmake .. -DSIMBODY_HOME=C:\simbody -DBUILD_JAVA_WRAPPING=ON -DBUILD_PYTHON_WRAPPING=ON
   # Build.
   - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
