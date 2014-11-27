@@ -39,7 +39,7 @@ build_script:
   - mkdir build
   - cd build
   # Configure.
-  - cmake .. -DSimbody_DIR=C:\simbody\cmake
+  - cmake .. -DSIMBODY_HOME=C:\simbody
   # Build.
   - MSBuild OpenSim.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount /verbosity:quiet
 
