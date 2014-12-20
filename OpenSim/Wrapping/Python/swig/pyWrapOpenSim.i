@@ -558,6 +558,8 @@ namespace SimTK {
 %include <OpenSim/Common/Component.h>
 %include <OpenSim/Common/ComponentList.h>
 
+%template(getSubcomponents) OpenSim::Component::getComponentList<Component>;
+%template(ComponentList_Component) OpenSim::ComponentList<Component>;
 %template(ComponentList_Iter) OpenSim::ComponentListIterator<OpenSim::Component>;
 %template(ComponentList_IterBodies) OpenSim::ComponentListIterator<OpenSim::Body>;
 %template(ComponentList_IterMuscles) OpenSim::ComponentListIterator<OpenSim::Muscle>;
@@ -565,6 +567,29 @@ namespace SimTK {
 %template(ComponentList_IterMarkers) OpenSim::ComponentListIterator<OpenSim::Marker>;
 %template(ComponentList_IterJoints) OpenSim::ComponentListIterator<OpenSim::Joint>;
 %template(ComponentList_IterGeometryPaths) OpenSim::ComponentListIterator<OpenSim::GeometryPath>;
+
+%extend OpenSim::ComponentList<Component> {
+%pythoncode %{
+    def __iter__(self):
+        return self.begin()
+%}
+};
+
+%extend OpenSim::ComponentList<Component> {
+%pythoncode %{
+    def __iter__(self):
+        return self
+    def next(self):
+        if self.this is None:
+            raise StopIteration
+        else:
+            return self.next()
+
+    adoptAndAppend(self, aFunction):
+        aFunction._markAdopted()
+        return super(FunctionSet, self).adoptAndAppend(aFunction)
+%}
+};
 
 %include <OpenSim/Common/Scale.h>
 %template(SetScales) OpenSim::Set<OpenSim::Scale>;
