@@ -5,7 +5,7 @@ FILE(GLOB TEST_PROGS "test*.cpp")
 LINK_LIBRARIES(debug osimSimulation${CMAKE_DEBUG_POSTFIX}	optimized osimSimulation
                debug osimCommon${CMAKE_DEBUG_POSTFIX}	optimized osimCommon
                debug osimAnalyses${CMAKE_DEBUG_POSTFIX}		optimized osimAnalyses
-               ${SIMTK_ALL_LIBS}
+               "${Simbody_LIBRARIES}"
 )
 
 IF(BUILD_TESTING)

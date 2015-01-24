@@ -50,41 +50,6 @@ SET(EXECUTABLE_OUTPUT_PATH ${BUILD_BINARY_DIR})
 SET(LIBRARY_OUTPUT_PATH ${BUILD_BINARY_DIR})
 
 
-# Build using namespace.
-# ----------------------
-IF(WIN32)
-    # Use this to generate a private set of libraries whose names
-    # won't conflict with installed versions.
-    SET(BUILD_USING_NAMESPACE "" CACHE STRING
-        "All library names will be prefixed with 'xxx_' if this is set to xxx. Only used on Windows.")
-
-    SET(NameSpace)
-    IF(BUILD_USING_NAMESPACE)
-        SET(NameSpace "${BUILD_USING_NAMESPACE}_")
-    ENDIF(BUILD_USING_NAMESPACE)
-
-    #
-    # These are the names of all the libraries we depend on. These are
-    # target names so can be used to specify dependencies of one library
-    # on another. (In Debug mode the actual targets will have "_d" appended.)
-    #
-
-    SET(SimTKSIMBODY_LIBRARY_NAME ${NameSpace}SimTKsimbody CACHE STRING
-        "Base name of the library being built; can't be changed here; see BUILD_USING_NAMESPACE variable."
-        FORCE)
-    SET(SimTKMATH_LIBRARY_NAME ${NameSpace}SimTKmath CACHE STRING
-        "Base name of the library being built; can't be changed here; see BUILD_USING_NAMESPACE variable."
-        FORCE)
-    SET(SimTKCOMMON_LIBRARY_NAME ${NameSpace}SimTKcommon CACHE STRING
-        "Base name of the library being built; can't be changed here; see BUILD_USING_NAMESPACE variable."
-        FORCE)
-    MARK_AS_ADVANCED( SimTKSIMBODY_LIBRARY_NAME )
-    MARK_AS_ADVANCED( SimTKMATH_LIBRARY_NAME )
-    MARK_AS_ADVANCED( SimTKCOMMON_LIBRARY_NAME )
-
-ENDIF()
-
-
 # Configure installation directories across platforms.
 # ----------------------------------------------------
 INCLUDE(GNUInstallDirs)
@@ -114,9 +79,19 @@ MARK_AS_ADVANCED(PROCESSOR_COUNT)
 # ------------------
 # This will be initialized to the environment variable of the same name
 # if it is set, otherwise it will be empty.
-SET(SIMBODY_HOME $ENV{SIMBODY_HOME} CACHE
-    PATH "The location of the Simbody installation to use; you can change this. Set as empty to let CMake search for Simbody automatically.")
+SET(SIMBODY_HOME $ENV{SIMBODY_HOME} CACHE PATH
+"The location of the Simbody installation to use.  Set as empty to let
+CMake search for Simbody automatically.")
 
+# OPENSIM_COPY_SIMBODY
+IF(WIN32)
+    SET(COPY_SIMBODY_DEFAULT ON)
+ELSE()
+    SET(COPY_SIMBODY_DEFAULT OFF)
+ENDIF()
+OPTION(OPENSIM_COPY_SIMBODY
+    "Copy Simbody libraries and headers to the OpenSim installation."
+    ${COPY_SIMBODY_DEFAULT})
 
 # Platform.
 # ---------
@@ -342,7 +317,6 @@ INCLUDE(InstallRequiredSystemLibraries)
 
 IF(WIN32)
 ELSE(WIN32)
-	SET(NameSpace "")	## No renamed SimTK libraries except on Windows
 	IF(APPLE)
 	   IF(ARCH64) 
            SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.8" )
@@ -418,7 +392,7 @@ ENDIF()
 
 # Copy files over from the Simbody installation.
 # ----------------------------------------------
-IF(WIN32)
+IF(OPENSIM_COPY_SIMBODY)
     # Copy files over from the Simbody installation.
 
     FILE(GLOB LIB_FILES
@@ -458,6 +432,7 @@ IF(WIN32)
             VERBATIM)
     ENDFOREACH()
 
+    # TODO change to simplify simbodyconfig.cmake
     INSTALL(DIRECTORY ${Simbody_INCLUDE_DIR} DESTINATION
         "${CMAKE_INSTALL_INCLUDEDIR}/SimTK")
 
@@ -499,11 +474,7 @@ SET(OpenSim_EXECUTABLE_DIR ${EXECUTABLE_OUTPUT_PATH})
 # Specify directories for Simbody headers and libraries.
 # ------------------------------------------------------
 INCLUDE_DIRECTORIES("${Simbody_INCLUDE_DIR}")
-IF(WIN32)
-    LINK_DIRECTORIES("${OpenSim_LIBRARY_DIR}")
-ELSE()
-    LINK_DIRECTORIES("${Simbody_LIB_DIR}")
-ENDIF()
+LINK_DIRECTORIES("${Simbody_LIB_DIR}")
 
 # Other than Windows we can debug without debuggable SimTK libraries
 IF(WIN32)
@@ -511,15 +482,6 @@ IF(WIN32)
 ELSE(WIN32)
     SET(CMAKE_DEBUG_POSTFIX "_d" CACHE STRING "Suffix for debug libraries")
 ENDIF(WIN32)
-
-SET(SIMTK_COMMON_LIB debug     ${SimTKCOMMON_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}
-                     optimized ${SimTKCOMMON_LIBRARY_NAME})
-SET(SIMTK_MATH_LIB debug     ${SimTKMATH_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}
-                   optimized ${SimTKMATH_LIBRARY_NAME})
-SET(SIMTK_SIMBODY_LIB debug     ${SimTKSIMBODY_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}
-                      optimized ${SimTKSIMBODY_LIBRARY_NAME})
-
-SET(SIMTK_ALL_LIBS ${SIMTK_COMMON_LIB} ${SIMTK_MATH_LIB} ${SIMTK_SIMBODY_LIB})
 
 
 ## The following are required to uses Dart and the Cdash dashboard per Jesse
