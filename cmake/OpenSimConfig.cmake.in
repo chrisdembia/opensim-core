@@ -34,7 +34,7 @@ endif()
 # ------------
 list(APPEND @CMAKE_PROJECT_NAME@_INCLUDE_DIRS
     "@CMAKE_INSTALL_PREFIX@/sdk/include"
-    "@CMAKE_INSTALL_PREFIX@/sdk/include/Vendors/Lepton/include"
+    "@CMAKE_INSTALL_PREFIX@/sdk/include/Vendors/lepton/include"
     )
 
 if(@OPENSIM_COPY_SIMBODY@)
@@ -45,8 +45,9 @@ if(@OPENSIM_COPY_SIMBODY@)
         set(_SIMBODY_INCLUDE_RELPATH "simbody")
     endif()
     list(APPEND @CMAKE_PROJECT_NAME@_INCLUDE_DIRS
-        "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@/SimTK/@_SIMBODY_INCLUDE_RELPATH@")
+        "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@/SimTK/${_SIMBODY_INCLUDE_RELPATH}")
 else()
+    # Refer to Simbody's own headers.
     list(APPEND @CMAKE_PROJECT_NAME@_INCLUDE_DIRS "@Simbody_INCLUDE_DIR@")
 endif()
 

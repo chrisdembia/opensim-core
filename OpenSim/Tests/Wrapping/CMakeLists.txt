@@ -1,5 +1,5 @@
 INCLUDE_DIRECTORIES(${OpenSim_SOURCE_DIR} 
-		    ${OpenSim_SOURCE_DIR}/Vendors)
+            ${OpenSim_SOURCE_DIR}/Vendors)
 
 
 LINK_LIBRARIES( 

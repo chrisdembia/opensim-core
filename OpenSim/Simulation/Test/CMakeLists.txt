@@ -3,11 +3,11 @@
 
 
 LINK_LIBRARIES( debug osimCommon${CMAKE_DEBUG_POSTFIX} optimized osimCommon
-		debug osimSimulation${CMAKE_DEBUG_POSTFIX} optimized osimSimulation
-		debug osimAnalyses${CMAKE_DEBUG_POSTFIX} optimized osimAnalyses
-		debug osimActuators${CMAKE_DEBUG_POSTFIX} optimized osimActuators
-		debug osimLepton${CMAKE_DEBUG_POSTFIX} optimized osimLepton
-		"${Simbody_LIBRARIES}")
+        debug osimSimulation${CMAKE_DEBUG_POSTFIX} optimized osimSimulation
+        debug osimAnalyses${CMAKE_DEBUG_POSTFIX} optimized osimAnalyses
+        debug osimActuators${CMAKE_DEBUG_POSTFIX} optimized osimActuators
+        debug osimLepton${CMAKE_DEBUG_POSTFIX} optimized osimLepton
+        "${Simbody_LIBRARIES}")
 
 ADD_CUSTOM_TARGET(copyTestFiles)
 
@@ -21,8 +21,8 @@ FOREACH(TEST_PROG ${TEST_PROGS})
     TARGET_LINK_LIBRARIES(${TEST_ROOT} ${LINK_LIBRARIES} )
     ADD_TEST(${TEST_ROOT} ${EXECUTABLE_OUTPUT_PATH}/${TEST_ROOT})
     SET_TARGET_PROPERTIES(${TEST_ROOT} 
-		PROPERTIES 
-		PROJECT_LABEL "Tests - ${TEST_ROOT}")
+        PROPERTIES 
+        PROJECT_LABEL "Tests - ${TEST_ROOT}")
 
 ENDFOREACH(TEST_PROG ${TEST_PROGS})
 

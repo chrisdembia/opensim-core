@@ -70,47 +70,42 @@ ELSE()
 ENDIF()
 SET(OPENSIM_INSTALL_APIEXAMPLESDIR "${CMAKE_INSTALL_DOCDIR}/APIExamples")
 
+
 # Specify number of cores to run for build
 SET(PROCESSOR_COUNT 8 CACHE STRING "Number of processors in the CPU")
 MARK_AS_ADVANCED(PROCESSOR_COUNT)
 
 
-# Simbody libraries.
-# ------------------
+# Simbody.
+# --------
 # This will be initialized to the environment variable of the same name
 # if it is set, otherwise it will be empty.
 SET(SIMBODY_HOME $ENV{SIMBODY_HOME} CACHE PATH
 "The location of the Simbody installation to use.  Set as empty to let
 CMake search for Simbody automatically.")
 
-# OPENSIM_COPY_SIMBODY
-IF(WIN32)
-    SET(COPY_SIMBODY_DEFAULT ON)
-ELSE()
-    SET(COPY_SIMBODY_DEFAULT OFF)
-ENDIF()
-OPTION(OPENSIM_COPY_SIMBODY
-    "Copy Simbody libraries and headers to the OpenSim installation."
-    ${COPY_SIMBODY_DEFAULT})
+OPTION(OPENSIM_COPY_SIMBODY "Copy Simbody headers and libraries into the
+OpenSim installation. This way, you can treat OpenSim and Simbody as one
+package, and you only need to set environment variables (e.g., PATH,
+LD_LIBRARY_PATH, DYLD_LIBRARY_PATH) for OpenSim.  On Windows, this also copies
+Simbody dll's and exe's into the OpenSim build directory, so that you don't
+need to set PATH to run OpenSim tests and examples; this is done via the
+SimbodyFiles project. If OFF, you likely must set those environment variables
+for both OpenSim and Simbody." ON)
+
 
 # Platform.
 # ---------
 # Create a platform name useful for finding things in the Platform
 # directory.
 IF(WIN32)
-	IF(CMAKE_GENERATOR MATCHES  "Visual Studio 8")
-		SET(VCVERSION VC8)
-	ENDIF(CMAKE_GENERATOR MATCHES  "Visual Studio 8")
-	IF(CMAKE_GENERATOR MATCHES  "Visual Studio 9")
-		SET(VCVERSION VC9)
-	ENDIF(CMAKE_GENERATOR MATCHES  "Visual Studio 9")
-	IF(CMAKE_GENERATOR MATCHES  "Visual Studio 10")
-		#NOTE: VC12 (VS2013) does not require explicit link line to Psapi library
-		#Specifying here so it will link for VC10
-		link_libraries(Psapi)
-		SET(VCVERSION VC10)
-	ENDIF(CMAKE_GENERATOR MATCHES  "Visual Studio 10")
-	SET(Platform "Windows")
+    IF(CMAKE_GENERATOR MATCHES "Visual Studio 10")
+        #NOTE: VC12 (VS2013) does not require explicit link line to Psapi library
+        #Specifying here so it will link for VC10
+        link_libraries(Psapi)
+        SET(VCVERSION VC10)
+    ENDIF()
+    SET(Platform "Windows")
     SET(NATIVE_COPY_CMD copy)
 ELSEIF(APPLE)
     SET(Platform Mac)
@@ -130,8 +125,8 @@ ENDIF()
 
 IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
     SET(PLATFORM_ABI x64)
-	SET(ARCH64 ON) 
-	#    SET(LIB64 64) Ubuntu 12.05
+    SET(ARCH64 ON) 
+    #    SET(LIB64 64) Ubuntu 12.05
 ELSE()
     SET(PLATFORM_ABI x86)
 ENDIF()
@@ -150,9 +145,9 @@ IF( APPLE )
    SET(ARCH64 OFF) 
 ENDIF( APPLE )
 
-IF(UNIX AND NOT CMAKE_BUILD_TYPE)
+IF(NOT MSVC AND NOT XCODE AND NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE Release CACHE STRING "Debug or Release build" FORCE)
-ENDIF (UNIX AND NOT CMAKE_BUILD_TYPE)
+ENDIF()
 
 ## Choose the maximum level of x86 instruction set that the compiler is 
 ## allowed to use. Was using sse2 but changed to let the compilers choose. Most
@@ -211,7 +206,7 @@ IF(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU" OR
     # should have these disabled.
     if (GCC_VERSION VERSION_GREATER 4.3 OR GCC_VERSION VERSION_EQUAL 4.3)
         SET(GCC_OPT_DISABLE 
-	"-fno-tree-vrp -fno-strict-aliasing -fno-guess-branch-probability")
+    "-fno-tree-vrp -fno-strict-aliasing -fno-guess-branch-probability")
     endif()
 
     # C++
@@ -250,7 +245,7 @@ IF(WIN32 AND ${CMAKE_C_COMPILER} MATCHES "cl")
     else()
         set(CL_INST_SET)
     endif()
-	
+    
     set(BUILD_LIMIT_PARALLEL_COMPILES "" CACHE STRING
         "Set a maximum number of simultaneous compilations.")
     mark_as_advanced(BUILD_LIMIT_PARALLEL_COMPILES)
@@ -258,30 +253,30 @@ IF(WIN32 AND ${CMAKE_C_COMPILER} MATCHES "cl")
 
     ## C++
     SET(CMAKE_CXX_FLAGS_DEBUG        
-	"/MP${mxcpu} /D _DEBUG /MDd /Od /Ob0 /RTC1 /Zi /bigobj /GS- ${CL_INST_SET}" 
+    "/MP${mxcpu} /D _DEBUG /MDd /Od /Ob0 /RTC1 /Zi /bigobj /GS- ${CL_INST_SET}" 
         CACHE STRING "VC++ Debug build compile flags" FORCE)
     SET(CMAKE_CXX_FLAGS_RELEASE        
-	"/MP${mxcpu} /D NDEBUG /MD  /O2 /Ob2 /Oi /bigobj /GS- ${CL_INST_SET}" 
+    "/MP${mxcpu} /D NDEBUG /MD  /O2 /Ob2 /Oi /bigobj /GS- ${CL_INST_SET}" 
         CACHE STRING "VC++ Release build compile flags" FORCE)
     SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO 
-	"/MP${mxcpu} /D NDEBUG /MD  /O2 /Ob2 /Oi /Zi /bigobj /GS- ${CL_INST_SET}" 
+    "/MP${mxcpu} /D NDEBUG /MD  /O2 /Ob2 /Oi /Zi /bigobj /GS- ${CL_INST_SET}" 
         CACHE STRING "VC++ RelWithDebInfo build compile flags" FORCE)
     SET(CMAKE_CXX_FLAGS_MINSIZEREL 
-	"/MP${mxcpu} /D NDEBUG /MD  /O1 /Ob1 /Oi /bigobj /GS- ${CL_INST_SET}" 
+    "/MP${mxcpu} /D NDEBUG /MD  /O1 /Ob1 /Oi /bigobj /GS- ${CL_INST_SET}" 
         CACHE STRING "VC++ MinSizeRel build compile flags" FORCE)
 
     ## C
     SET(CMAKE_C_FLAGS_DEBUG        
-	"/MP${mxcpu} /D _DEBUG /MDd /Od /Ob0 /RTC1 /Zi /GS- ${CL_INST_SET}" 
+    "/MP${mxcpu} /D _DEBUG /MDd /Od /Ob0 /RTC1 /Zi /GS- ${CL_INST_SET}" 
         CACHE STRING "VC++ Debug build compile flags" FORCE)
     SET(CMAKE_C_FLAGS_RELEASE        
-	"/MP${mxcpu} /D NDEBUG /MD  /O2 /Ob2 /Oi /GS- ${CL_INST_SET}" 
+    "/MP${mxcpu} /D NDEBUG /MD  /O2 /Ob2 /Oi /GS- ${CL_INST_SET}" 
         CACHE STRING "VC++ Release build compile flags" FORCE)
     SET(CMAKE_C_FLAGS_RELWITHDEBINFO 
-	"/MP${mxcpu} /D NDEBUG /MD  /O2 /Ob2 /Oi /Zi /GS- ${CL_INST_SET}" 
+    "/MP${mxcpu} /D NDEBUG /MD  /O2 /Ob2 /Oi /Zi /GS- ${CL_INST_SET}" 
         CACHE STRING "VC++ RelWithDebInfo build compile flags" FORCE)
     SET(CMAKE_C_FLAGS_MINSIZEREL 
-	"/MP${mxcpu} /D NDEBUG /MD  /O1 /Ob1 /Oi /GS- ${CL_INST_SET}" 
+    "/MP${mxcpu} /D NDEBUG /MD  /O1 /Ob1 /Oi /GS- ${CL_INST_SET}" 
         CACHE STRING "VC++ MinSizeRel build compile flags" FORCE)
 
 ENDIF()
@@ -306,8 +301,8 @@ ENDIF(WIN32)
 
 ##################################################
 ## Define Platform to
-##			Win32/VC${version}
-##		or	Mac
+##          Win32/VC${version}
+##      or  Mac
 ##      or  Linux
 ##
 ## Also translate ARCH64 to platform specific flags
@@ -320,18 +315,18 @@ ELSE(WIN32)
 	IF(APPLE)
 	   IF(ARCH64) 
            SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.8" )
-	   ELSE (ARCH64)
+       ELSE (ARCH64)
            SET( CMAKE_CXX_FLAGS
                "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.8 -m32" )
-	   ENDIF (ARCH64)
-	ELSE (APPLE)
-	   IF(ARCH64) 
+       ENDIF (ARCH64)
+    ELSE (APPLE)
+       IF(ARCH64) 
            SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64" )
-	   ELSE (ARCH64)
-		  # I don't believe setting the CXX flags is working in cmake.
+       ELSE (ARCH64)
+          # I don't believe setting the CXX flags is working in cmake.
           SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32" )
-	   ENDIF(ARCH64)
-	ENDIF (APPLE)
+       ENDIF(ARCH64)
+    ENDIF (APPLE)
 ENDIF(WIN32)
 
 # C++11: In revision 8629, we started using std::unique_ptr, which requires
@@ -389,92 +384,105 @@ IF(NOT Simbody_FOUND)
         SIMBODY_HOME to the installation directory of Simbody.")
 ENDIF()
 
+# Directories for Simbody headers and libraries for building.
+# -----------------------------------------------------------
+INCLUDE_DIRECTORIES("${Simbody_INCLUDE_DIR}")
+LINK_DIRECTORIES("${Simbody_LIB_DIR}")
+
 
 # Copy files over from the Simbody installation.
 # ----------------------------------------------
-IF(OPENSIM_COPY_SIMBODY)
-    # Copy files over from the Simbody installation.
+IF(${OPENSIM_COPY_SIMBODY})
 
-    FILE(GLOB LIB_FILES
-        "${Simbody_BIN_DIR}/*.dll"
-        "${Simbody_BIN_DIR}/*") # .dll, .exe, no suffix executable
-
-    # This is where we're going to put these binaries.
-    SET(COPIED_LIB_FILES)
-    FOREACH(LIBF ${LIB_FILES})
-        GET_FILENAME_COMPONENT(LIBF_ROOT ${LIBF} NAME)
-        SET(COPIED_LIB_FILES ${COPIED_LIB_FILES}
-            "${BUILD_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${LIBF_ROOT}")
-    ENDFOREACH()
-
-    # This target depends on the destination copies of the Simbody files (in the
-    # binary build directory).  Those are produced by the OUTPUT custom command 
-    # below, which depends on the source files from the Simbody installation 
-    # directory.
-    ADD_CUSTOM_TARGET(SimbodyFiles ALL DEPENDS ${COPIED_LIB_FILES})
-    SET_TARGET_PROPERTIES(SimbodyFiles
-        PROPERTIES PROJECT_LABEL "Library - Simbody Files")
-
-    FOREACH(LIBF ${LIB_FILES})
-        # MESSAGE("LIB_FILE" ${LIBF})
-        GET_FILENAME_COMPONENT(LIBF_ROOT ${LIBF} NAME)
-        GET_FILENAME_COMPONENT(LIBF_SUFFIX ${LIBF} EXT)
-        SET(COPIED_LIBF "${BUILD_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${LIBF_ROOT}")
-        FILE(TO_NATIVE_PATH "${LIBF}" LIBF_SRC)
-        FILE(TO_NATIVE_PATH "${COPIED_LIBF}" LIBF_DEST)
-
-        # Copy Simbody files if they are out of date. This is invoked because
-        # the SimbodyFiles target depends on these output files.
-        ADD_CUSTOM_COMMAND(OUTPUT "${COPIED_LIBF}"
-            COMMAND ${NATIVE_COPY_CMD} "${LIBF_SRC}" "${LIBF_DEST}"
-            DEPENDS "${LIBF}"
-            COMMENT "Copy ${LIBF_SRC} -> ${LIBF_DEST}"
-            VERBATIM)
-    ENDFOREACH()
-
-    # TODO change to simplify simbodyconfig.cmake
-    INSTALL(DIRECTORY ${Simbody_INCLUDE_DIR} DESTINATION
+    # Install Simbody headers into OpenSim installation.
+    INSTALL(DIRECTORY "${Simbody_INCLUDE_DIR}" DESTINATION
         "${CMAKE_INSTALL_INCLUDEDIR}/SimTK")
 
-    # Now figure out which 3rd party files need to be installed in the /bin 
+    # Figure out which Simbody files need to be installed in the /bin 
     # directory and which in the lib directory. Executables go in /bin on all 
     # platforms.  Libraries (shared or otherwise) go in /lib, except on Windows 
     # where the ".dll" files go in bin along with executables. Anything that
     # is only needed for programmers goes in sdk/lib.
-    FILE(GLOB THIRDPARTY_BIN_FILES 
-        ${Simbody_BIN_DIR}/*.dll	# non repository layout
-        ${Simbody_BIN_DIR}/*.exe
-        ${Simbody_BIN_DIR}/${VCVERSION}/*.dll
-        ${Simbody_BIN_DIR}/${VCVERSION}/*.exe)
-    FILE(GLOB THIRDPARTY_SDKLIB_FILES 
-        ${Simbody_LIB_DIR}/*.lib	# non repository layout
-        ${Simbody_LIB_DIR}/${VCVERSION}/*.lib)
+    IF(WIN32)
+        FILE(GLOB SIMBODY_BIN_FILES
+            ${Simbody_BIN_DIR}/*.dll
+            ${Simbody_BIN_DIR}/*.exe)
+        FILE(GLOB SIMBODY_SDKLIB_FILES
+            ${Simbody_LIB_DIR}/*.lib)
+    ELSE()
+        FILE(GLOB SIMBODY_BIN_FILES
+            ${Simbody_BIN_DIR}/simbody*) # executables only (e.g., visualizer).
+        # If the LIB_DIR is some common place for libraries (e.g., /usr/lib/),
+        # we only want to copy over libraries that have SimTK in their name.
+        FILE(GLOB SIMBODY_LIB_FILES
+            ${Simbody_LIB_DIR}/*SimTK*.so
+            ${Simbody_LIB_DIR}/*SimTK*.so.*
+            ${Simbody_LIB_DIR}/*SimTK*.dylib)
+        FILE(GLOB SIMBODY_SDKLIB_FILES
+            ${Simbody_LIB_DIR}/*SimTK*.a)
+    ENDIF()
 
     # Specify "PROGRAMS" rather than "FILES" so the execute bit gets set.
-    INSTALL(PROGRAMS    ${THIRDPARTY_BIN_FILES}
+    INSTALL(PROGRAMS     ${SIMBODY_BIN_FILES}
             DESTINATION "${CMAKE_INSTALL_BINDIR}")
-    INSTALL(FILES       ${THIRDPARTY_LIB_FILES}
+    INSTALL(FILES        ${SIMBODY_LIB_FILES}
             DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-    INSTALL(FILES       ${THIRDPARTY_SDKLIB_FILES}
+    INSTALL(FILES        ${SIMBODY_SDKLIB_FILES}
             DESTINATION "${OPENSIM_INSTALL_ARCHIVEDIR}")
+
+    # On Windows, we must copy Simbody libraries to the OpenSim build directory
+    # so that the tests and examples can run without modifying the PATH
+    # (that is, put Simbody's dll's in the same directory as OpenSim's
+    # executables and libraries).
+    IF(WIN32)
+
+        # This is where we're going to put these binaries.
+        SET(COPIED_LIB_FILES)
+        FOREACH(LIBF ${SIMBODY_BIN_FILES})
+            GET_FILENAME_COMPONENT(LIBF_ROOT ${LIBF} NAME)
+            SET(COPIED_LIB_FILES ${COPIED_LIB_FILES}
+                "${BUILD_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${LIBF_ROOT}")
+        ENDFOREACH()
+
+        # This target depends on the destination copies of the Simbody files
+        # (in the binary build directory).  Those are produced by the OUTPUT
+        # custom command below, which depends on the source files from the
+        # Simbody installation directory.
+        ADD_CUSTOM_TARGET(SimbodyFiles ALL DEPENDS ${COPIED_LIB_FILES})
+        SET_TARGET_PROPERTIES(SimbodyFiles
+            PROPERTIES PROJECT_LABEL "Library - Simbody Files")
+
+        FOREACH(LIBF ${SIMBODY_BIN_FILES})
+            # MESSAGE("LIB_FILE" ${LIBF})
+            GET_FILENAME_COMPONENT(LIBF_ROOT ${LIBF} NAME)
+            GET_FILENAME_COMPONENT(LIBF_SUFFIX ${LIBF} EXT)
+            SET(COPIED_LIBF "${BUILD_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${LIBF_ROOT}")
+            FILE(TO_NATIVE_PATH "${LIBF}" LIBF_SRC)
+            FILE(TO_NATIVE_PATH "${COPIED_LIBF}" LIBF_DEST)
+
+            # Copy Simbody files if they are out of date. This is invoked
+            # because the SimbodyFiles target depends on these output files.
+            ADD_CUSTOM_COMMAND(OUTPUT "${COPIED_LIBF}"
+                COMMAND ${NATIVE_COPY_CMD} "${LIBF_SRC}" "${LIBF_DEST}"
+                DEPENDS "${LIBF}"
+                COMMENT "Copy ${LIBF_SRC} -> ${LIBF_DEST}"
+                VERBATIM)
+        ENDFOREACH()
+    ENDIF()
 ENDIF()
 
+
+# Where do build products go in the build tree?
+# ---------------------------------------------
 IF(NOT LIBRARY_OUTPUT_PATH)
-    SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/${VCVERSION} CACHE INTERNAL
+    SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR} CACHE INTERNAL
         "Single output directory for building all libraries.")
 ENDIF()
 IF(NOT EXECUTABLE_OUTPUT_PATH)
-  SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/${VCVERSION} CACHE INTERNAL
+  SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR} CACHE INTERNAL
       "Single output directory for building all executables.")
 ENDIF()
 
-SET(OpenSim_LIBRARY_DIR ${LIBRARY_OUTPUT_PATH})
-SET(OpenSim_EXECUTABLE_DIR ${EXECUTABLE_OUTPUT_PATH})
-
-# Specify directories for Simbody headers and libraries.
-# ------------------------------------------------------
-INCLUDE_DIRECTORIES("${Simbody_INCLUDE_DIR}")
-LINK_DIRECTORIES("${Simbody_LIB_DIR}")
 
 # Other than Windows we can debug without debuggable SimTK libraries
 IF(WIN32)

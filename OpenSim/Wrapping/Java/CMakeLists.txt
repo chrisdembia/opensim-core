@@ -3,7 +3,7 @@
 
 SUBDIRS(OpenSimJNI)
 
-IF(BUILD_JAVA_WRAPPING)	
+IF(BUILD_JAVA_WRAPPING) 
 
 ## Now build jar file from the java files created by SWIG. This depends on finding an installation of Java
 FIND_PACKAGE ( Java )

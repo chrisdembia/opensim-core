@@ -1,13 +1,14 @@
 
-# Automatically create tests using files named "test*.cpp"	// Adopted from SimTK core
+# Automatically create tests using files named "test*.cpp"  // Adopted from SimTK core
 FILE(GLOB TEST_PROGS "test*.cpp")
 
-LINK_LIBRARIES(debug osimSimulation${CMAKE_DEBUG_POSTFIX}	optimized osimSimulation
-               debug osimActuators${CMAKE_DEBUG_POSTFIX}	optimized osimActuators
-               debug osimCommon${CMAKE_DEBUG_POSTFIX}	optimized osimCommon
-               debug osimAnalyses${CMAKE_DEBUG_POSTFIX}		optimized osimAnalyses
-			   debug osimTools${CMAKE_DEBUG_POSTFIX} optimized osimTools
-               "${Simbody_LIBRARIES}"
+LINK_LIBRARIES(
+    debug osimSimulation${CMAKE_DEBUG_POSTFIX}   optimized osimSimulation
+    debug osimActuators${CMAKE_DEBUG_POSTFIX}    optimized osimActuators
+    debug osimCommon${CMAKE_DEBUG_POSTFIX}   optimized osimCommon
+    debug osimAnalyses${CMAKE_DEBUG_POSTFIX}     optimized osimAnalyses
+    debug osimTools${CMAKE_DEBUG_POSTFIX} optimized osimTools
+    "${Simbody_LIBRARIES}"
 )
 
 FOREACH(TEST_PROG ${TEST_PROGS})
@@ -18,9 +19,9 @@ FOREACH(TEST_PROG ${TEST_PROGS})
     TARGET_LINK_LIBRARIES(${TEST_ROOT} ${LINK_LIBRARIES} )
     ADD_TEST(${TEST_ROOT} ${EXECUTABLE_OUTPUT_PATH}/${TEST_ROOT})
     SET_TARGET_PROPERTIES(${TEST_ROOT} 
-		PROPERTIES 
-		PROJECT_LABEL "Tests - ${TEST_ROOT}")
-	# MESSAGE( "Adding test "${TEST_PROG} )
+        PROPERTIES 
+        PROJECT_LABEL "Tests - ${TEST_ROOT}")
+    # MESSAGE( "Adding test "${TEST_PROG} )
 
 ENDFOREACH(TEST_PROG ${TEST_PROGS})
 
