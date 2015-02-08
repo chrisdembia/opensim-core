@@ -113,19 +113,11 @@ FUNCTION(OPENSIM_ADD_LIBRARY)
         FOREACH(dir ${OSIMADDLIB_INCLUDEDIRS})
             FILE(GLOB HEADERS ${dir}/*.h) # returns full pathnames
             INSTALL(FILES ${HEADERS}
-<<<<<<< HEAD
-                DESTINATION "${_INSTALL_INCLUDEDIR}/${OSIMADDLIB_KIT}/${dir}")
+                DESTINATION "${_INSTALL_INCLUDEDIR}/${_INCLUDE_LIBNAME}/${dir}")
         ENDFOREACH(dir)
     ELSE()
         INSTALL(FILES ${OSIMADDLIB_INCLUDES}
-                DESTINATION "${_INSTALL_INCLUDEDIR}/${OSIMADDLIB_KIT}")
-=======
-                DESTINATION ${_INCLUDE_PREFIX}/${_INCLUDE_LIBNAME}/${dir})
-        ENDFOREACH(dir)
-    ELSE()
-        INSTALL(FILES ${OSIMADDLIB_INCLUDES}
-            DESTINATION ${_INCLUDE_PREFIX}/${_INCLUDE_LIBNAME})
->>>>>>> unix-dont-copy-simbody
+                DESTINATION "${_INSTALL_INCLUDEDIR}/${_INCLUDE_LIBNAME}")
     ENDIF()
 
 
