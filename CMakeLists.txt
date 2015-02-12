@@ -53,13 +53,22 @@ SET(LIBRARY_OUTPUT_PATH ${BUILD_BINARY_DIR})
 # Configure installation directories across platforms.
 # ----------------------------------------------------
 INCLUDE(GNUInstallDirs)
-# GNUInstalLDirs sets the variables CMAKE_INSTALL_*DIR; we modify them here.
 IF(UNIX)
+    SET(OPENSIM_INSTALL_UNIX_FHS_DEFAULT ON)
+ELSE()
+    SET(OPENSIM_INSTALL_UNIX_FHS_DEFAULT OFF)
+ENDIF()
+OPTION(OPENSIM_INSTALL_UNIX_FHS
+"Organize installation according to UNIX Filesystem Hierarchy Standard (FHS)."
+${OPENSIM_INSTALL_UNIX_FHS_DEFAULT}
+)
+MARK_AS_ADVANCED(OPENSIM_INSTALL_UNIX_FHS)
+# GNUInstalLDirs sets the variables CMAKE_INSTALL_*DIR; we modify them here.
+IF(${OPENSIM_INSTALL_UNIX_FHS})
     SET(OPENSIM_INSTALL_ARCHIVEDIR "${CMAKE_INSTALL_LIBDIR}")
     SET(OPENSIM_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/OpenSim")
     SET(OPENSIM_INSTALL_MATLABDIR "${CMAKE_INSTALL_DOCDIR}/Scripts")
 ELSE()
-    # Windows.
     SET(CMAKE_INSTALL_DOCDIR sdk/doc)
     SET(CMAKE_INSTALL_SYSCONFDIR sdk)
     SET(CMAKE_INSTALL_INCLUDEDIR sdk/include)
