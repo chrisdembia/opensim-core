@@ -6,7 +6,7 @@ LINK_LIBRARIES(
     debug osimSimulation${CMAKE_DEBUG_POSTFIX}   optimized osimSimulation
     debug osimCommon${CMAKE_DEBUG_POSTFIX}   optimized osimCommon
     debug osimAnalyses${CMAKE_DEBUG_POSTFIX}     optimized osimAnalyses
-    "${Simbody_LIBRARIES}"
+    ${Simbody_LIBRARIES}
 )
 
 IF(BUILD_TESTING)
