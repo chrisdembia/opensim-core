@@ -79,21 +79,10 @@ SET_TARGET_PROPERTIES(osim${KIT} PROPERTIES
 
 ADD_DEPENDENCIES(osim${KIT} JavaWrap)
 
-# Shared libraries are needed at runtime for applications, so we put them
-# at the top level in OpenSim/bin/*.dll (Windows) or OpenSim/lib/*.so (Linux)
-# or OpemSim/lib/*.dylib (Mac). Windows .lib files, and Linux/Mac .a static
-# archives are only needed at link time so go in sdk/lib.
-IF(WIN32)
-    INSTALL(TARGETS osim${KIT}
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION sdk/lib
-            ARCHIVE DESTINATION sdk/lib)
-ELSE()
-    INSTALL(TARGETS osim${KIT}
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION lib
-            ARCHIVE DESTINATION sdk/lib)
-ENDIF()
+INSTALL(TARGETS osim${KIT}
+        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        ARCHIVE DESTINATION "${OPENSIM_INSTALL_ARCHIVEDIR}")
 
 INSTALL(DIRECTORY ${SWIG_JAVA_SOURCE_BUILD_OUTPUT_DIR}/
     DESTINATION sdk/Java/${SWIG_JAVA_PACKAGE_PATH})
