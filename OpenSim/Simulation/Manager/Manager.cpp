@@ -48,10 +48,6 @@ std::string Manager::_displayName = "Simulator";
 //=============================================================================
 // DESTRUCTOR
 //=============================================================================
-//_____________________________________________________________________________
-/**
- * Destructor.
- */
 Manager::~Manager()
 {
     // DESTRUCTORS
@@ -63,15 +59,14 @@ Manager::~Manager()
 //=============================================================================
 // CONSTRUCTOR(S)
 //=============================================================================
-//_____________________________________________________________________________
-/**
- * Construct a simulation manager.
- *
- * @param model pointer to model for the simulation.
- */
-Manager::Manager(Model& model):
+Manager::Manager()
+{
+    setNull();
+}
+
+Manager::Manager(Model& model) :
        _model(&model),
-       _integ(NULL),               
+       _integ(NULL),
        _controllerSet(&model.updControllerSet() ),
        _stateStore(NULL),
        _performAnalyses(true),
@@ -88,26 +83,9 @@ Manager::Manager(Model& model):
     // SESSION NAME
     setSessionName(_model->getName());
 }
-//_____________________________________________________________________________
-/**
- * Construct a simulation manager.
- *
- * @param aModel model to integrate.
- * @param integ integrator used to do the integration
- */
-Manager::Manager(Model& aModel, SimTK::Integrator& integ) {    
-    new(this) Manager(aModel);
-    setIntegrator(integ);
-}
 
-//_____________________________________________________________________________
-/**
- * Construct a simulation manager.
- *
- */
-Manager::Manager()
-{
-    setNull();
+Manager::Manager(Model& aModel, SimTK::Integrator& integ) : Manager(aModel) {
+    setIntegrator(integ);
 }
 
 //=============================================================================

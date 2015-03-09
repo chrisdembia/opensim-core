@@ -117,12 +117,22 @@ private:
 // METHODS
 //=============================================================================
 public:
-    virtual ~Manager();
-    Manager(Model&,  SimTK::Integrator&);
-    /** Constructor that takes a model only and builds integrator internally */
-    Manager(Model& aModel) ;
-    /** A Constructor that does not take a model or controllerSet */
+
     Manager();  
+
+    /** Constructor that takes a model only. As is, the Manager will not
+     * contain a SimTK::Integrator. You must set an integrator using
+     * setIntegrator() before integrating. */
+    Manager(Model& aModel);
+
+    /** Construct a simulation manager.
+     *
+     * @param aModel model to integrate.
+     * @param integ integrator used to do the integration.
+     */
+    Manager(Model& aModel, SimTK::Integrator& integ);
+
+    virtual ~Manager();
 
 private:
     void setNull();
