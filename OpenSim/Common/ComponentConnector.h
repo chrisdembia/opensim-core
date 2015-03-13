@@ -227,6 +227,14 @@ public:
         //std::cout << getConcreteClassName() << "::connected to '";
         //std::cout << output.getName() << "'<" << output.getTypeName();
         //std::cout << ">." << std::endl;
+        SimTK_ERRCHK2_ALWAYS(output.getDependsOnStage() <= getConnectAtStage(),
+                "AbstractInput::connect()",
+                "Trying to connect an Output of stage %s to an "
+                "Input of stage %s; "
+                "The Output stage must be less than or equal to the "
+                "Input stage.",
+                output.getDependsOnStage().getName().c_str(),
+                getConnectAtStage().getName().c_str());
     }
 
     void disconnect() override {
@@ -312,8 +320,13 @@ public:
     Implementation* cloneVirtual() const override
     {return new Implementation(*this);}
     int getNumTimeDerivativesVirtual() const override {return 0;}
+
     SimTK::Stage getDependsOnStageVirtual(int order) const override
     { return m_input.getConnectAtStage(); }
+
+    void initializeVirtual(SimTK::State& s) const override {
+        // TODO
+    }
 
     // The meat of this class: return the Input's value.
     void calcCachedValueVirtual(const SimTK::State& s,

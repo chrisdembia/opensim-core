@@ -132,14 +132,14 @@ void Delay<T>::constructProperties() {
 template<class T>
 void Delay<T>::constructInputs() {
     // TODO the requiredAt Stage should be the same as this Delay's output dependsOn stage.
-    constructInput<T>("input", SimTK::Stage::Time);
+    constructInput<T>("input", SimTK::Stage::Acceleration);
 }
 
 template<class T>
 void Delay<T>::constructOutputs() {
     // TODO the depensdOn stage should be the dependsOn stage of the output
     // that is wired to this Delay's input.
-    constructOutput<T>("output", &Delay::getValue, SimTK::Stage::Time);
+    constructOutput<T>("output", &Delay::getValue, SimTK::Stage::Acceleration);
 }
 
 template<class T>
