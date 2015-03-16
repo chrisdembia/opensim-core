@@ -33,6 +33,7 @@ using namespace std;
 void testGait2354();
 
 int main() {
+
     Object::renameType("Thelen2003Muscle", "Thelen2003Muscle_Deprecated");
     //Object::renameType("Thelen2003Muscle", "Millard2012AccelerationMuscle");
     //Object::renameType("Thelen2003Muscle", "Millard2012EquilibriumMuscle");
@@ -53,6 +54,7 @@ int main() {
 }
 
 void testGait2354() {
+
     cout<<"\n******************************************************************" << endl;
     cout << "*                          testGait2354                          *" << endl;
     cout << "******************************************************************\n" << endl;

@@ -41,6 +41,7 @@
 #include "ActuatorForceTarget.h"
 #include "ActuatorForceTargetFast.h"
 
+
 using namespace std;
 using namespace SimTK;
 using namespace OpenSim;
@@ -389,7 +390,6 @@ operator=(const CMCTool &aTool)
 bool CMCTool::run()
 {
     cout<<"Running tool "<<getName()<<".\n";
-
     // CHECK FOR A MODEL
     if(_model==NULL) {
         string msg = "ERROR- A model has not been set.";

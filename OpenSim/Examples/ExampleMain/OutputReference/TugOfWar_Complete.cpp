@@ -31,7 +31,12 @@
 
 //==============================================================================
 //==============================================================================
-#include <OpenSim/OpenSim.h>
+//#include <OpenSim/OpenSim.h>
+#include <OpenSim/Common/osimCommon.h>
+#include <OpenSim/Simulation/osimSimulation.h>
+#include <OpenSim/Actuators/osimActuators.h>
+#include <OpenSim/Analyses/osimAnalyses.h>
+#include <OpenSim/Tools/osimTools.h>
 
 #include <ctime>    // for clock()
 

@@ -71,7 +71,7 @@ static osimToolsInstantiator instantiator;
 OSIMTOOLS_API void RegisterTypes_osimTools()
 {
   try {
-
+    std::cout << "DEBUG HOW MANY TIMES AM I CALLED?" << std::endl;
     Object::registerType( ScaleTool() );
     //Object::registerType( IKTool() );
     Object::registerType( CMCTool() );
