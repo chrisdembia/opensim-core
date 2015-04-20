@@ -60,7 +60,7 @@ before_install:
   - export PATH=$(whereis -b ccache |grep -o '\S*lib\S*'):$PATH
   # For some reason the Travis CI clang compiler toolchain installation does not
   # have a symlink in the ccache symlinks directory, so workaround it
-  - if [ "$CC"  == "clang" ]; then ln -s $(which ccache) $HOME/clang && ln -s $(which ccache) $HOME/clang++ && export PATH=$HOME:$PATH; fi
+  - ln -s $(which ccache) $HOME/clang && ln -s $(which ccache) $HOME/clang++ && export PATH=$HOME:$PATH
   # Without the following lines, ccache causes clang to not print in color.
   - if [ "$CC" == "clang" ]; then export CC="clang -fcolor-diagnostics"; fi;
   - if [ "$CXX" == "clang++" ]; then export CX="clang++ -fcolor-diagnostics"; fi;
@@ -72,7 +72,7 @@ before_install:
   - cd ~/simbody-source
   # Configure Simbody. No matter how we're compiling OpenSim,
   # compile Simbody with clang for a faster build (allows us to use 8 procs).
-  - cmake . -DBUILD_VISUALIZER=off -DBUILD_EXAMPLES=off -DCMAKE_INSTALL_PREFIX=~/simbody-install -DCMAKE_C_COMPILER=$HOME/clang -DCMAKE_CXX_COMPILER=$HOME/clang++
+  - cmake . -DBUILD_VISUALIZER=off -DBUILD_EXAMPLES=off -DCMAKE_INSTALL_PREFIX=~/simbody-install -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
   # Build Simbody.
   - make -j8
   # Test Simbody.
