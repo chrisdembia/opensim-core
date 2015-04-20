@@ -131,7 +131,7 @@ script:
   
   # Maximum size of cache is 100 MB.
   - ccache --max-size 100M
-  
+
 before_cache:
   # Show cache statistics.
   - ccache --show-stats
