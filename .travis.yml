@@ -9,8 +9,8 @@ matrix:
   include:
     - compiler: clang
       env: BUILD_WRAPPING=off NPROC=8
-    #- compiler: gcc
-    #  env: BUILD_WRAPPING=off NPROC=3
+    - compiler: gcc
+      env: BUILD_WRAPPING=off NPROC=3
 
 env:
   global:
