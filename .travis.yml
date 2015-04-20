@@ -21,7 +21,7 @@ env:
     
 cache: 
   - directories: $HOME/.ccache
-  
+
 addons:
   # Dependencies on linux.
   apt:
