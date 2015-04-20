@@ -64,7 +64,7 @@ before_install:
   # Without the following lines, ccache causes clang to not print in color.
   - if [ "$CC" == "clang" ]; then export CC="clang -fcolor-diagnostics"; fi;
   - if [ "$CXX" == "clang++" ]; then export CX="clang++ -fcolor-diagnostics"; fi;
-  
+
   ## Install Simbody.
   # Clone Simbody into the Simbody directory. Don't need its history, and
   # only need the master branch.
