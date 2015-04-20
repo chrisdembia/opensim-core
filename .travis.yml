@@ -9,8 +9,8 @@ matrix:
   include:
     - compiler: clang
       env: BUILD_WRAPPING=off NPROC=8
-    - compiler: gcc
-      env: BUILD_WRAPPING=off NPROC=3
+    #- compiler: gcc
+    #  env: BUILD_WRAPPING=off NPROC=3
 
 env:
   global:
@@ -130,7 +130,7 @@ script:
   - if grep --recursive --include={CMakeLists.txt,*.cpp,*.c,*.h} -P "\t" . ; then echo "Tabs found in the lines shown above. See CONTRIBUTING.md about tabs."; false; fi
   
   # Maximum size of cache is 100 MB.
-  - ccache --max-size 100M
+  #- ccache --max-size 100M
 
 before_cache:
   # Show cache statistics.
