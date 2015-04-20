@@ -20,7 +20,7 @@ env:
     - CCACHE_COMPRESS=1
     # for Clang to work with ccache.
     - CCACHE_CPP2=1
-    
+
 cache: 
   - directories: $HOME/.ccache
 
