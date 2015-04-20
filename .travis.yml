@@ -53,7 +53,7 @@ before_install:
   # Only if compiling with gcc, update environment variables
   # to use the new gcc.
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
-  
+
   ## Set up ccache.
   # Lots of this is borrowed from https://github.com/weitjong/Urho3D/blob/master/.travis.yml.
   # Put /usr/lib/ccache on the path.
