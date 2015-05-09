@@ -8,6 +8,15 @@ This breaks Python PEP 8 convention, but allows us to be consistent within our
 own project.
 */
 
+/*
+We can use Doxygen's XML output to generate Python docstrings. We used the
+instructions at this website:
+http://stackoverflow.com/questions/11435102/is-there-a-good-way-to-produce-documentation-for-swig-interfaces
+
+The website talks of the tool doxy2swig.py
+*/
+%import "python_documentation.i"
+
 %{
 #define SWIG_FILE_WITH_INIT
 
