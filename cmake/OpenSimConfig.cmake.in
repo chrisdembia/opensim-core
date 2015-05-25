@@ -57,7 +57,7 @@ endif()
 
 # LIBRARIES
 # ---------
-include("@PACKAGE_OPENSIM_INSTALL_CMAKE_DIR@/@CMAKE_PROJECT_NAME@Targets.cmake")
+include("@PACKAGE_OPENSIM_INSTALL_CMAKEDIR@/@CMAKE_PROJECT_NAME@Targets.cmake")
 
 # The osimTools target uses all the other targets.
 # This makes a distinction between release and debug libraries.
