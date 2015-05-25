@@ -53,16 +53,15 @@ SET(LIBRARY_OUTPUT_PATH ${BUILD_BINARY_DIR})
 # Configure installation directories across platforms.
 # ----------------------------------------------------
 INCLUDE(GNUInstallDirs)
-IF(UNIX)
-    SET(OPENSIM_INSTALL_UNIX_FHS_DEFAULT ON)
-ELSE()
-    SET(OPENSIM_INSTALL_UNIX_FHS_DEFAULT OFF)
-ENDIF()
+
+# Consider defaulting to ON on UNIX:
+SET(OPENSIM_INSTALL_UNIX_FHS_DEFAULT OFF)
 OPTION(OPENSIM_INSTALL_UNIX_FHS
 "Organize installation according to UNIX Filesystem Hierarchy Standard (FHS)."
 ${OPENSIM_INSTALL_UNIX_FHS_DEFAULT}
 )
 IF(WIN32)
+    # Windows users probably aren't interested in this option.
     MARK_AS_ADVANCED(OPENSIM_INSTALL_UNIX_FHS)
 ENDIF()
 # GNUInstalLDirs sets the variables CMAKE_INSTALL_*DIR; we modify them here.
