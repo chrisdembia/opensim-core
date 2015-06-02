@@ -122,15 +122,15 @@ public:
     //SET 
     void setRollingBodyByName(std::string aBodyName);
     void setSurfaceBodyByName(std::string aBodyName);
-    virtual void setContactPointForInducedAccelerations(const SimTK::State &s, SimTK::Vec3 point);
+    virtual void setContactPointForInducedAccelerations(const SimTK::State &s, SimTK::Vec3 point) override;
 
     // Methods that makes this a unilateral constraint
-    virtual std::vector<bool> unilateralConditionsSatisfied(const SimTK::State& state);
+    virtual std::vector<bool> unilateralConditionsSatisfied(const SimTK::State& state) override;
 
-    virtual bool isDisabled(const SimTK::State& state) const;
+    virtual bool isDisabled(const SimTK::State& state) const override;
 
     // Unilateral conditions are automatically satisfied if constraint is not disabled
-    virtual bool setDisabled(SimTK::State& state, bool isDisabled);
+    virtual bool setDisabled(SimTK::State& state, bool isDisabled) override;
 
     // This method allows finer granularity over the subconstraints according to imposed behavior
     bool setDisabled(SimTK::State& state, bool isDisabled, std::vector<bool> shouldBeOn);
@@ -141,7 +141,7 @@ public:
         { return setDisabled(state, isDisabled, _defaultUnilateralConditions); };
 
     virtual void calcConstraintForces(const SimTK::State& state, SimTK::Vector_<SimTK::SpatialVec>& bodyForcesInAncestor, 
-                                      SimTK::Vector& mobilityForces) const;
+                                      SimTK::Vector& mobilityForces) const override;
 
     /** 
      * Methods to query a Constraint forces (defaults to the Lagrange mulipliers) applied
@@ -159,7 +159,7 @@ public:
 private:
 
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
 
 //=============================================================================
 };  // END of class RollingOnSurfaceConstraint

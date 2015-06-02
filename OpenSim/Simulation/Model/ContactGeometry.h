@@ -157,8 +157,8 @@ public:
     virtual void scale(const ScaleSet& aScaleSet);
 
     // Visible Object Support
-    virtual const VisibleObject* getDisplayer() const { return &_displayer; };
-    virtual VisibleObject* updDisplayer() { return &_displayer; };
+    virtual const VisibleObject* getDisplayer() const override { return &_displayer; };
+    virtual VisibleObject* updDisplayer() override { return &_displayer; };
     // Override this method if geometry changes/deforms
     virtual void updateGeometry() {};
 
@@ -169,7 +169,7 @@ protected:
 private:
     // INITIALIZATION
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
 //=============================================================================
 };  // END of class ContactGeometry
 //=============================================================================

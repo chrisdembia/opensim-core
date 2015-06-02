@@ -142,8 +142,8 @@ public:
         { return SimTK::Vec3(0); }
 
     // Visible Object Support
-    virtual const VisibleObject* getDisplayer() const { return &_displayer; }
-    virtual VisibleObject*  updDisplayer() { return &_displayer; };
+    virtual const VisibleObject* getDisplayer() const override { return &_displayer; }
+    virtual VisibleObject*  updDisplayer() override { return &_displayer; };
     virtual void updateGeometry();
 
     // Utility

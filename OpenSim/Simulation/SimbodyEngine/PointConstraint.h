@@ -80,7 +80,7 @@ public:
     void setBody2PointLocation(SimTK::Vec3 location);
 
     /** Method to set point location of contact during an induced acceleration analysis */
-    virtual void setContactPointForInducedAccelerations(const SimTK::State &s, SimTK::Vec3 point);
+    virtual void setContactPointForInducedAccelerations(const SimTK::State &s, SimTK::Vec3 point) override;
 
 
 protected:
@@ -92,7 +92,7 @@ protected:
 
 private:
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
 
 //=============================================================================
 };  // END of class PointConstraint

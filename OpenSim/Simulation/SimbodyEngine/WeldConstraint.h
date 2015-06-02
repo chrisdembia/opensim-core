@@ -84,7 +84,7 @@ public:
     void setBody2WeldLocation(SimTK::Vec3 location, SimTK::Vec3 orientation=SimTK::Vec3(0));
 
     // Method to set point locations for induced acceleration analysis
-    virtual void setContactPointForInducedAccelerations(const SimTK::State &s, SimTK::Vec3 point);
+    virtual void setContactPointForInducedAccelerations(const SimTK::State &s, SimTK::Vec3 point) override;
 
 protected:
     void extendConnectToModel(Model& aModel) override;
@@ -95,7 +95,7 @@ protected:
 
 private:
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
     friend class SimbodyEngine;
 
 private:

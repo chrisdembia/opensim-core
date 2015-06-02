@@ -73,11 +73,11 @@ public:
     GeometryPath& updGeometryPath() { return upd_GeometryPath(); }
     const GeometryPath& getGeometryPath() const 
     {   return get_GeometryPath(); }
-    virtual bool hasGeometryPath() const { return true;};
+    virtual bool hasGeometryPath() const override { return true;};
 
     // OPTIMAL FORCE
     void setOptimalForce(double aOptimalForce);
-    double getOptimalForce() const;
+    double getOptimalForce() const override;
 
     // Length and Speed of actuator
     virtual double getLength(const SimTK::State& s) const;
@@ -85,12 +85,12 @@ public:
 
     // Power: Since lengthening is positive and tension always shortens, positive power
     // is when muscle is shortening under tension.
-    virtual double getPower(const SimTK::State& s) const 
+    virtual double getPower(const SimTK::State& s) const override 
     {   return -getActuation(s)*getSpeed(s); }
 
 
     // STRESS
-    virtual double getStress( const SimTK::State& s ) const;
+    virtual double getStress( const SimTK::State& s ) const override;
 
     // Convenience method to add PathPoints
      /** Note that this function does not maintain the State and so should be used only
@@ -103,18 +103,18 @@ public:
     //--------------------------------------------------------------------------
     virtual void computeForce( const SimTK::State& state, 
                                SimTK::Vector_<SimTK::SpatialVec>& bodyForces, 
-                               SimTK::Vector& mobilityForces) const;
+                               SimTK::Vector& mobilityForces) const override;
 
     //--------------------------------------------------------------------------
     // COMPUTATIONS
     //--------------------------------------------------------------------------
-    virtual double computeActuation( const SimTK::State& s) const;
+    virtual double computeActuation( const SimTK::State& s) const override;
     virtual double computeMomentArm( const SimTK::State& s, Coordinate& aCoord) const;
 
     //--------------------------------------------------------------------------
     // XML
     //--------------------------------------------------------------------------
-    virtual void updateFromXMLNode(SimTK::Xml::Element& aNode, int versionNumber=-1);
+    virtual void updateFromXMLNode(SimTK::Xml::Element& aNode, int versionNumber=-1) override;
 
     //--------------------------------------------------------------------------
     // SCALING
@@ -126,8 +126,8 @@ public:
     //--------------------------------------------------------------------------
     // Visible Object Support
     //--------------------------------------------------------------------------
-    virtual const VisibleObject* getDisplayer() const;
-    virtual void updateDisplayer(const SimTK::State& s) const;
+    virtual const VisibleObject* getDisplayer() const override;
+    virtual void updateDisplayer(const SimTK::State& s) const override;
 
 protected:
     /** Override this method if you would like to calculate a color for use when
@@ -156,7 +156,7 @@ protected:
 
 private:
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
 
 //=============================================================================
 };  // END of class PathActuator

@@ -234,7 +234,7 @@ public:
       */
     virtual void computeForce(const SimTK::State& s, 
                               SimTK::Vector_<SimTK::SpatialVec>& bodyForces, 
-                              SimTK::Vector& generalizedForces) const;
+                              SimTK::Vector& generalizedForces) const override;
 
     /** Potential energy calculation is not implemented */
 
@@ -247,11 +247,11 @@ public:
      * Provide name(s) of the quantities (column labels) of the force value(s) 
      * to be reported.
      */
-    virtual OpenSim::Array<std::string> getRecordLabels() const ;
+    virtual OpenSim::Array<std::string> getRecordLabels() const override ;
     /**
     *  Provide the value(s) to be reported that correspond to the labels
     */
-    virtual OpenSim::Array<double> getRecordValues(const SimTK::State& state) const ;
+    virtual OpenSim::Array<double> getRecordValues(const SimTK::State& state) const override ;
 
 protected:
     //--------------------------------------------------------------------------
@@ -261,7 +261,7 @@ protected:
         bool fixed, 
         const ModelDisplayHints&                    hints,
         const SimTK::State&                         state,
-        SimTK::Array_<SimTK::DecorativeGeometry>&   geometryArray) const;
+        SimTK::Array_<SimTK::DecorativeGeometry>&   geometryArray) const override;
     
     void ComputeForcesAtBushing(const SimTK::State& state, 
                                 SimTK::SpatialVec& forces_on_M_in_ground, 
@@ -277,11 +277,11 @@ private:
     //--------------------------------------------------------------------------
     // Visible Object Support for Java Gui
     //--------------------------------------------------------------------------
-    virtual VisibleObject* getDisplayer() const;
+    virtual VisibleObject* getDisplayer() const override;
     virtual void updateDisplayer(const SimTK::State& s);
     virtual void updateGeometry(const SimTK::State& s);
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
 
 //==============================================================================
 };  // END of class ExpressionBasedBushingForce

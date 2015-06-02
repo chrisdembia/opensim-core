@@ -60,7 +60,7 @@ public:
             " derivOrder %d seen but only 0 allowed.", derivOrder);
  
         value = m_probe.computeProbeInputs(s);
-    }
+    } override
 
     
 private:

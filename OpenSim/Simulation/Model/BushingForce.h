@@ -115,7 +115,7 @@ public:
 
     /** Potential energy is determine by the elastic energy storage of the 
     bushing. **/
-    virtual double computePotentialEnergy(const SimTK::State& s) const;
+    virtual double computePotentialEnergy(const SimTK::State& s) const override;
 
     //--------------------------------------------------------------------------
     // Reporting
@@ -124,11 +124,11 @@ public:
      * Provide name(s) of the quantities (column labels) of the force value(s) 
      * to be reported.
      */
-    virtual OpenSim::Array<std::string> getRecordLabels() const ;
+    virtual OpenSim::Array<std::string> getRecordLabels() const override ;
     /**
     *  Provide the value(s) to be reported that correspond to the labels
     */
-    virtual OpenSim::Array<double> getRecordValues(const SimTK::State& state) const ;
+    virtual OpenSim::Array<double> getRecordValues(const SimTK::State& state) const override ;
 
 private:
     //--------------------------------------------------------------------------
@@ -139,7 +139,7 @@ private:
     void extendAddToSystem(SimTK::MultibodySystem& system) const override;
 
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
 
 //==============================================================================
 };  // END of class BushingForce

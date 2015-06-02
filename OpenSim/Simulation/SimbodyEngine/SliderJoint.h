@@ -69,7 +69,7 @@ public:
         const SimTK::Vec3& locationInchild, const SimTK::Vec3& orientationInChild,
         bool reverse = false);
 
-    int numCoordinates() const { return _numMobilities; }
+    int numCoordinates() const override { return _numMobilities; }
 
 protected:
     void extendAddToSystem(SimTK::MultibodySystem& system) const override;

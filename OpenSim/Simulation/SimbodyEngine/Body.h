@@ -110,8 +110,8 @@ public:
 
     virtual void addDisplayGeometry(const std::string &aGeometryFileName);
 
-    const VisibleObject* getDisplayer() const { return &get_VisibleObject(); }
-    VisibleObject* updDisplayer() { return &upd_VisibleObject(); }
+    const VisibleObject* getDisplayer() const override { return &get_VisibleObject(); }
+    VisibleObject* updDisplayer() override { return &upd_VisibleObject(); }
 
     /** Get the named wrap object, if it exists.
     *
@@ -140,7 +140,7 @@ public:
 private:
 
     /** Component Interface */
-    void constructProperties();
+    void constructProperties() override;
 
     /** Return the equivalent (internal) SimTK::Rigid::Body for this body.
         Not valid until after extendAddToSystem on Body has be called.*/

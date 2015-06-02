@@ -83,15 +83,15 @@ public:
     WrapEllipsoid& operator=(const WrapEllipsoid& aWrapEllipsoid);
 #endif
    void copyData(const WrapEllipsoid& aWrapEllipsoid);
-    virtual const char* getWrapTypeName() const;
-    virtual std::string getDimensionsString() const;
+    virtual const char* getWrapTypeName() const override;
+    virtual std::string getDimensionsString() const override;
         SimTK::Vec3 getRadii() const;
 
-    virtual void scale(const SimTK::Vec3& aScaleFactors);
-    virtual void connectToModelAndBody(Model& aModel, OpenSim::Body& aBody);
+    virtual void scale(const SimTK::Vec3& aScaleFactors) override;
+    virtual void connectToModelAndBody(Model& aModel, OpenSim::Body& aBody) override;
 #ifndef SWIG
     virtual int wrapLine(const SimTK::State& s, SimTK::Vec3& aPoint1, SimTK::Vec3& aPoint2,
-        const PathWrap& aPathWrap, WrapResult& aWrapResult, bool& aFlag) const;
+        const PathWrap& aPathWrap, WrapResult& aWrapResult, bool& aFlag) const override;
 #endif
 
 protected:

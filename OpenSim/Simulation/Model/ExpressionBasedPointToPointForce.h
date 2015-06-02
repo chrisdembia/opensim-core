@@ -161,7 +161,7 @@ public:
     //--------------------------------------------------------------------------
     // Visible Object Support
     //--------------------------------------------------------------------------
-    VisibleObject* getDisplayer() const;
+    VisibleObject* getDisplayer() const override;
     void updateDisplayer(const SimTK::State& s);
     void updateGeometry(const SimTK::State& s);
 
@@ -179,7 +179,7 @@ protected:
 
 private:
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
 
     // parser programs for efficiently evaluating the expressions
     Lepton::ExpressionProgram _forceProg;

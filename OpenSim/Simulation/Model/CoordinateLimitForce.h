@@ -191,7 +191,7 @@ public:
 
     /** Contribute this Force component's potential energy to the accounting
     of the total system energy. **/
-    double computePotentialEnergy(const SimTK::State& s) const;
+    double computePotentialEnergy(const SimTK::State& s) const override;
 
 
     //--------------------------------------------------------------------------
@@ -201,12 +201,12 @@ public:
      * Methods to query a Force for the value actually applied during simulation
      * The names of quantities (column labels) are  returned by getRecordLabels()
      */
-    Array<std::string> getRecordLabels() const ;
+    Array<std::string> getRecordLabels() const override ;
     /**
      * Given SimTK::State object extract all the values necessary to report forces, application location
      * frame, etc. used in conjunction with getRecordLabels and should return same size Array
      */
-    Array<double> getRecordValues(const SimTK::State& state) const ;
+    Array<double> getRecordValues(const SimTK::State& state) const override ;
 
 protected:
     //--------------------------------------------------------------------------
@@ -228,7 +228,7 @@ protected:
 private:
     // Object helpers
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
 
     // Model Component Interface when computing energy
     void computeStateVariableDerivatives(const SimTK::State& s) const override;

@@ -67,7 +67,7 @@ public:
                     OpenSim::Body& body, SimTK::Vec3 locationInBody, SimTK::Vec3 orientationInBody,
                     bool reverse=false);
 
-    int numCoordinates() const { return _numMobilities; }
+    int numCoordinates() const override { return _numMobilities; }
 
 protected:
     /** Model component interface */

@@ -78,7 +78,7 @@ public:
     //--------------------------------------------------------------------------
     // Visible Object Support
     //--------------------------------------------------------------------------
-    virtual VisibleObject* getDisplayer() const;
+    virtual VisibleObject* getDisplayer() const override;
     virtual void updateDisplayer(const SimTK::State& s);
     virtual void updateGeometry(const SimTK::State& s);
     
@@ -126,11 +126,11 @@ public:
     /** 
      * Provide name(s) of the quantities (column labels) of the force value(s) to be reported
      */
-    virtual OpenSim::Array<std::string> getRecordLabels() const ;
+    virtual OpenSim::Array<std::string> getRecordLabels() const override ;
     /**
     *  Provide the value(s) to be reported that correspond to the labels
     */
-    virtual OpenSim::Array<double> getRecordValues(const SimTK::State& state) const ;
+    virtual OpenSim::Array<double> getRecordValues(const SimTK::State& state) const override ;
 
 protected:
     /** how to display the Spring */

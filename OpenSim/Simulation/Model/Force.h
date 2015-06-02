@@ -231,7 +231,7 @@ protected:
 
 private:
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
     void copyData(const Force &aForce);
 
     friend class ForceAdapter;

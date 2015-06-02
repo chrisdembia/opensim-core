@@ -158,7 +158,7 @@ protected:
     void computeStateVariableDerivatives(const SimTK::State& s) const override;
 private:
     /** construct the new properties and set their default values */
-    void constructProperties();
+    void constructProperties() override;
 
 //=============================================================================
 };  // END of class FatigableMuscle

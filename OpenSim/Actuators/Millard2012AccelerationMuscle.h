@@ -604,7 +604,7 @@ public:
     @param s the state of the system
     @param activation the desired activation level
     */
-    void setActivation(SimTK::State& s, double activation) const;
+    void setActivation(SimTK::State& s, double activation) const override;
 
     /**
     @param s the state of the system
@@ -663,7 +663,7 @@ protected:
     @param s the state of the model
     @param aScaleSet the scale set
     */
-    void postScale(const SimTK::State& s, const ScaleSet& aScaleSet);
+    void postScale(const SimTK::State& s, const ScaleSet& aScaleSet) override;
     
     /**
     @param s the state of the model
@@ -784,7 +784,7 @@ private:
 
     /*Checks to make sure that none of the muscle model's properties have
     changed, and if any have changed then rebuild muscle model.*/
-    void extendFinalizeFromProperties();
+    void extendFinalizeFromProperties() override;
 
     /*       
     @param ami A struct that holds all of the necessary quantities to compute

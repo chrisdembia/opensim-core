@@ -168,7 +168,7 @@ public:
     //-------------------------------------------------------------------------
     // GET AND SET
     //-------------------------------------------------------------------------
-    virtual void setModel(Model& aModel);
+    virtual void setModel(Model& aModel) override;
 
     // Property accessors
     /** Public accessors for the forcesFileName property */
@@ -188,11 +188,11 @@ public:
     // INTEGRATION
     //----------------------------------------------------------------------
     virtual int
-        begin( SimTK::State& s );
+        begin( SimTK::State& s ) override;
     virtual int
-        step( const SimTK::State& s, int setNumber );
+        step( const SimTK::State& s, int setNumber ) override;
     virtual int
-        end( SimTK::State& s );
+        end( SimTK::State& s ) override;
 
 
     //-------------------------------------------------------------------------
@@ -200,7 +200,7 @@ public:
     //-------------------------------------------------------------------------
     virtual int
         printResults(const std::string &aBaseName,const std::string &aDir="",
-        double aDT=-1.0,const std::string &aExtension=".sto");
+        double aDT=-1.0,const std::string &aExtension=".sto") override;
 
 
 protected:

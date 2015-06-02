@@ -183,7 +183,7 @@ public:
     //--------------------------------------------------------------------------
     // Visible Object Support
     //--------------------------------------------------------------------------
-    virtual const VisibleObject* getDisplayer() const { 
+    virtual const VisibleObject* getDisplayer() const override { 
         return &get_display(); 
     }
     
@@ -220,7 +220,7 @@ private:
 
 
     void setNull();
-    void constructProperties();
+    void constructProperties() override;
     void updateDisplayPath(const SimTK::State& s) const;
     void updateGeometrySize(const SimTK::State& ) const;
     void updateGeometryLocations(const SimTK::State& s) const;
