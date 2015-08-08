@@ -144,9 +144,9 @@ setNull()
     setupProperties();
 
     // POINTERS
-    _pStore = NULL;
-    _vStore = NULL;
-    _aStore = NULL;
+    _pStore = nullptr;
+    _vStore = nullptr;
+    _aStore = nullptr;
     _bodies.setSize(1);
     _bodies[0] = "all";
     _recordCenterOfMass = true;
@@ -278,9 +278,9 @@ allocateStorage()
 void BodyKinematics::
 deleteStorage()
 {
-    if(_aStore!=NULL) { delete _aStore;  _aStore=NULL; }
-    if(_vStore!=NULL) { delete _vStore;  _vStore=NULL; }
-    if(_pStore!=NULL) { delete _pStore;  _pStore=NULL; }
+    if(_aStore!=nullptr) { delete _aStore;  _aStore=nullptr; }
+    if(_vStore!=nullptr) { delete _vStore;  _vStore=nullptr; }
+    if(_pStore!=nullptr) { delete _pStore;  _pStore=nullptr; }
 }
 
 //_____________________________________________________________________________

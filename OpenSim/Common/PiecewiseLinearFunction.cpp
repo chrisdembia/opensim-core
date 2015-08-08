@@ -84,9 +84,9 @@ PiecewiseLinearFunction::PiecewiseLinearFunction(int aN,const double *aX,const d
     }
 
     // CHECK DATA
-    if((aX==NULL)||(aY==NULL))
+    if((aX==nullptr)||(aY==nullptr))
     {
-        printf("PiecewiseLinearFunction: ERROR- NULL arrays for data points encountered.\n");
+        printf("PiecewiseLinearFunction: ERROR- nullptr arrays for data points encountered.\n");
         return;
     }
 
@@ -122,7 +122,7 @@ PiecewiseLinearFunction::PiecewiseLinearFunction(const PiecewiseLinearFunction &
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to their NULL or default values.
+ * Set all member variables to their nullptr or default values.
  */
 void PiecewiseLinearFunction::setNull()
 {
@@ -177,11 +177,11 @@ void PiecewiseLinearFunction::setEqual(const PiecewiseLinearFunction &aFunction)
  */
 void PiecewiseLinearFunction::init(Function* aFunction)
 {
-    if (aFunction == NULL)
+    if (aFunction == nullptr)
         return;
 
     PiecewiseLinearFunction* lf = dynamic_cast<PiecewiseLinearFunction*>(aFunction);
-    if (lf != NULL) {
+    if (lf != nullptr) {
         setEqual(*lf);
     } else {
         XYFunctionInterface xyFunc(aFunction);
@@ -191,7 +191,7 @@ void PiecewiseLinearFunction::init(Function* aFunction)
             // If it is not, make up two data points.
             double x[2] = {0.0, 1.0}, y[2];
             Constant* cons = dynamic_cast<Constant*>(aFunction);
-            if (cons != NULL) {
+            if (cons != nullptr) {
                 y[0] = y[1] = cons->calcValue(SimTK::Vector(0));
             } else {
                 y[0] = y[1] = 1.0;

@@ -323,10 +323,10 @@ updateFromXMLNode(SimTK::Xml::Element& aNode, int versionNumber)
 
             SimTK::Xml::element_iterator axesSetNode = 
                 spatialTransformNode->element_begin("objects");
-            /////if (axesSetNode != NULL)
+            /////if (axesSetNode != nullptr)
             /////   spatialTransformNode->removeChild(axesSetNode);
             /////DOMElement*grpNode = XMLNode::GetFirstChildElementByTagName(spatialTransformNode,"groups");
-            /////if (grpNode != NULL)
+            /////if (grpNode != nullptr)
             /////   spatialTransformNode->removeChild(grpNode);
             // (0, 1, 2 rotations & 3, 4, 5 translations then remove the is_rotation node)
             SimTK::Array_<SimTK::Xml::Element> list = 

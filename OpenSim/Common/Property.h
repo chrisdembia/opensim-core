@@ -489,7 +489,7 @@ public:
     although we  accept a pointer here, we do not take over ownership. See 
     adoptAndAppendValue() if you want the property to take ownership. **/
     int appendValue(const T* value) {
-        if (value == NULL)
+        if (value == nullptr)
             throw OpenSim::Exception(
                 "Property::appendValue(T*): null value not allowed.",
                 __FILE__, __LINE__);
@@ -507,7 +507,7 @@ public:
     is thrown if the property can't hold any more values. The index assigned
     to this value is returned. **/
     int adoptAndAppendValue(T* value) {
-        if (value == NULL)
+        if (value == nullptr)
             throw OpenSim::Exception(
                 "Property::adoptAndAppendValue(T*): null value not allowed.");
         if (getNumValues() >= getMaxListSize())
@@ -537,7 +537,7 @@ public:
     allocated; it is not sufficient for T to be a more general base type from
     which the actual type was derived. **/
     static bool isA(const AbstractProperty& prop) 
-    {   return dynamic_cast<const Property*>(&prop) != NULL; }
+    {   return dynamic_cast<const Property*>(&prop) != nullptr; }
 
     /** Downcast the given AbstractProperty to a concrete
     property of this type (%Property\<T>). An exception is thrown if
@@ -799,7 +799,7 @@ public:
     }
 
     static bool isA(const AbstractProperty& prop) 
-    {   return dynamic_cast<const SimpleProperty*>(&prop) != NULL; }
+    {   return dynamic_cast<const SimpleProperty*>(&prop) != nullptr; }
 
     static const SimpleProperty& getAs(const AbstractProperty& prop) {
         const SimpleProperty* p = SimTK_DYNAMIC_CAST_DEBUG<const SimpleProperty*>(&prop);
@@ -986,7 +986,7 @@ public:
     }
 
     static bool isA(const AbstractProperty& prop) 
-    {   return dynamic_cast<const ObjectProperty*>(&prop) != NULL; }
+    {   return dynamic_cast<const ObjectProperty*>(&prop) != nullptr; }
 
     static const ObjectProperty& getAs(const AbstractProperty& prop) {
         const ObjectProperty* p = SimTK_DYNAMIC_CAST_DEBUG<const ObjectProperty*>(&prop);

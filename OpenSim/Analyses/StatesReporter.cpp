@@ -59,7 +59,7 @@ StatesReporter::StatesReporter(Model *aModel) :
     Analysis(aModel),
     _statesStore(1000,"ModelStates")
 {
-    // NULL
+    // nullptr
     setNull();
 
     // DESCRIPTION
@@ -111,7 +111,7 @@ _statesStore(aStatesReporter._statesStore)
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void StatesReporter::
 setNull()
@@ -200,7 +200,7 @@ constructColumnLabels()
 int StatesReporter::
 record(const SimTK::State& s)
 {
-    if(_model==NULL) return(-1);
+    if(_model==nullptr) return(-1);
 
     // MAKE SURE ALL StatesReporter QUANTITIES ARE VALID
     _model->getMultibodySystem().realize(s, SimTK::Stage::Velocity );

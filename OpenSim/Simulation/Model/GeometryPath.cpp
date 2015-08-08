@@ -58,7 +58,7 @@ static const Vec3 DefaultDefaultColor(.5,.5,.5); // boring gray
 GeometryPath::GeometryPath() :
     ModelComponent(),
     _preScaleLength(0.0),
-    _owner(NULL)
+    _owner(nullptr)
 {
     setNull();
     constructProperties();
@@ -81,7 +81,7 @@ GeometryPath::~GeometryPath()
 void GeometryPath::setNull()
 {
     setAuthors("Peter Loan");
-    _maSolver = NULL;
+    _maSolver = nullptr;
 }
 
 //_____________________________________________________________________________
@@ -94,8 +94,8 @@ void GeometryPath::extendConnectToModel(Model& aModel)
 {
     Super::extendConnectToModel(aModel);
 
-    // aModel will be NULL when objects are being registered.
-    if (&aModel == NULL)
+    // aModel will be nullptr when objects are being registered.
+    if (&aModel == nullptr)
         return;
 
     // Name the path points based on the current path
@@ -326,10 +326,10 @@ void GeometryPath::addInEquivalentForces(const SimTK::State& s,
     SimTK::Vector_<SimTK::SpatialVec>& bodyForces,
     SimTK::Vector& mobilityForces) const
 {
-    PathPoint* start = NULL;
-    PathPoint* end = NULL;
-    const SimTK::MobilizedBody* bo = NULL;
-    const SimTK::MobilizedBody* bf = NULL;
+    PathPoint* start = nullptr;
+    PathPoint* end = nullptr;
+    const SimTK::MobilizedBody* bo = nullptr;
+    const SimTK::MobilizedBody* bf = nullptr;
     const Array<PathPoint*>& currentPath = getCurrentPath(s);
     int np = currentPath.getSize();
 
@@ -710,7 +710,7 @@ bool GeometryPath::
 replacePathPoint(const SimTK::State& s, PathPoint* aOldPathPoint, 
                  PathPoint* aNewPathPoint) 
 {
-    if (aOldPathPoint != NULL && aNewPathPoint != NULL) {
+    if (aOldPathPoint != nullptr && aNewPathPoint != nullptr) {
         int count = 0;
         int index = get_PathPointSet().getIndex(aOldPathPoint);
         // If you're switching from non-via to via, check to make sure that the
@@ -719,11 +719,11 @@ replacePathPoint(const SimTK::State& s, PathPoint* aOldPathPoint,
             dynamic_cast<ConditionalPathPoint*>(aOldPathPoint);
         ConditionalPathPoint* newVia = 
             dynamic_cast<ConditionalPathPoint*>(aNewPathPoint);
-        if (oldVia == NULL && newVia != NULL) {
+        if (oldVia == nullptr && newVia != nullptr) {
             for (int i=0; i<get_PathPointSet().getSize(); i++) {
                 if (i != index) {
                     if (dynamic_cast<ConditionalPathPoint*>
-                                        (&get_PathPointSet().get(i)) == NULL)
+                                        (&get_PathPointSet().get(i)) == nullptr)
                         count++;
                 }
             }
@@ -1085,8 +1085,8 @@ applyWrapObjects(const SimTK::State& s, Array<PathPoint*>& path) const
 
                     // As long as the two points are not auto wrap points on the
                     // same wrap object, check them for wrapping.
-                    if (   path.get(pt1)->getWrapObject() == NULL 
-                        || path.get(pt2)->getWrapObject() == NULL 
+                    if (   path.get(pt1)->getWrapObject() == nullptr 
+                        || path.get(pt2)->getWrapObject() == nullptr 
                         || (   path.get(pt1)->getWrapObject() 
                             != path.get(pt2)->getWrapObject()))
                     {
@@ -1293,7 +1293,7 @@ void GeometryPath::updateDisplayPath(const SimTK::State& s) const
     Array<PathPoint*>& currentDisplayPath = 
         updCacheVariableValue<Array<PathPoint*> >(s, "current_display_path");
     // Clear the current display path. Delete all path points
-    // that have a NULL path pointer. This means that they were
+    // that have a nullptr path pointer. This means that they were
     // created by an earlier call to updateDisplayPath() and are
     // not part of the _currentPath.
 /*

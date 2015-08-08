@@ -50,7 +50,7 @@ ProbeReporter::~ProbeReporter()
 ProbeReporter::ProbeReporter(Model *aModel) : Analysis(aModel),
     _probeStore(1000,"ModelProbes")
 {
-    // NULL
+    // nullptr
     setNull();
 
     // DESCRIPTION
@@ -105,7 +105,7 @@ ProbeReporter::ProbeReporter(const ProbeReporter &aProbeReporter):
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void ProbeReporter::setNull()
 {
@@ -218,7 +218,7 @@ void ProbeReporter::constructColumnLabels(const SimTK::State& s)
  */
 void ProbeReporter::deleteStorage()
 {
-    //if(_probeStore!=NULL) { delete _probeStore;  _probeStore=NULL; }
+    //if(_probeStore!=nullptr) { delete _probeStore;  _probeStore=nullptr; }
 }
 
 //=============================================================================
@@ -230,7 +230,7 @@ void ProbeReporter::deleteStorage()
  */
 int ProbeReporter::record(const SimTK::State& s)
 {
-    if(_model==NULL) return -1;
+    if(_model==nullptr) return -1;
 
     // MAKE SURE ALL ProbeReporter QUANTITIES ARE VALID
     _model->getMultibodySystem().realize(s, SimTK::Stage::Report );

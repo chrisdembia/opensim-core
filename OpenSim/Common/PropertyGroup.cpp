@@ -41,7 +41,7 @@ using namespace OpenSim;
  */
 PropertyGroup::
 PropertyGroup() :
-    _properties(NULL)
+    _properties(nullptr)
 {
     setNull();
 }
@@ -52,7 +52,7 @@ PropertyGroup() :
  */
 PropertyGroup::
 PropertyGroup(string& aName) :
-    _properties(NULL)
+    _properties(nullptr)
 {
     setName(aName);
     setNull();
@@ -75,7 +75,7 @@ PropertyGroup::
  */
 PropertyGroup::
 PropertyGroup(const PropertyGroup &aGroup) :
-    _properties(NULL)
+    _properties(nullptr)
 {
     copyData(aGroup);
 }
@@ -233,7 +233,7 @@ get(int aIndex)
     if (aIndex >= 0 && aIndex < _properties.getSize())
         return _properties.get(aIndex);
 
-    return NULL;
+    return nullptr;
 }
 
 //_____________________________________________________________________________

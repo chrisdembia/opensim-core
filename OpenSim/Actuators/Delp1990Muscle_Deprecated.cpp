@@ -218,7 +218,7 @@ void Delp1990Muscle_Deprecated::extendConnectToModel(Model& aModel)
 {
     Super::extendConnectToModel(aModel);
 
-    // aModel will be NULL when objects are being registered.
+    // aModel will be nullptr when objects are being registered.
     if (!_model)
         return;
 

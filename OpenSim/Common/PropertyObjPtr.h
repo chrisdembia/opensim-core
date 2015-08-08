@@ -109,7 +109,7 @@ public:
     virtual bool operator==(const Property_Deprecated& aProperty) const {
         bool equal = Property_Deprecated::operator==(aProperty);
         if (equal){ 
-            if (_value==NULL) return (((PropertyObjPtr&) aProperty)._value==NULL);
+            if (_value==nullptr) return (((PropertyObjPtr&) aProperty)._value==nullptr);
             return ((*_value) == (*((PropertyObjPtr&) aProperty)._value));
         }
         return equal;

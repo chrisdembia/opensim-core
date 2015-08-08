@@ -69,7 +69,7 @@ HINSTANCE LoadLibrary(const std::string &name, std::string &actualNameLoaded) {
  *
  * @param lpLibFileName Name of the library without either the .lib or .dll
  * extension.
- * @return Pointer to the loaded library, NULL on error.
+ * @return Pointer to the loaded library, nullptr on error.
  */
 
 OSIMCOMMON_API
@@ -87,7 +87,7 @@ OpenSim::LoadOpenSimLibrary(const std::string &lpLibFileName, bool verbose)
     bool hasDebugSuffix = (IO::GetSuffix(fixedLibFileName,(int)debugSuffix.size())==debugSuffix);
     string actualNameLoaded;
 
-    OPENSIM_PORTABLE_HINSTANCE libraryHandle = NULL;
+    OPENSIM_PORTABLE_HINSTANCE libraryHandle = nullptr;
 
     // If we're in debug mode and a release library is specified, or we're in release
     // mode and a debug library is specified, we'll first try loading the debug library,
@@ -163,7 +163,7 @@ OpenSim::LoadOpenSimLibraries(int argc,char **argv)
         if((option=="-Library")||(option=="-L")) {
             string libraryName = argv[i+1];
             library = LoadOpenSimLibrary(libraryName.c_str(), true);
-            if(library==NULL) {
+            if(library==nullptr) {
                 cout<<"ERROR- library "<<libraryName<<" could not be loaded.\n" << endl;
             } else {
                 i++;

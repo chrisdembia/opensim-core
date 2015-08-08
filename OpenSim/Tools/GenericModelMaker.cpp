@@ -154,7 +154,7 @@ GenericModelMaker& GenericModelMaker::operator=(const GenericModelMaker &aGeneri
  */
 Model* GenericModelMaker::processModel(const string& aPathToSubject)
 {
-    Model* model = NULL;
+    Model* model = nullptr;
 
     cout << endl << "Step 1: Loading generic model" << endl;
 
@@ -174,7 +174,7 @@ Model* GenericModelMaker::processModel(const string& aPathToSubject)
     catch (const Exception& x)
     {
         x.print(cout);
-        return NULL;
+        return nullptr;
     }
 
     return model;

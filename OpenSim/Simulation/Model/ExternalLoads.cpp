@@ -238,17 +238,17 @@ ExternalForce* ExternalLoads::transformPointExpressedInGroundToAppliedBody(const
 
     if(!exForce._specifiesPoint){ // The external force does not apply a force to a point
         cout << "ExternalLoads: WARNING ExternalForce '"<< exForce.getName() <<"' does not specify a point of application." << endl;
-        return NULL;
+        return nullptr;
     }
 
     if (exForce.getPointExpressedInBodyName() != getModel().getGround().getName()){
         cout << "ExternalLoads: WARNING ExternalForce '"<< exForce.getName() <<"' is not expressed in ground and will not be transformed." << endl;
-        return NULL;
+        return nullptr;
     }
 
     if (exForce.getAppliedToBodyName() == getModel().getGround().getName()){
         cout << "ExternalLoads: WARNING ExternalForce '"<< exForce.getName() <<"' is applied to a point on ground and will not be transformed." << endl;
-        return NULL;
+        return nullptr;
     }
 
     int nq = getModel().getNumCoordinates();
@@ -273,7 +273,7 @@ ExternalForce* ExternalLoads::transformPointExpressedInGroundToAppliedBody(const
     else{
         cout << "ExternalLoads: WARNING specified load kinematics contains no coordinate values. " 
             << "Point of force application cannot be transformed." << endl;
-        return NULL;
+        return nullptr;
     }
 
     nt = lastIndex-startIndex+1;

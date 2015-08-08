@@ -60,7 +60,7 @@ SymbolicExpressionReporter::SymbolicExpressionReporter(Model *aModel) :
     Analysis(aModel),
     _expressionStr(_expressionStrProp.getValueStr())
 {
-    // NULL
+    // nullptr
     setNull();
 
     // DESCRIPTION
@@ -112,7 +112,7 @@ _expressionStr(_expressionStrProp.getValueStr())
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void SymbolicExpressionReporter::
 setNull()
@@ -217,7 +217,7 @@ constructColumnLabels()
 int SymbolicExpressionReporter::
 record(const SimTK::State& s)
 {
-    if(_model==NULL) return(-1);
+    if(_model==nullptr) return(-1);
 
     // MAKE SURE ALL QUANTITIES ARE VALID
     _model->getMultibodySystem().realize(s, SimTK::Stage::Velocity );

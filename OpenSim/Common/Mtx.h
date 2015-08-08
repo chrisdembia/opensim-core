@@ -114,7 +114,7 @@ public:
     /**
     * Compute the dot product of two vectors.
     *
-    * If the arguments are not valid (aV1=aV2=NULL), 0.0 is returned.
+    * If the arguments are not valid (aV1=aV2=nullptr), 0.0 is returned.
     */
     //_____________________________________________________________________________
     inline static double DotProduct(int aN,const SimTK::Vec3& aV1,const SimTK::Vec3& aV2){
@@ -124,7 +124,7 @@ public:
     /**
     * Compute the cross product of two vectors.
     *
-    * If the arguments are not valid (aR=aS=NULL), -1 is returned.
+    * If the arguments are not valid (aR=aS=nullptr), -1 is returned.
     */
     inline static void CrossProduct(const SimTK::Vec3& aV1, const SimTK::Vec3& aV2, SimTK::Vec3& aV){
          aV = aV1 % aV2;

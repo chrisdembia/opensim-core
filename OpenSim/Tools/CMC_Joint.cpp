@@ -89,7 +89,7 @@ CMC_Joint::CMC_Joint(const CMC_Joint &aTask) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void CMC_Joint::
 setNull()
@@ -257,7 +257,7 @@ computeErrors(const SimTK::State& s, double aT)
     //std::cout<<"_pTrk[0]->evaluate(0,aT) = "<<_pTrk[0]->evaluate(0,aT)<<std::endl;
     //std::cout<<"_q->getValue() = "<<_q->getValue()<<std::endl;
     _pErr[0] = _pTrk[0]->calcValue(SimTK::Vector(1,aT)) - _q->getValue(s);
-    if(_vTrk[0]==NULL) {
+    if(_vTrk[0]==nullptr) {
         std::vector<int> derivComponents(1);
         derivComponents[0]=0;
         _vErr[0] = _pTrk[0]->calcDerivative(derivComponents,SimTK::Vector(1,aT)) - _q->getSpeedValue(s);
@@ -281,8 +281,8 @@ computeDesiredAccelerations(const SimTK::State& s, double aT)
     _aDes=SimTK::NaN;
 
     // CHECK
-    if(_model==NULL) return;
-    if(_pTrk[0]==NULL) return;
+    if(_model==nullptr) return;
+    if(_pTrk[0]==nullptr) return;
 
     // COMPUTE ERRORS
     computeErrors(s, aT);
@@ -291,7 +291,7 @@ computeDesiredAccelerations(const SimTK::State& s, double aT)
     double p = (_kp)[0]*_pErr[0];
     double v = (_kv)[0]*_vErr[0];
     double a;
-    if(_aTrk[0]==NULL) {
+    if(_aTrk[0]==nullptr) {
         std::vector<int> derivComponents(2);
         derivComponents[0]=0;
         derivComponents[1]=0;
@@ -323,8 +323,8 @@ computeDesiredAccelerations(const SimTK::State& s, double aTI,double aTF)
     _aDes=SimTK::NaN;
 
     // CHECK
-    if(_model==NULL) return;
-    if(_pTrk[0]==NULL) return;
+    if(_model==nullptr) return;
+    if(_pTrk[0]==nullptr) return;
 
     // COMPUTE ERRORS
     computeErrors(s, aTI);
@@ -333,7 +333,7 @@ computeDesiredAccelerations(const SimTK::State& s, double aTI,double aTF)
     double p = (_kp)[0]*_pErr[0];
     double v = (_kv)[0]*_vErr[0];
     
-    if(_aTrk[0]==NULL) {
+    if(_aTrk[0]==nullptr) {
         std::vector<int> derivComponents(2);
         derivComponents[0]=0;
         derivComponents[1]=0;
@@ -367,7 +367,7 @@ computeAccelerations(const SimTK::State& s )
     _a=SimTK::NaN;
 
     // CHECK
-    if(_model==NULL) return;
+    if(_model==nullptr) return;
 
     // ACCELERATION
     _a[0] = _q->getAccelerationValue(s);

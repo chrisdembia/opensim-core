@@ -146,7 +146,7 @@ operator=(const JointReaction &aJointReaction)
     _onBody = aJointReaction._onBody;
     _inFrame = aJointReaction._inFrame;
     _useForceStorage = aJointReaction._useForceStorage;
-    _storeActuation = NULL;
+    _storeActuation = nullptr;
     return(*this);
 }
 
@@ -171,7 +171,7 @@ setNull()
     _inFrame.setSize(1);
     _inFrame[0] = "ground";
 
-    _storeActuation = NULL;
+    _storeActuation = nullptr;
 
 }
 //_____________________________________________________________________________
@@ -363,7 +363,7 @@ constructDescription()
 void JointReaction::
 constructColumnLabels()
 {
-    if(_model==NULL) return;
+    if(_model==nullptr) return;
 
     Array<string> labels;
     labels.append("time");
@@ -399,7 +399,7 @@ constructColumnLabels()
  */
 void JointReaction::loadForcesFromFile()
 {
-    delete _storeActuation; _storeActuation = NULL;
+    delete _storeActuation; _storeActuation = nullptr;
     // check if the forces storage file name is valid and, if so, load the file into storage
     if(_forcesFileNameProp.isValidFileName()) {
         

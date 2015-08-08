@@ -144,7 +144,7 @@ Object::Object(const string &aFileName, bool aUpdateFromXMLNode)
  *
  * Copy constructors for all Object's only copy the non-XML variable
  * members of the object; that is, the object's DOMnode and XMLDocument
- * are not copied but set to NULL.  The reason for this is that for the
+ * are not copied but set to nullptr.  The reason for this is that for the
  * object and all its derived classes to establish the correct connection
  * to the XML document nodes, the the object would need to reconstruct based
  * on the XML document not the values of the object's member variables.
@@ -211,7 +211,7 @@ operator=(const Object& source)
         _references     = source._references;
         _propertyTable  = source._propertyTable;
 
-        delete _document; _document = NULL;
+        delete _document; _document = nullptr;
         _inlined = true; // meaning: not associated to an XML document
     }
     return *this;
@@ -237,7 +237,7 @@ setNull()
     _authors        = "";
     _references     = "";
 
-    _document       = NULL;
+    _document       = nullptr;
     _inlined        = true;
 
     // In case there are properties allocated at the Object base class level,
@@ -615,7 +615,7 @@ getDefaultInstanceOfType(const std::string& objectTypeTag) {
             + "' which is not the name of a registered object.");
     }
 
-    return NULL;
+    return nullptr;
 }
 
 /*
@@ -634,7 +634,7 @@ newInstanceOfType(const std::string& objectTypeTag)
     cerr << "Object::newInstanceOfType(): object type '" << objectTypeTag 
          << "' is not a registered Object!" << endl;
 
-    return NULL;
+    return nullptr;
 }
 
 /*
@@ -970,7 +970,7 @@ try {
             // LOOP THROUGH PROPERTY ELEMENT'S CHILD ELEMENTS
             // Each element is expected to be an Object of some type given
             // by the element's tag.
-            Object *object =NULL;
+            Object *object =nullptr;
             int objectsFound = 0;
             SimTK::Xml::element_iterator iter = propElementIter->element_begin();
             while(iter != propElementIter->element_end()){
@@ -1032,7 +1032,7 @@ updateDefaultObjectsFromXMLNode()
 {
     
     // MUST BE ROOT ELEMENT
-    if(_document==NULL) return;
+    if(_document==nullptr) return;
 
     // GET DEFAULTS ELEMENT
     SimTK::Xml::element_iterator iterDefault =
@@ -1048,7 +1048,7 @@ updateDefaultObjectsFromXMLNode()
 
         // GET DEFAULT OBJECT
         const Object *defaultObject = getDefaultInstanceOfType(stg);
-        if(defaultObject==NULL) continue;
+        if(defaultObject==nullptr) continue;
 
         // GET ELEMENT
         const string& type = defaultObject->getConcreteClassName();
@@ -1238,7 +1238,7 @@ updateXMLNode(SimTK::Xml::Element& aParent) const
         case(Property_Deprecated::ObjArray) :
         case(Property_Deprecated::ObjPtr) : {
                 if(type==Property_Deprecated::ObjArray) {
-                        // Set all the XML nodes to NULL, and then update them all
+                        // Set all the XML nodes to nullptr, and then update them all
                         // in order, with index=0 so each new one is added to the end
                         // of the list (more efficient than inserting each one into
                         // the proper slot).
@@ -1278,7 +1278,7 @@ updateXMLNode(SimTK::Xml::Element& aParent) const
 void Object::
 updateDefaultObjectsXMLNode(SimTK::Xml::Element& aParent)
 {
-    if (_document==NULL || !_document->hasDefaultObjects())
+    if (_document==nullptr || !_document->hasDefaultObjects())
         return;
     string defaultsTag = "defaults";
     SimTK::Xml::element_iterator elmt = aParent.element_begin(defaultsTag);
@@ -1322,7 +1322,7 @@ void Object::
 generateXMLDocument()
 {
     // CREATE NEW DOCUMENT
-    if (_document==NULL)
+    if (_document==nullptr)
         _document = new XMLDocument();
 }
 
@@ -1344,7 +1344,7 @@ setInlined(bool aInlined, const std::string &aFileName)
     // Wipe out the previously associated document if we weren't inline.
     if (!_inlined && _document) {
         delete _document;
-        _document = NULL;
+        _document = nullptr;
     }
 
     _inlined = aInlined; // set new inline status
@@ -1379,7 +1379,7 @@ setAllPropertiesUseDefault(bool aUseDefault)
 /**
  * Print the object.
  *
- * @param aFileName File name.  If the file name is NULL, which is the
+ * @param aFileName File name.  If the file name is nullptr, which is the
  * default, the object is printed to standard out.  
  */
 bool Object::
@@ -1389,8 +1389,8 @@ print(const string &aFileName) const
     std::string savedCwd = IO::getCwd();
     IO::chDir(IO::getParentDirectory(aFileName));
     try {
-        XMLDocument* oldDoc = NULL;
-        if (_document != NULL){
+        XMLDocument* oldDoc = nullptr;
+        if (_document != nullptr){
             oldDoc = _document;
         }
         _document = new XMLDocument();
@@ -1408,7 +1408,7 @@ print(const string &aFileName) const
         throw(ex);
     }
     IO::chDir(savedCwd);
-    if(_document==NULL) return false;
+    if(_document==nullptr) return false;
     _document->print(aFileName);
     return true;
 }
@@ -1450,7 +1450,7 @@ PrintPropertyInfo(ostream &aOStream,
         Object *obj;
         for(int i=0;i<size;i++) {
             obj = _registeredTypes.get(i);
-            if(obj==NULL) continue;
+            if(obj==nullptr) continue;
             aOStream<<obj->getConcreteClassName()<<endl;
         }
         aOStream<<"\n\nUse '-PropertyInfo ClassName' to list the properties of a particular class.\n\n";
@@ -1459,7 +1459,7 @@ PrintPropertyInfo(ostream &aOStream,
 
     // FIND CLASS
     const Object* object = getDefaultInstanceOfType(aClassName);
-    if(object==NULL) {
+    if(object==nullptr) {
         aOStream<<"\nA class with the name '"<<aClassName<<"' was not found.\n";
         aOStream<<"\nUse '-PropertyInfo' without specifying a class name to print a listing of all registered classes.\n";
         return;
@@ -1479,7 +1479,7 @@ PrintPropertyInfo(ostream &aOStream,
         for(i=0;i<propertyTableSize;i++) {
             abstractProperty = 
                 &object->_propertyTable.getAbstractPropertyByIndex(i);
-            if(abstractProperty==NULL) continue;
+            if(abstractProperty==nullptr) continue;
             if(aPropertyName=="") {
                 aOStream<<i+1<<". "<<abstractProperty->getName()<<endl;
             } else {
@@ -1494,7 +1494,7 @@ PrintPropertyInfo(ostream &aOStream,
 
         for(;i<size;i++) {
             prop = object->_propertySet.get(i-propertyTableSize);
-            if(prop==NULL) continue;
+            if(prop==nullptr) continue;
             if(aPropertyName=="") {
                 aOStream<<i+1<<". "<<prop->getName()<<endl;
             } else {

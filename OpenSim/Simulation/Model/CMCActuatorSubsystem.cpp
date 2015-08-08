@@ -60,9 +60,9 @@ void CMCActuatorSubsystemRep::setSpeedCorrections(const double* aCorrections) {
   
 void CMCActuatorSubsystemRep::setCoordinateTrajectories(FunctionSet *aSet) {
     // ERROR CHECKING
-    if(aSet == NULL) {
+    if(aSet == nullptr) {
         string msg = "CMCActuatorSubsystemRep.setCoordinateTrajectories:";
-        msg += " ERR- NULL function set.\n";
+        msg += " ERR- nullptr function set.\n";
         throw( Exception(msg,__FILE__,__LINE__) );
     }
     if(aSet->getSize() != _model->getNumCoordinates()) {
@@ -75,9 +75,9 @@ void CMCActuatorSubsystemRep::setCoordinateTrajectories(FunctionSet *aSet) {
 }
 void CMCActuatorSubsystemRep::setSpeedTrajectories(FunctionSet *aSet) {
     // ERROR CHECKING
-    if(aSet == NULL) {
+    if(aSet == nullptr) {
         string msg = "CMCActuatorSubsystemRep.setSpeedTrajectories:";
-        msg += " ERR- NULL function set.\n";
+        msg += " ERR- nullptr function set.\n";
         throw( Exception(msg,__FILE__,__LINE__) );
     }
     if(aSet->getSize() != _model->getNumSpeeds()) {
@@ -92,8 +92,8 @@ void CMCActuatorSubsystemRep::setSpeedTrajectories(FunctionSet *aSet) {
        : SimTK::Subsystem::Guts( "CMCActuatorSubsystem", "2.0"),
        _holdCoordinatesConstant(false),
        _holdTime(0.0),
-       _qSet(NULL),
-       _uSet(NULL),
+       _qSet(nullptr),
+       _uSet(nullptr),
        _model(model) {
 
        _qCorrections.setSize(_model->getNumCoordinates() );
@@ -142,7 +142,7 @@ void CMCActuatorSubsystemRep::setSpeedTrajectories(FunctionSet *aSet) {
     }
 
     _qSet->evaluate(_qWork,0,t);
-    if(_uSet!=NULL) {
+    if(_uSet!=nullptr) {
         _uSet->evaluate(_uWork,0,t);
     } else {
         _qSet->evaluate(_uWork,1,t);

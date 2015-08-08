@@ -145,7 +145,7 @@ public:
         _excludedForces = aExcluded;
     }
     bool createExternalLoads( const std::string &aExternalLoadsFileName,
-                                     Model& aModel, const Storage *loadKinematics=NULL);
+                                     Model& aModel, const Storage *loadKinematics=nullptr);
 
     virtual bool run() SWIG_DECLARE_EXCEPTION=0;
 

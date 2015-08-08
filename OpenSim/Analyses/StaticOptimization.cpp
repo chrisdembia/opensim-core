@@ -70,7 +70,7 @@ StaticOptimization::StaticOptimization(Model *aModel) :
     _useMusclePhysiology(_useMusclePhysiologyProp.getValueBool()),
     _convergenceCriterion(_convergenceCriterionProp.getValueDbl()),
     _maximumIterations(_maximumIterationsProp.getValueInt()),
-    _modelWorkingCopy(NULL),
+    _modelWorkingCopy(nullptr),
     _numCoordinateActuators(0)
 {
     setNull();
@@ -91,7 +91,7 @@ StaticOptimization::StaticOptimization(const StaticOptimization &aStaticOptimiza
     _useMusclePhysiology(_useMusclePhysiologyProp.getValueBool()),
     _convergenceCriterion(_convergenceCriterionProp.getValueDbl()),
     _maximumIterations(_maximumIterationsProp.getValueInt()),
-    _modelWorkingCopy(NULL),
+    _modelWorkingCopy(nullptr),
     _numCoordinateActuators(aStaticOptimization._numCoordinateActuators)
 {
     setNull();
@@ -139,10 +139,10 @@ void StaticOptimization::setNull()
 
     // OTHER VARIABLES
     _useModelForceSet = true;
-    _activationStorage = NULL;
-    _forceStorage = NULL;
+    _activationStorage = nullptr;
+    _forceStorage = nullptr;
     _ownsForceSet = false;
-    _forceSet = NULL;
+    _forceSet = nullptr;
     _activationExponent=2;
     _useMusclePhysiology=true;
     _numCoordinateActuators = 0;
@@ -241,8 +241,8 @@ allocateStorage()
 void StaticOptimization::
 deleteStorage()
 {
-    delete _activationStorage; _activationStorage = NULL;
-    delete _forceStorage; _forceStorage = NULL;
+    delete _activationStorage; _activationStorage = nullptr;
+    delete _forceStorage; _forceStorage = nullptr;
 }
 
 //=============================================================================
@@ -413,7 +413,7 @@ record(const SimTK::State& s)
             Actuator* act = dynamic_cast<Actuator*>(&_forceSet->get(a));
             if( act ) {
                 Muscle*  mus = dynamic_cast<Muscle*>(&_forceSet->get(a));
-                if(mus==NULL) {
+                if(mus==nullptr) {
                     if(_parameters(a) < (lowerBounds(a)+tolBounds)) {
                         msgWeak += "   ";
                         msgWeak += act->getName();
@@ -541,7 +541,7 @@ begin(SimTK::State& s )
             
             for(int i=0; i<saveForces->getSize(); i++){
                 const Force& f=saveForces->get(i);
-                if ((dynamic_cast<const Muscle*>(&saveForces->get(i)))==NULL)
+                if ((dynamic_cast<const Muscle*>(&saveForces->get(i)))==nullptr)
                     as.append(saveForces->get(i).clone());
             }
         }

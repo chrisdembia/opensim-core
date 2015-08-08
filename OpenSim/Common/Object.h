@@ -403,7 +403,7 @@ public:
                            const std::string& newTypeName);
 
     /** Return a pointer to the default instance of the registered (concrete)
-    %Object whose class name is given, or NULL if the type is not registered.
+    %Object whose class name is given, or nullptr if the type is not registered.
     Note that this refers to the default %Object instance that is stored with
     the %Object class; do not delete it! If you want a copy of this object
     instead, use newInstanceOfType(). The given \a concreteClassName will be
@@ -427,8 +427,8 @@ public:
     template <class T> static bool
     isObjectTypeDerivedFrom(const std::string& concreteClassName) {
         const Object* defObj = getDefaultInstanceOfType(concreteClassName);
-        if (defObj == NULL) return false;
-        return dynamic_cast<const T*>(defObj) != NULL;
+        if (defObj == nullptr) return false;
+        return dynamic_cast<const T*>(defObj) != nullptr;
     }
 
     /** Create a new instance of the concrete %Object type whose class name is 
@@ -1269,7 +1269,7 @@ ObjectProperty<T>::setValueAsObject(const Object& obj, int index) {
     if (index < 0 && this->getMaxListSize()==1)
         index = 0;
     T* newObjT = dynamic_cast<T*>(obj.clone());
-    if (newObjT == NULL) 
+    if (newObjT == nullptr) 
         throw OpenSim::Exception
             ("ObjectProperty<T>::setValueAsObject(): the supplied object"
             + obj.getName() + " was of type " + obj.getConcreteClassName()
@@ -1301,7 +1301,7 @@ getValue(int index) const {
     }
 
     const Property<T>* p = dynamic_cast<const Property<T>*>(this);
-    if (p == NULL)
+    if (p == nullptr)
         throw Exception("AbstractProperty::getValue(): property "
                         + getName() + " is not of type " 
                         + std::string(SimTK::NiceTypeName<T>::name()));
@@ -1320,7 +1320,7 @@ updValue(int index) {
     }
 
     Property<T>* p = dynamic_cast<Property<T>*>(this);
-    if (p == NULL)
+    if (p == nullptr)
         throw Exception("AbstractProperty::updValue(): property "
                         + getName() + " is not of type " 
                         + std::string(SimTK::NiceTypeName<T>::name()));
@@ -1342,7 +1342,7 @@ appendValue(const T& value) {
     }
 
     Property<T>* p = dynamic_cast<Property<T>*>(this);
-    if (p == NULL)
+    if (p == nullptr)
         throw Exception("AbstractProperty::appendValue(): property "
                         + getName() + " is not of type " 
                         + std::string(SimTK::NiceTypeName<T>::name()));

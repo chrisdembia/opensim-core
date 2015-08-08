@@ -66,11 +66,11 @@ MuscleAnalysis::~MuscleAnalysis()
 MuscleAnalysis::MuscleAnalysis(Model *aModel) :
     Analysis(aModel)
 {
-    // NULL
+    // nullptr
     setNull();
 
     // CHECK MODEL
-    if(_model==NULL) return;
+    if(_model==nullptr) return;
 
     // STORAGE
     allocateStorageObjects();
@@ -109,7 +109,7 @@ Analysis(aMuscleAnalysis)
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void MuscleAnalysis::setNull()
 {
@@ -119,27 +119,27 @@ void MuscleAnalysis::setNull()
     constructDescription();
 
     // STORAGE
-    _pennationAngleStore = NULL;
-    _lengthStore = NULL;
-    _fiberLengthStore = NULL;
-    _normalizedFiberLengthStore = NULL;
-    _tendonLengthStore = NULL;
+    _pennationAngleStore = nullptr;
+    _lengthStore = nullptr;
+    _fiberLengthStore = nullptr;
+    _normalizedFiberLengthStore = nullptr;
+    _tendonLengthStore = nullptr;
 
-    _fiberVelocityStore = NULL;
-    _normFiberVelocityStore = NULL;
-    _pennationAngularVelocityStore = NULL;
+    _fiberVelocityStore = nullptr;
+    _normFiberVelocityStore = nullptr;
+    _pennationAngularVelocityStore = nullptr;
 
-    _forceStore = NULL;
-    _fiberForceStore = NULL;
-    _activeFiberForceStore = NULL;
-    _passiveFiberForceStore = NULL;
-    _activeFiberForceAlongTendonStore = NULL;
-    _passiveFiberForceAlongTendonStore = NULL;
+    _forceStore = nullptr;
+    _fiberForceStore = nullptr;
+    _activeFiberForceStore = nullptr;
+    _passiveFiberForceStore = nullptr;
+    _activeFiberForceAlongTendonStore = nullptr;
+    _passiveFiberForceAlongTendonStore = nullptr;
 
-    _fiberActivePowerStore  =   NULL;
-    _fiberPassivePowerStore =   NULL;
-    _tendonPowerStore       =   NULL;
-    _musclePowerStore       =   NULL;
+    _fiberActivePowerStore  =   nullptr;
+    _fiberPassivePowerStore =   nullptr;
+    _tendonPowerStore       =   nullptr;
+    _musclePowerStore       =   nullptr;
 
     // DEFAULT VALUES
     _muscleListProp.getValueStrArray().setSize(1);
@@ -201,7 +201,7 @@ void MuscleAnalysis::constructDescription()
  */
 void MuscleAnalysis::allocateStorageObjects()
 {
-    if(_model==NULL) return;
+    if(_model==nullptr) return;
 
     // CLEAR EXISTING WORK ARRAYS
     _storageList.setMemoryOwner(true);
@@ -378,7 +378,7 @@ void MuscleAnalysis::allocateStorageObjects()
     Storage* store;
     for(int i=0;i<size;i++) {
         store = _storageList[i];
-        if(store==NULL) continue;
+        if(store==nullptr) continue;
         store->setColumnLabels(getColumnLabels());
     }
 }
@@ -484,7 +484,7 @@ setStorageCapacityIncrements(int aIncrement)
     int size = _storageList.getSize();
     for(int i=0;i<size;i++) {
         store = _storageList[i];
-        if(store==NULL) continue;
+        if(store==nullptr) continue;
         store->setCapacityIncrement(aIncrement);
     }
 }
@@ -499,7 +499,7 @@ setStorageCapacityIncrements(int aIncrement)
  */
 int MuscleAnalysis::record(const SimTK::State& s)
 {
-    if(_model==NULL) return -1;
+    if(_model==nullptr) return -1;
     if (!getOn()) return -1;
 
     // MAKE SURE ALL ACTUATION QUANTITIES ARE VALID
@@ -647,8 +647,8 @@ int MuscleAnalysis::record(const SimTK::State& s)
 
     if (_computeMoments){
         // LOOP OVER ACTIVE MOMENT ARM STORAGE OBJECTS
-        Coordinate *q = NULL;
-        Storage *maStore=NULL, *mStore=NULL;
+        Coordinate *q = nullptr;
+        Storage *maStore=nullptr, *mStore=nullptr;
         int nq = _momentArmStorageArray.getSize();
         Array<double> ma(0.0,nm),m(0.0,nm);
 
@@ -698,7 +698,7 @@ int MuscleAnalysis::begin(SimTK::State& s )
     int size = _storageList.getSize();
     for(int i=0;i<size;i++) {
         store = _storageList[i];
-        if(store==NULL) continue;
+        if(store==nullptr) continue;
         store->purge();
     }
 
@@ -707,7 +707,7 @@ int MuscleAnalysis::begin(SimTK::State& s )
     // Make sure cooridnates are not locked
     if (_computeMoments){
     // LOOP OVER ACTIVE MOMENT ARM STORAGE OBJECTS
-        Coordinate *q = NULL;
+        Coordinate *q = nullptr;
         int nq = _momentArmStorageArray.getSize();
         for(int i=0; i<nq; i++) {
             q = _momentArmStorageArray[i]->q;

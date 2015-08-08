@@ -58,7 +58,7 @@ CorrectionController::CorrectionController() :
     _kp(_kpProp.getValueDbl()), 
     _kv(_kvProp.getValueDbl())
 {
-    // NULL
+    // nullptr
     setNull();
 }
 //_____________________________________________________________________________
@@ -97,13 +97,13 @@ CorrectionController(const CorrectionController &aController) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void CorrectionController::
 setNull()
 {
     setupProperties();
-    _model = NULL;  
+    _model = nullptr;  
 }
 /**
  ** Assignment operator.
@@ -269,7 +269,7 @@ void CorrectionController::extendConnectToModel(Model& model)
                   <<  cs.get(i).getName()+"_corrector" << "  added " 
                   << std::endl;
         std::string name = cs.get(i).getName()+"_corrector";
-        CoordinateActuator *actuator = NULL;
+        CoordinateActuator *actuator = nullptr;
         if(_model->getForceSet().contains(name)){
             actuator = (CoordinateActuator *)&_model->getForceSet().get(name);
         }

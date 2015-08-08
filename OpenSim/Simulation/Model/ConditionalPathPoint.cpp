@@ -49,7 +49,7 @@ using namespace OpenSim;
 ConditionalPathPoint::ConditionalPathPoint() :
    _range(_rangeProp.getValueDblArray()),
     _coordinateName(_coordinateNameProp.getValueStr()),
-    _coordinate(NULL)
+    _coordinate(nullptr)
 {
     setNull();
     setupProperties();
@@ -73,7 +73,7 @@ ConditionalPathPoint::ConditionalPathPoint(const ConditionalPathPoint &aPoint) :
    PathPoint(aPoint),
    _range(_rangeProp.getValueDblArray()),
     _coordinateName(_coordinateNameProp.getValueStr()),
-    _coordinate(NULL)
+    _coordinate(nullptr)
 {
     setNull();
     setupProperties();

@@ -219,7 +219,7 @@ contains(const string& aName) const
     for(i=0;i<_array.getSize();i++) {
         if((*_array[i]) == prop) return(_array[i]);
     }
-    return NULL;
+    return nullptr;
 }
 //_____________________________________________________________________________
 /**
@@ -236,7 +236,7 @@ contains(const string& aName)
     for(i=0;i<_array.getSize();i++) {
         if((*_array[i]) == prop) return(_array[i]);
     }
-    return NULL;
+    return nullptr;
 }
 
 

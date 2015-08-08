@@ -148,9 +148,9 @@ const double* XYFunctionInterface::getXValues() const
     switch (_functionType)
     {
         case typeConstant:
-            return NULL;
+            return nullptr;
        case typeStepFunction:
-            return NULL;
+            return nullptr;
        case typePiecewiseConstantFunction:
             return _mStepFunction->getXValues();
        case typePiecewiseLinearFunction:
@@ -173,16 +173,16 @@ const double* XYFunctionInterface::getXValues() const
 
 const double* XYFunctionInterface::getYValues() const
 {
-    const double* yValues = NULL;
-    double* tmp = NULL;
+    const double* yValues = nullptr;
+    double* tmp = nullptr;
     int numPoints = getNumberOfPoints();
 
     switch (_functionType)
     {
         case typeConstant:
-            return NULL;
+            return nullptr;
        case typeStepFunction:
-            return NULL;;
+            return nullptr;;
             break;
        case typePiecewiseConstantFunction:
             yValues = _mStepFunction->getYValues();
@@ -202,7 +202,7 @@ const double* XYFunctionInterface::getYValues() const
            yValues = _gcvSpline->getYValues();
             break;
         default:
-            return NULL;
+            return nullptr;
     }
 
     double* scaledY = new double[numPoints];
@@ -405,7 +405,7 @@ Array<XYPoint>* XYFunctionInterface::renderAsLineSegments(int aIndex)
 {
     if (_functionType == typeUndefined || _functionType == typeConstant ||
         aIndex < 0 || aIndex >= getNumberOfPoints() - 1)
-        return NULL;
+        return nullptr;
 
     Array<XYPoint>* xyPts = new Array<XYPoint>(XYPoint());
     const double* x = getXValues();

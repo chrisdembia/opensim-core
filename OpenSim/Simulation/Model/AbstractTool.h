@@ -170,7 +170,7 @@ public:
     *
     * Copy constructors for all SimulationTools only copy the non-XML variable
     * members of the object; that is, the object's DOMnode and XMLDocument
-    * are not copied but set to NULL.  This is because the object and all its 
+    * are not copied but set to nullptr.  This is because the object and all its 
     * derived classes need to establish the correct connection to the XML 
     * document nodes. Thus the object needs to reconstruct based on the XML 
     * document, not the values of the object's member variables.
@@ -369,7 +369,7 @@ public:
         double aDT=-1.0,const std::string &aExtension=".sto");
 
     bool createExternalLoads( const std::string &aExternalLoadsFileName,
-                                     Model& aModel, const Storage *loadKinematics=NULL);
+                                     Model& aModel, const Storage *loadKinematics=nullptr);
 
     virtual void updateFromXMLNode(SimTK::Xml::Element& aNode, int versionNumber);
     virtual void loadQStorage (const std::string& statesFileName, Storage& rQStore) const;

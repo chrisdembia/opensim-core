@@ -92,7 +92,7 @@ VectorFunction::VectorFunction(const VectorFunction &aVectorFunction) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to NULL values.
+ * Set all member variables to nullptr values.
  */
 void VectorFunction::
 setNull()

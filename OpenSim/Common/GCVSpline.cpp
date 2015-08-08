@@ -105,8 +105,8 @@ GCVSpline(int aDegree,int aN,const double *aX,const double *aF,
     }
 
     // CHECK DATA
-    if((aX==NULL)||(aF==NULL)) {
-        printf("GCVSpline: ERROR- NULL arrays for data points encountered.\n");
+    if((aX==nullptr)||(aF==nullptr)) {
+        printf("GCVSpline: ERROR- nullptr arrays for data points encountered.\n");
         return;
     }
 
@@ -158,7 +158,7 @@ GCVSpline(const GCVSpline &aSpline) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to their NULL or default values.
+ * Set all member variables to their nullptr or default values.
  */
 void GCVSpline::
 setNull()
@@ -267,13 +267,13 @@ void GCVSpline::updateFromXMLNode(SimTK::Xml::Element& aNode, int versionNumber)
 void GCVSpline::
 init(Function* aFunction)
 {
-    if (aFunction == NULL)
+    if (aFunction == nullptr)
         return;
 
     int degree = 5;
     int order = degree + 1;
     GCVSpline* gcv = dynamic_cast<GCVSpline*>(aFunction);
-    if (gcv != NULL) {
+    if (gcv != nullptr) {
         setEqual(*gcv);
     } else {
         XYFunctionInterface xyFunc(aFunction);
@@ -286,7 +286,7 @@ init(Function* aFunction)
             for (int i=0; i<order; i++)
                 x[i] = i;
             Constant* cons = dynamic_cast<Constant*>(aFunction);
-            if (cons != NULL) {
+            if (cons != nullptr) {
                 for (int i=0; i<order; i++)
                     y[i] = cons->calcValue(SimTK::Vector(0));
             } else {

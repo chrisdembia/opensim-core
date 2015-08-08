@@ -46,7 +46,7 @@ InverseKinematicsSolver::InverseKinematicsSolver(const Model &model, MarkersRefe
     setAuthors("Ajay Seth");
 
     // Base AssemblySolver takes care of creating the underlying _assembler and setting up CoordinateReferences;
-    _markerAssemblyCondition = NULL;
+    _markerAssemblyCondition = nullptr;
 
     // Do some consistency checking for markers
     const MarkerSet &modelMarkerSet = getModel().getMarkerSet();

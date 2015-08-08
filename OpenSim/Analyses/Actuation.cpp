@@ -53,7 +53,7 @@ using namespace std;
 */
 Actuation::~Actuation()
 {
-    if (_fsp != NULL) { delete[] _fsp;  _fsp = NULL; }
+    if (_fsp != nullptr) { delete[] _fsp;  _fsp = nullptr; }
     deleteStorage();
 }
 //_____________________________________________________________________________
@@ -66,7 +66,7 @@ Actuation::~Actuation()
 Actuation::Actuation(Model *aModel) :
 Analysis(aModel)
 {
-    // NULL
+    // nullptr
     setNull();
 
     // DESCRIPTION
@@ -118,7 +118,7 @@ Analysis(aActuation)
 //=============================================================================
 //_____________________________________________________________________________
 /**
-* Set NULL values for all member variables.
+* Set nullptr values for all member variables.
 */
 void Actuation::
 setNull()
@@ -127,10 +127,10 @@ setNull()
     setName("Actuation");
 
     _na = 0;
-    _fsp = NULL;
-    _forceStore = NULL;
-    _speedStore = NULL;
-    _powerStore = NULL;
+    _fsp = nullptr;
+    _forceStore = nullptr;
+    _speedStore = nullptr;
+    _powerStore = nullptr;
 }
 //--------------------------------------------------------------------------
 // OPERATORS
@@ -141,14 +141,14 @@ Actuation& Actuation::operator=(const Actuation &aActuation)
     Analysis::operator=(aActuation);
 
     // Deallocate _fsp if already allocated
-    if (_fsp != NULL) { delete[] _fsp;  _fsp = NULL; }
+    if (_fsp != nullptr) { delete[] _fsp;  _fsp = nullptr; }
 
     // STORAGE
     deleteStorage();
     allocateStorage();
 
     // CHECK MODEL
-    if (_model != NULL) {
+    if (_model != nullptr) {
         _na = getNumEnabledActuators();
         _fsp = new double[_na];
         constructColumnLabels();
@@ -287,9 +287,9 @@ constructColumnLabels()
 void Actuation::
 deleteStorage()
 {
-    if (_forceStore != NULL) { delete _forceStore;  _forceStore = NULL; }
-    if (_speedStore != NULL) { delete _speedStore;  _speedStore = NULL; }
-    if (_powerStore != NULL) { delete _powerStore;  _powerStore = NULL; }
+    if (_forceStore != nullptr) { delete _forceStore;  _forceStore = nullptr; }
+    if (_speedStore != nullptr) { delete _speedStore;  _speedStore = nullptr; }
+    if (_powerStore != nullptr) { delete _powerStore;  _powerStore = nullptr; }
 }
 
 
@@ -365,7 +365,7 @@ setStorageCapacityIncrements(int aIncrement)
 int Actuation::
 record(const SimTK::State& s)
 {
-    if (_model == NULL) return(-1);
+    if (_model == nullptr) return(-1);
 
     // MAKE SURE ALL ACTUATION QUANTITIES ARE VALID
     _model->getMultibodySystem().realize(s, SimTK::Stage::Dynamics);
@@ -426,15 +426,15 @@ begin(SimTK::State& s)
     int na = _model->getActuators().getSize();
     _na = na;
     // WORK ARRAY
-    if (_fsp != NULL) delete[] _fsp;
+    if (_fsp != nullptr) delete[] _fsp;
     _fsp = new double[_na];
 
     // RESET STORAGE
-    if (_forceStore == NULL)
+    if (_forceStore == nullptr)
         _forceStore = new Storage();
-    if (_speedStore == NULL)
+    if (_speedStore == nullptr)
         _speedStore = new Storage();
-    if (_powerStore == NULL)
+    if (_powerStore == nullptr)
         _powerStore = new Storage();
 
     // RESET STORAGE

@@ -136,8 +136,8 @@ void CoupledBushingForce::copyData(const CoupledBushingForce &aForce)
 void CoupledBushingForce::setNull()
 {
     setAuthors("Ajay Seth");
-    _b1 = NULL;
-    _b2 = NULL;
+    _b1 = nullptr;
+    _b2 = nullptr;
     setupProperties();
 }
 

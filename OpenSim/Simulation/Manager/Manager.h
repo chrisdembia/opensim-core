@@ -161,12 +161,12 @@ public:
    const Array<double>& getDTArray();
    void setDTArray(int aN,const double aDT[],double aTI=0.0);
    double getDTArrayDT(int aStep);
-   void printDTArray(const char *aFileName=NULL);
+   void printDTArray(const char *aFileName=nullptr);
    // TIME VECTOR
    const Array<double>& getTimeArray();
    double getTimeArrayTime(int aStep);
    int getTimeArrayStep(double aTime);
-   void printTimeArray(const char *aFileName=NULL);
+   void printTimeArray(const char *aFileName=nullptr);
    void resetTimeAndDTArrays(double aTime);
 
    double getNextTimeArrayTime(double aTime);

@@ -391,7 +391,7 @@ bool CMCTool::run()
     cout<<"Running tool "<<getName()<<".\n";
 
     // CHECK FOR A MODEL
-    if(_model==NULL) {
+    if(_model==nullptr) {
         string msg = "ERROR- A model has not been set.";
         cout<<endl<<msg<<endl;
         throw(Exception(msg,__FILE__,__LINE__));
@@ -442,7 +442,7 @@ bool CMCTool::run()
         return false;
     }
 
-    Storage *desiredPointsStore=NULL;
+    Storage *desiredPointsStore=nullptr;
     bool desiredPointsFlag = false;
     if(_desiredPointsFileName=="") {
         cout<<"\n\nWARN- a desired points file was not specified.\n\n";
@@ -452,7 +452,7 @@ bool CMCTool::run()
         desiredPointsFlag = true;
     }
 
-    Storage *desiredKinStore=NULL;
+    Storage *desiredKinStore=nullptr;
     bool desiredKinFlag = false;
     if(_desiredKinematicsFileName=="") {
         cout<<"\n\nWARN- a desired kinematics file was not specified.\n\n";
@@ -548,8 +548,8 @@ bool CMCTool::run()
     // Form complete storage objects for the q's and u's
     // This means filling in unspecified generalized coordinates and
     // setting constrained coordinates to their valid values.
-    Storage *qStore=NULL;
-    Storage *uStore=NULL;
+    Storage *qStore=nullptr;
+    Storage *uStore=nullptr;
 
     if(desiredKinFlag) {
         _model->getMultibodySystem().realize(s, Stage::Time );
@@ -561,32 +561,32 @@ bool CMCTool::run()
     }
 
     // Spline
-    GCVSplineSet *posSet=NULL;
+    GCVSplineSet *posSet=nullptr;
     if(desiredPointsFlag) {
         cout<<"\nConstructing function set for tracking desired points...\n\n";
         posSet = new GCVSplineSet(5,desiredPointsStore);
 
         Storage *velStore=posSet->constructStorage(1);
         GCVSplineSet velSet(5,velStore);
-        delete velStore; velStore=NULL;
+        delete velStore; velStore=nullptr;
 
         // Print acc for debugging
         Storage *accStore=posSet->constructStorage(2);
         accStore->print("desiredPoints_splinefit_accelerations.sto");
-        delete accStore; accStore=NULL; 
+        delete accStore; accStore=nullptr; 
     }
 
-    GCVSplineSet *qSet=NULL;
-    GCVSplineSet *uSet=NULL;
-    GCVSplineSet *uDotSet=NULL;
+    GCVSplineSet *qSet=nullptr;
+    GCVSplineSet *uSet=nullptr;
+    GCVSplineSet *uDotSet=nullptr;
 
     if(desiredKinFlag) {
         cout<<"\nConstructing function set for tracking desired kinematics...\n\n";
         qSet = new GCVSplineSet(5,qStore);
-        delete qStore; qStore = NULL;
+        delete qStore; qStore = nullptr;
 
         uSet = new GCVSplineSet(5,uStore);
-        delete uStore; uStore=NULL;
+        delete uStore; uStore=nullptr;
 
         Storage *dudtStore = uSet->constructStorage(1);
         uDotSet = new GCVSplineSet(5,dudtStore);
@@ -595,13 +595,13 @@ bool CMCTool::run()
         if (_verbose) {
             dudtStore->print("desiredKinematics_splinefit_accelerations.sto");
         }
-        delete dudtStore; dudtStore=NULL;
+        delete dudtStore; dudtStore=nullptr;
     }
 
     // ANALYSES
     addNecessaryAnalyses();
 
-    GCVSplineSet *qAndPosSet=NULL;
+    GCVSplineSet *qAndPosSet=nullptr;
     qAndPosSet = new GCVSplineSet();
     if(desiredPointsFlag) {
         int nps=posSet->getSize();
@@ -629,7 +629,7 @@ bool CMCTool::run()
     taskSet.setFunctionsForAcceleration(*uDotSet);
 
     // CONSTRAINTS ON THE CONTROLS
-    ControlSet *controlConstraints = NULL;
+    ControlSet *controlConstraints = nullptr;
     if(_constraintsFileName!="") {
         controlConstraints = new ControlSet(_constraintsFileName);
     }
@@ -682,7 +682,7 @@ bool CMCTool::run()
     controller->updTaskSet().setFunctions(*qAndPosSet);
 
     // Optimization target
-    OptimizationTarget *target = NULL;
+    OptimizationTarget *target = nullptr;
     if(_useFastTarget) {
         target = new ActuatorForceTargetFast(s, na,controller);
     } else {
@@ -902,7 +902,7 @@ addNecessaryAnalyses()
     int stepInterval = 1;
     AnalysisSet& as = _model->updAnalysisSet();
     // Add Actuation if necessary
-    Actuation *act = NULL;
+    Actuation *act = nullptr;
     for(int i=0; i<as.getSize(); i++) 
         if(as.get(i).getConcreteClassName() == "Actuation") { act = (Actuation*)&as.get(i); break; }
     if(!act) {
@@ -915,7 +915,7 @@ addNecessaryAnalyses()
     
     // Add Kinematics if necessary
     // NOTE: also checks getPrintResultFiles() so that the Kinematics analysis added from the GUI does not count
-    Kinematics *kin = NULL;
+    Kinematics *kin = nullptr;
     for(int i=0; i<as.getSize(); i++) 
         if(as.get(i).getConcreteClassName() == "Kinematics" && as.get(i).getPrintResultFiles()) { kin = (Kinematics*)&as.get(i); break; }
     if(!kin) {
@@ -967,7 +967,7 @@ initializeControlSetUsingConstraints(
     }
 
     // FOR RESIDUAL CONTROLS, SET TO USE LINEAR INTERPOLATION
-    if(aRRAControlSet!=NULL) {
+    if(aRRAControlSet!=nullptr) {
         OPENSIM_FUNCTION_NOT_IMPLEMENTED();
         // Need to make sure code below still works after changes to controls/control constraints
 #if 0
@@ -980,7 +980,7 @@ initializeControlSetUsingConstraints(
             } catch(const Exception& x) {
                 continue;
             }
-            if(control==NULL) continue;
+            if(control==nullptr) continue;
             control->setUseSteps(false);
             cout<<"Set "<<rraControlName<<" to use linear interpolation.\n";
         }
@@ -1002,25 +1002,25 @@ initializeControlSetUsingConstraints(
 ControlSet* CMCTool::
 constructRRAControlSet(ControlSet *aControlConstraints)
 {
-    if(_rraControlsFileName=="") return(NULL);
+    if(_rraControlsFileName=="") return(nullptr);
     
     OPENSIM_FUNCTION_NOT_IMPLEMENTED();
     // Need to make sure code below still works after changes to controls/control constraints
 #if 0
     int i;
-    ControlLinear *controlConstraint=NULL;
+    ControlLinear *controlConstraint=nullptr;
     string rraControlName,cmcControlName;
-    ControlLinear *rraControl=NULL;
+    ControlLinear *rraControl=nullptr;
 
     // LOAD RRA CONTROLS
-    ControlSet *rraControlSet=NULL;
+    ControlSet *rraControlSet=nullptr;
     rraControlSet = new ControlSet(_rraControlsFileName);
 
     // Loop through controls looking for corresponding actuators
     int nrra = rraControlSet->getSize();
     for(i=0;i<nrra;i++) {
         rraControl = (ControlLinear*)&rraControlSet->get(i);
-        if(rraControl==NULL) continue;
+        if(rraControl==nullptr) continue;
         rraControlName = rraControl->getName();
 
         // Does control exist in the model?
@@ -1033,7 +1033,7 @@ constructRRAControlSet(ControlSet *aControlConstraints)
         if(index>=0) {
 
             // Create control constraint set if necessary
-            if(aControlConstraints==NULL) {
+            if(aControlConstraints==nullptr) {
                 aControlConstraints = new ControlSet();
                 aControlConstraints->setName("ControlConstraints");
             }
@@ -1041,7 +1041,7 @@ constructRRAControlSet(ControlSet *aControlConstraints)
             // Get control constraint
             controlConstraint = (ControlLinear*)&&aControlConstraints->get(rraControlName);
             // Control constraint already exists, so clear the existing nodes
-            if(controlConstraint!=NULL) {
+            if(controlConstraint!=nullptr) {
                     controlConstraint->getNodeArray().setSize(0);
             // Make a new control constraint
             } else {
@@ -1069,7 +1069,7 @@ constructRRAControlSet(ControlSet *aControlConstraints)
     }
 
     // Print out modified control constraints
-    //if(aControlConstraints!=NULL) aControlConstraints->print("cmc_aControlConstraints_check.xml");
+    //if(aControlConstraints!=nullptr) aControlConstraints->print("cmc_aControlConstraints_check.xml");
 
     return(rraControlSet);
 #endif

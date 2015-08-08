@@ -86,7 +86,7 @@ SMC_Joint::SMC_Joint(const SMC_Joint &aTask) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void SMC_Joint::
 setNull()
@@ -169,15 +169,15 @@ computeDesiredAccelerations( const SimTK::State& state, double aT)
     _aDes = SimTK::NaN;
 
     // CHECK
-    if(_model==NULL) return;
-    if(_pTrk[0]==NULL) return;
+    if(_model==nullptr) return;
+    if(_pTrk[0]==nullptr) return;
 
     // COMPUTE ERRORS
     computeErrors(state, aT);
 
     // Term 1: Experimental Acceleration
     double a;
-    if(_aTrk[0]==NULL) {
+    if(_aTrk[0]==nullptr) {
         std::vector<int> derivComponents(2);
         derivComponents[0]=0;
         derivComponents[1]=0;

@@ -280,7 +280,7 @@ int main()
         const Set<Muscle>& muscleSet = osimModel.getMuscles();
         ActivationFiberLengthMuscle* muscle1 = dynamic_cast<ActivationFiberLengthMuscle*>( &muscleSet.get(0) );
         ActivationFiberLengthMuscle* muscle2 = dynamic_cast<ActivationFiberLengthMuscle*>( &muscleSet.get(1) );
-        if((muscle1 == NULL) || (muscle2 == NULL)){
+        if((muscle1 == nullptr) || (muscle2 == nullptr)){
             throw OpenSim::Exception("ControllerExample: muscle1 or muscle2 is not an ActivationFiberLengthMuscle and example cannot proceed.");
         }
         muscle1->setActivation(si, 0.01 ); // muscle1 activation

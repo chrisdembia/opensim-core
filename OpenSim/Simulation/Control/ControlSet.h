@@ -115,17 +115,17 @@ public:
     void getParameterList(double aTLower,double aTUpper,Array<int> &rList,
             bool aForModelControls=true) const;
     void getParameterMins(Array<double> &rMins,
-            const Array<int> *aList=NULL) const;
+            const Array<int> *aList=nullptr) const;
     void getParameterMaxs(Array<double> &rMaxs,
-            const Array<int> *aList=NULL) const;
+            const Array<int> *aList=nullptr) const;
     void getParameterValues(double rP[],
-            const Array<int> *aList=NULL) const;
+            const Array<int> *aList=nullptr) const;
     void getParameterValues(Array<double> &rP,
-            const Array<int> *aList=NULL) const;
+            const Array<int> *aList=nullptr) const;
     void setParameterValues(const double aP[],
-            const Array<int> *aList=NULL);
+            const Array<int> *aList=nullptr);
     void setParameterValues(const Array<double> &aP,
-            const Array<int> *aList=NULL);
+            const Array<int> *aList=nullptr);
 
     //--------------------------------------------------------------------------
     // UTILITY

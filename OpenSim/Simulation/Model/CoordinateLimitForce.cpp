@@ -80,8 +80,8 @@ CoordinateLimitForce::CoordinateLimitForce
 void CoordinateLimitForce::setNull()
 {
     setAuthors("Ajay Seth");
-    _upStep = NULL;
-    _loStep = NULL;
+    _upStep = nullptr;
+    _loStep = nullptr;
     
     // Scaling for coordinate values in m or degrees (rotational) 
     _w = SimTK::NaN;
@@ -96,7 +96,7 @@ void CoordinateLimitForce::setNull()
     // Damping in internal (SI) units of N/(m/s) or Nm/(rad/s)
     _damp = SimTK::NaN;
 
-    _coord = NULL;
+    _coord = nullptr;
 }
 //_____________________________________________________________________________
 // Allocate and initialize properties.

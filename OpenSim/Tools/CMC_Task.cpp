@@ -104,7 +104,7 @@ CMC_Task::CMC_Task(const CMC_Task &aTask) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void CMC_Task::
 setNull()
@@ -112,7 +112,7 @@ setNull()
     setName(DEFAULT_NAME);
     setupProperties();
 
-    _model = NULL;
+    _model = nullptr;
     _wrtBodyName = "";
     _expressBodyName = "";
     //_on = true;
@@ -131,8 +131,8 @@ setNull()
     _vErr[0] = _vErr[1] = _vErr[2] = 0.0;
     _aDes[0] = _aDes[1] = _aDes[2] = 0.0;
     _a[0] = _a[1] = _a[2] = 0.0;
-    _j = NULL;
-    _m = NULL;
+    _j = nullptr;
+    _m = nullptr;
 }
 //_____________________________________________________________________________
 /**
@@ -231,17 +231,17 @@ copyData(const CMC_Task &aTask)
     const Function *func;
     for(i=0;i<3;i++) {
         // position
-        if(_pTrk[i]!=NULL) {delete _pTrk[i];  _pTrk[i]=NULL; }
+        if(_pTrk[i]!=nullptr) {delete _pTrk[i];  _pTrk[i]=nullptr; }
         func = aTask.getTaskFunction(i);
-        if(func!=NULL) _pTrk[i] = func->clone();
+        if(func!=nullptr) _pTrk[i] = func->clone();
         // velocity
-        if(_vTrk[i]!=NULL) {delete _vTrk[i];  _vTrk[i]=NULL; }
+        if(_vTrk[i]!=nullptr) {delete _vTrk[i];  _vTrk[i]=nullptr; }
         func = aTask.getTaskFunctionForVelocity(i);
-        if(func!=NULL) _vTrk[i] = func->clone();
+        if(func!=nullptr) _vTrk[i] = func->clone();
         // acceleration
-        if(_aTrk[i]!=NULL) {delete _aTrk[i];  _aTrk[i]=NULL; }
+        if(_aTrk[i]!=nullptr) {delete _aTrk[i];  _aTrk[i]=nullptr; }
         func = aTask.getTaskFunctionForAcceleration(i);
-        if(func!=NULL) _aTrk[i] = func->clone();
+        if(func!=nullptr) _aTrk[i] = func->clone();
     }
 }
 
@@ -583,8 +583,8 @@ getDirection_2(SimTK::Vec3& rR) const
 OpenSim::Function* CMC_Task::
 getTaskFunction(int aWhich) const
 {
-    if(aWhich<0) return(NULL);
-    if(aWhich>2) return(NULL);
+    if(aWhich<0) return(nullptr);
+    if(aWhich>2) return(nullptr);
     return(_pTrk[aWhich]);
 }
 
@@ -604,13 +604,13 @@ getTaskFunction(int aWhich) const
 void CMC_Task::
 setTaskFunctionsForVelocity(OpenSim::Function *aF0, OpenSim::Function *aF1, OpenSim::Function *aF2)
 {
-    if(_vTrk[0]!=NULL) { delete _vTrk[0];  _vTrk[0]=NULL; }
-    if(_vTrk[1]!=NULL) { delete _vTrk[1];  _vTrk[1]=NULL; }
-    if(_vTrk[2]!=NULL) { delete _vTrk[2];  _vTrk[2]=NULL; }
+    if(_vTrk[0]!=nullptr) { delete _vTrk[0];  _vTrk[0]=nullptr; }
+    if(_vTrk[1]!=nullptr) { delete _vTrk[1];  _vTrk[1]=nullptr; }
+    if(_vTrk[2]!=nullptr) { delete _vTrk[2];  _vTrk[2]=nullptr; }
 
-    if(aF0!=NULL) _vTrk[0] = aF0->clone();
-    if(aF1!=NULL) _vTrk[1] = aF1->clone();
-    if(aF2!=NULL) _vTrk[2] = aF2->clone();
+    if(aF0!=nullptr) _vTrk[0] = aF0->clone();
+    if(aF1!=nullptr) _vTrk[1] = aF1->clone();
+    if(aF2!=nullptr) _vTrk[2] = aF2->clone();
 }
 //_____________________________________________________________________________
 /**
@@ -622,8 +622,8 @@ setTaskFunctionsForVelocity(OpenSim::Function *aF0, OpenSim::Function *aF1, Open
 OpenSim::Function* CMC_Task::
 getTaskFunctionForVelocity(int aWhich) const
 {
-    if(aWhich<0) return(NULL);
-    if(aWhich>2) return(NULL);
+    if(aWhich<0) return(nullptr);
+    if(aWhich>2) return(nullptr);
     return(_vTrk[aWhich]);
 }
 
@@ -644,13 +644,13 @@ void CMC_Task::
 setTaskFunctionsForAcceleration(
     OpenSim::Function *aF0, OpenSim::Function *aF1, OpenSim::Function *aF2)
 {
-    if(_aTrk[0]!=NULL) { delete _aTrk[0];  _aTrk[0]=NULL; }
-    if(_aTrk[1]!=NULL) { delete _aTrk[1];  _aTrk[1]=NULL; }
-    if(_aTrk[2]!=NULL) { delete _aTrk[2];  _aTrk[2]=NULL; }
+    if(_aTrk[0]!=nullptr) { delete _aTrk[0];  _aTrk[0]=nullptr; }
+    if(_aTrk[1]!=nullptr) { delete _aTrk[1];  _aTrk[1]=nullptr; }
+    if(_aTrk[2]!=nullptr) { delete _aTrk[2];  _aTrk[2]=nullptr; }
 
-    if(aF0!=NULL) _aTrk[0] = aF0->clone();
-    if(aF1!=NULL) _aTrk[1] = aF1->clone();
-    if(aF2!=NULL) _aTrk[2] = aF2->clone();
+    if(aF0!=nullptr) _aTrk[0] = aF0->clone();
+    if(aF1!=nullptr) _aTrk[1] = aF1->clone();
+    if(aF2!=nullptr) _aTrk[2] = aF2->clone();
 }
 //_____________________________________________________________________________
 /**
@@ -662,8 +662,8 @@ setTaskFunctionsForAcceleration(
 OpenSim::Function* CMC_Task::
 getTaskFunctionForAcceleration(int aWhich) const
 {
-    if(aWhich<0) return(NULL);
-    if(aWhich>2) return(NULL);
+    if(aWhich<0) return(nullptr);
+    if(aWhich>2) return(nullptr);
     return(_aTrk[aWhich]);
 }
 
@@ -708,7 +708,7 @@ getTaskVelocity(int aWhich,double aT) const
     }
 
     double velocity;
-    if(_vTrk[aWhich]!=NULL) {
+    if(_vTrk[aWhich]!=nullptr) {
         velocity = _vTrk[aWhich]->calcValue(SimTK::Vector(1,aT));
     } else {
         std::vector<int> derivComponents(1);
@@ -735,7 +735,7 @@ getTaskAcceleration(int aWhich,double aT) const
     }
 
     double acceleration;
-    if(_aTrk[aWhich]!=NULL) {
+    if(_aTrk[aWhich]!=nullptr) {
         acceleration = _aTrk[aWhich]->calcValue(SimTK::Vector(1,aT));
     } else {
         std::vector<int> derivComponents(2);

@@ -51,7 +51,7 @@ Analysis::Analysis(Model *aModel):
     _endTime(_endTimeProp.getValueDbl()),
     _stepInterval(_stepIntervalProp.getValueInt()),
     _inDegrees(_inDegreesProp.getValueBool()),
-    _statesStore(NULL)
+    _statesStore(nullptr)
 {
     
     _model = aModel;
@@ -94,7 +94,7 @@ Analysis::Analysis(const string &aFileName, bool aUpdateFromXMLNode):
     _on(_onProp.getValueBool()),
     _startTime(_startTimeProp.getValueDbl()),
     _endTime(_endTimeProp.getValueDbl()),
-    _statesStore(NULL)
+    _statesStore(nullptr)
 {
     setNull();
     SimTK::Xml::Element e = updDocument()->getRootDataElement(); 
@@ -106,7 +106,7 @@ Analysis::Analysis(const string &aFileName, bool aUpdateFromXMLNode):
  *
  * Copy constructors for all Analysis's only copy the non-XML variable
  * members of the object; that is, the object's DOMnode and XMLDocument
- * are not copied but set to NULL.  The reason for this is that for the
+ * are not copied but set to nullptr.  The reason for this is that for the
  * object and all its derived classes to establish the correct connection
  * to the XML document nodes, the the object would need to reconstruct based
  * on the XML document not the values of the object's member variables.
@@ -143,7 +143,7 @@ Analysis::Analysis(const Analysis &aAnalysis):
    _endTime(_endTimeProp.getValueDbl()),
    _stepInterval(_stepIntervalProp.getValueInt()),
    _inDegrees(_inDegreesProp.getValueBool()),
-   _statesStore(NULL)
+   _statesStore(nullptr)
 {
     setNull();
     *this = aAnalysis;
@@ -159,7 +159,7 @@ setNull()
     setupProperties();
     _stepInterval = 1;
     _on = true;
-    _model = NULL;
+    _model = nullptr;
     _startTime = -SimTK::Infinity;
     _endTime = SimTK::Infinity;
     _inDegrees=true;

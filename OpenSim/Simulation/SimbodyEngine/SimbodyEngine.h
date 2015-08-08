@@ -154,9 +154,9 @@ public:
     void formEulerTransform(const SimTK::State& s, const PhysicalFrame &aBody, double *rE) const;
 
     //unimplemented virtual void formMassMatrix(double *rI) {};
-    //unimplemented virtual void formJacobianTranslation(const PhysicalFrame &aBody, const SimTK::Vec3& aPoint, double *rJ, const PhysicalFrame *aRefBody=NULL) const {};
-    //unimplemented virtual void formJacobianOrientation(const PhysicalFrame &aBody, double *rJ0, const PhysicalFrame *aRefBody=NULL) const {};
-    //unimplemented virtual void formJacobianEuler(const PhysicalFrame &aBody, double *rJE, const PhysicalFrame *aRefBody=NULL) const {};
+    //unimplemented virtual void formJacobianTranslation(const PhysicalFrame &aBody, const SimTK::Vec3& aPoint, double *rJ, const PhysicalFrame *aRefBody=nullptr) const {};
+    //unimplemented virtual void formJacobianOrientation(const PhysicalFrame &aBody, double *rJ0, const PhysicalFrame *aRefBody=nullptr) const {};
+    //unimplemented virtual void formJacobianEuler(const PhysicalFrame &aBody, double *rJE, const PhysicalFrame *aRefBody=nullptr) const {};
 
     //--------------------------------------------------------------------------
     // UTILITY

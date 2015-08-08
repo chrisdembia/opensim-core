@@ -121,7 +121,7 @@ void MarkerPlacer::copyData(const MarkerPlacer &aMarkerPlacer)
     _outputMotionFileName = aMarkerPlacer._outputMotionFileName;
     _maxMarkerMovement = aMarkerPlacer._maxMarkerMovement;
     _printResultFiles = aMarkerPlacer._printResultFiles;
-    _outputStorage = NULL;
+    _outputStorage = nullptr;
 }
 
 //_____________________________________________________________________________
@@ -135,7 +135,7 @@ void MarkerPlacer::setNull()
 
     _printResultFiles = true;
     _moveModelMarkers = true;
-    _outputStorage = NULL;
+    _outputStorage = nullptr;
 }
 
 //_____________________________________________________________________________
@@ -265,7 +265,7 @@ bool MarkerPlacer::processModel(Model* aModel, const string& aPathToSubject)
 
     // Load the coordinate data
     // create CoordinateReferences for Coordinate Tasks
-    FunctionSet *coordFunctions = NULL;
+    FunctionSet *coordFunctions = nullptr;
     bool haveCoordinateFile = false;
     if(_coordinateFileName != "" && _coordinateFileName != "Unassigned"){
         Storage coordinateValues(aPathToSubject + _coordinateFileName);
@@ -278,7 +278,7 @@ bool MarkerPlacer::processModel(Model* aModel, const string& aPathToSubject)
     for(int i=0; i< _ikTaskSet.getSize(); i++){
         IKCoordinateTask *coordTask = dynamic_cast<IKCoordinateTask *>(&_ikTaskSet[i]);
         if (coordTask && coordTask->getApply()){
-            CoordinateReference *coordRef = NULL;
+            CoordinateReference *coordRef = nullptr;
             if(coordTask->getValueType() == IKCoordinateTask::FromFile){
                 index = coordFunctions->getIndex(coordTask->getName(), index);
                 if(index >= 0){
@@ -295,7 +295,7 @@ bool MarkerPlacer::processModel(Model* aModel, const string& aPathToSubject)
                 coordRef = new CoordinateReference(coordTask->getName(), reference);
             }
 
-            if(coordRef == NULL)
+            if(coordRef == nullptr)
                 throw Exception("MarkerPlacer: value for coordinate "+coordTask->getName()+" not found.");
 
             // We have a valid coordinate reference so now set its weight according to the task
@@ -337,7 +337,7 @@ bool MarkerPlacer::processModel(Model* aModel, const string& aPathToSubject)
      */
     if(_moveModelMarkers) moveModelMarkersToPose(s, *aModel, staticPose);
 
-    if (_outputStorage!= NULL){
+    if (_outputStorage!= nullptr){
         delete _outputStorage;
     }
     // Make a storage file containing the solved states and markers for display in GUI.

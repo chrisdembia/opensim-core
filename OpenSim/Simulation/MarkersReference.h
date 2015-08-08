@@ -126,7 +126,7 @@ public:
     // Convenience load markers from a file
     MarkersReference(const std::string filename, Units modelUnits=Units(Units::Meters));
 
-    MarkersReference(MarkerData& aMarkerData, const Set<MarkerWeight>* aMarkerWeightSet=NULL);
+    MarkersReference(MarkerData& aMarkerData, const Set<MarkerWeight>* aMarkerWeightSet=nullptr);
 
     MarkersReference& operator=(const MarkersReference &aRef) {Reference_<SimTK::Vec3>::operator=(aRef); copyData(aRef); return(*this); };
     

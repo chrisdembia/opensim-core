@@ -78,9 +78,9 @@ InducedAccelerations::InducedAccelerations(Model *aModel) :
     _bodySet(*new BodySet()),
     _coordSet(*new CoordinateSet())
 {
-    // make sure members point to NULL if not valid. 
+    // make sure members point to nullptr if not valid. 
     setNull();
-    if(_model==NULL) return;
+    if(_model==nullptr) return;
 
     // DESCRIPTION
     constructDescription();
@@ -183,7 +183,7 @@ void InducedAccelerations::setNull()
     _coordSet.setMemoryOwner(false);
     _bodySet.setMemoryOwner(false);
 
-    _storeConstraintReactions = NULL;
+    _storeConstraintReactions = nullptr;
 }
 //_____________________________________________________________________________
 /*

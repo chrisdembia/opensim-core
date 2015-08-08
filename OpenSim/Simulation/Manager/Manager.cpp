@@ -56,7 +56,7 @@ Manager::~Manager()
 {
     // DESTRUCTORS
     delete _stateStore;
-    _integ = NULL;
+    _integ = nullptr;
 }
 
 
@@ -71,9 +71,9 @@ Manager::~Manager()
  */
 Manager::Manager(Model& model):
        _model(&model),
-       _integ(NULL),               
+       _integ(nullptr),               
        _controllerSet(&model.updControllerSet() ),
-       _stateStore(NULL),
+       _stateStore(nullptr),
        _performAnalyses(true),
        _writeToStorage(true)
 {
@@ -115,7 +115,7 @@ Manager::Manager()
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to their NULL values.
+ * Set all member variables to their nullptr values.
  */
 void Manager::
 setNull()
@@ -186,7 +186,7 @@ void Manager::
 setSessionName(const string &aSessionName)
 {
     _sessionName = aSessionName;
-    if(_integ==NULL) return;
+    if(_integ==nullptr) return;
 
     // STORAGE NAMES
     string name;
@@ -340,7 +340,7 @@ void Manager::
 setDTArray(int aN,const double aDT[],double aTI)
 {
     if(aN<=0) return;
-    if(aDT==NULL) return;
+    if(aDT==nullptr) return;
 
     _dtArray.setSize(0);
     _dtArray.ensureCapacity(aN);
@@ -380,11 +380,11 @@ printDTArray(const char *aFileName)
 {
     // OPEN FILE
     FILE *fp;
-    if(aFileName==NULL) {
+    if(aFileName==nullptr) {
         fp = stdout;
     } else {
         fp = fopen(aFileName,"w");
-        if(fp==NULL) {
+        if(fp==nullptr) {
             printf("Manager.printDTArray: unable to print to file %s.\n",
                 aFileName);
             fp = stdout;
@@ -475,11 +475,11 @@ printTimeArray(const char *aFileName)
 {
     // OPEN FILE
     FILE *fp;
-    if(aFileName==NULL) {
+    if(aFileName==nullptr) {
         fp = stdout;
     } else {
         fp = fopen(aFileName,"w");
-        if(fp==NULL) {
+        if(fp==nullptr) {
             printf("Manager.printTimeArray: unable to print to file %s.\n",
                 aFileName);
             fp = stdout;
@@ -525,7 +525,7 @@ resetTimeAndDTArrays(double aTime)
 void Manager::
 setModel(Model& aModel)
 {
-    if(_model!=NULL){
+    if(_model!=nullptr){
         // May need to issue a warning here that model was already set to avoid a leak.
     }
     _model = &aModel;
@@ -661,7 +661,7 @@ setStateStorage(Storage& aStorage)
 Storage& Manager::
 getStateStorage() const 
 {
-    if( _stateStore  == NULL )
+    if( _stateStore  == nullptr )
         throw Exception("Manager::getStateStorage(): Storage is not set");
     return(*_stateStore);
 }
@@ -672,7 +672,7 @@ getStateStorage() const
 bool Manager::
 hasStateStorage() const
 {
-    return (_stateStore != NULL);
+    return (_stateStore != nullptr);
 }
 
 //-----------------------------------------------------------------------------
@@ -761,7 +761,7 @@ bool Manager::doIntegration(SimTK::State& s, int step, double dtFirst ) {
     // We need to be at a valid stage to initialize the controls, but only when 
     // we are integrating the complete model system, not the CMC system. This 
     // is very ugly and a cleaner solution is required- aseth
-    if(_system == NULL)
+    if(_system == nullptr)
         sys.realize(s, SimTK::Stage::Velocity); // this is multibody system 
     initialize(s, dt);  
 

@@ -63,14 +63,14 @@ Kinematics::~Kinematics()
 Kinematics::Kinematics(Model *aModel) :
     Analysis(aModel)
 {
-    // NULL
+    // nullptr
     setNull();
 
     // DESCRIPTION
     constructDescription();
 
     // CHECK MODEL
-    if(aModel==NULL) return;
+    if(aModel==nullptr) return;
     setModel(*aModel);
 
 }
@@ -109,7 +109,7 @@ setNull()
     constructProperties();
 
     setName("Kinematics");
-    _pStore=_vStore=_aStore=NULL;
+    _pStore=_vStore=_aStore=nullptr;
 
     // Let the list own the storages so we don't have to manually delete them
     _storageList.setMemoryOwner(true);
@@ -171,9 +171,9 @@ void Kinematics::allocateStorage()
 void Kinematics::
 deleteStorage()
 {
-    if(_aStore!=NULL) { delete _aStore;  _aStore=NULL; }
-    if(_vStore!=NULL) { delete _vStore;  _vStore=NULL; }
-    if(_pStore!=NULL) { delete _pStore;  _pStore=NULL; }
+    if(_aStore!=nullptr) { delete _aStore;  _aStore=nullptr; }
+    if(_vStore!=nullptr) { delete _vStore;  _vStore=nullptr; }
+    if(_pStore!=nullptr) { delete _pStore;  _pStore=nullptr; }
 }
 
 
@@ -247,7 +247,7 @@ constructDescription()
 void Kinematics::
 constructColumnLabels()
 {
-    // CHECK FOR NULL
+    // CHECK FOR nullptr
     if (!_model || _model->getNumSpeeds() == 0)
     {
         setColumnLabels(Array<string>());

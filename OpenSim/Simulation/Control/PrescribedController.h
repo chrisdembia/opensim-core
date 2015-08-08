@@ -127,7 +127,7 @@ private:
     Function* createFunctionFromData(const std::string& name,
         const Array<double>& time, const Array<double>& data);
 
-    // This method sets all member variables to default (e.g., NULL) values.
+    // This method sets all member variables to default (e.g., nullptr) values.
     void setNull();
 
 //=============================================================================

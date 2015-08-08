@@ -118,7 +118,7 @@ AbstractTool::AbstractTool(const string &aFileName, bool aUpdateFromXMLNode):
  *
  * Copy constructors for all SimulationTools only copy the non-XML variable
  * members of the object; that is, the object's DOMnode and XMLDocument
- * are not copied but set to NULL.  The reason for this is that for the
+ * are not copied but set to nullptr.  The reason for this is that for the
  * object and all its derived classes to establish the correct connection
  * to the XML document nodes, the the object would need to reconstruct based
  * on the XML document not the values of the object's member variables.
@@ -183,7 +183,7 @@ setNull()
 {
     setupProperties();
 
-    _model = NULL;
+    _model = nullptr;
     _modelFile = "";
     _replaceForceSet = true;
     _resultsDir = "./";
@@ -355,7 +355,7 @@ setModel(Model& aModel)
 Model& AbstractTool::
 getModel() const
 {
-    if (_model==NULL)
+    if (_model==nullptr)
         throw Exception("AbstractTool::getModel(): Model has not been set");
     return(*_model);
 }
@@ -395,7 +395,7 @@ loadModel(const string &aToolSetupFileName, ForceSet *rOriginalForceSet )
 
         try {
             model = new Model(_modelFile);
-            if (rOriginalForceSet!=NULL)
+            if (rOriginalForceSet!=nullptr)
                 *rOriginalForceSet = model->getForceSet();
         } catch(...) { // Properly restore current directory if an exception is thrown
             IO::chDir(saveWorkingDirectory);
@@ -584,7 +584,7 @@ bool AbstractTool::createExternalLoads( const string& aExternalLoadsFileName, Mo
 
     string loadKinematicsFileName = _externalLoads.getExternalLoadsModelKinematicsFileName();
     
-    const Storage *loadKinematicsForPointTransformation = NULL;
+    const Storage *loadKinematicsForPointTransformation = nullptr;
     
     //If the the Tool is already loading the storage allow it to pass it in for use rather than reloading and processing
     if(loadKinematics && loadKinematics->getName() == loadKinematicsFileName){
@@ -592,7 +592,7 @@ bool AbstractTool::createExternalLoads( const string& aExternalLoadsFileName, Mo
     }
     else{
         IO::TrimLeadingWhitespace(loadKinematicsFileName);
-        Storage *temp = NULL;
+        Storage *temp = nullptr;
         // fine if there are no kinematics as long as it was not assigned
         if(!(loadKinematicsFileName == "") && !(loadKinematicsFileName == "Unassigned")){
             temp = new Storage(loadKinematicsFileName);
@@ -616,8 +616,8 @@ bool AbstractTool::createExternalLoads( const string& aExternalLoadsFileName, Mo
         SimTK::State& s = aModel.initSystem();
         
         // Form complete storage so that the kinematics match the state labels/ordering
-        Storage *qStore=NULL;
-        Storage *uStore=NULL;
+        Storage *qStore=nullptr;
+        Storage *uStore=nullptr;
         aModel.getSimbodyEngine().formCompleteStorages(s, *loadKinematicsForPointTransformation,qStore,uStore);
         // qStore should be in radians
         if (qStore->isInDegrees()){

@@ -190,7 +190,7 @@ append(Force *aForce)
 {
     bool success = ModelComponentSet<Force>::adoptAndAppend(aForce);
 
-    if((success)&&(&updModel()!=NULL)) {
+    if((success)&&(&updModel()!=nullptr)) {
         updateActuators();
         updateMuscles();
     }
@@ -214,7 +214,7 @@ append(Force &aForce)
     bool success = ModelComponentSet<Force>::cloneAndAppend(aForce);
 
 
-    if ((success) && (&getModel() != NULL)) {
+    if ((success) && (&getModel() != nullptr)) {
         updateActuators();
         updateMuscles();
     }
@@ -321,7 +321,7 @@ void ForceSet::updateActuators()
     for (int i = 0; i < getSize(); ++i)
     {
         Actuator* act = dynamic_cast<Actuator*>(&get(i));
-        if (act != NULL)  _actuators.adoptAndAppend(act);
+        if (act != nullptr)  _actuators.adoptAndAppend(act);
     }
 }
 
@@ -349,7 +349,7 @@ void ForceSet::updateMuscles()
     for (int i = 0; i < getSize(); ++i)
     {
         Muscle* m = dynamic_cast<Muscle*>(&get(i));
-        if (m != NULL)  _muscles.adoptAndAppend(m);
+        if (m != nullptr)  _muscles.adoptAndAppend(m);
     }
 }
 

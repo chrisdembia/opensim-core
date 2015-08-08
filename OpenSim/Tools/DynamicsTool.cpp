@@ -106,7 +106,7 @@ DynamicsTool::DynamicsTool(const DynamicsTool &aTool) : Tool(aTool),
 void DynamicsTool::setNull()
 {
     setupProperties();
-    _model = NULL;
+    _model = nullptr;
 }
 //_____________________________________________________________________________
 /**
@@ -249,7 +249,7 @@ bool DynamicsTool::createExternalLoads( const string& aExternalLoadsFileName, Mo
 
     string loadKinematicsFileName = _externalLoads.getExternalLoadsModelKinematicsFileName();
     
-    const Storage *loadKinematicsForPointTransformation = NULL;
+    const Storage *loadKinematicsForPointTransformation = nullptr;
     
     //If the the Tool is already loading the storage allow it to pass it in for use rather than reloading and processing
     if(loadKinematics && loadKinematics->getName() == loadKinematicsFileName){
@@ -257,7 +257,7 @@ bool DynamicsTool::createExternalLoads( const string& aExternalLoadsFileName, Mo
     }
     else{
         IO::TrimLeadingWhitespace(loadKinematicsFileName);
-        Storage *temp = NULL;
+        Storage *temp = nullptr;
         // fine if there are no kinematics as long as it was not assigned
         if(!(loadKinematicsFileName == "") && !(loadKinematicsFileName == "Unassigned")){
             temp = new Storage(loadKinematicsFileName);
@@ -281,8 +281,8 @@ bool DynamicsTool::createExternalLoads( const string& aExternalLoadsFileName, Mo
         SimTK::State& s = aModel.initSystem();
         
         // Form complete storage so that the kinematics match the state labels/ordering
-        Storage *qStore=NULL;
-        Storage *uStore=NULL;
+        Storage *qStore=nullptr;
+        Storage *uStore=nullptr;
         aModel.getSimbodyEngine().formCompleteStorages(s, *loadKinematicsForPointTransformation,qStore,uStore);
         // qStore should be in radians
         if (qStore->isInDegrees()){

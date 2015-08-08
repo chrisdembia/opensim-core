@@ -83,7 +83,7 @@ public:
  */
 virtual ~Array()
 {
-    if(_array!=NULL) { delete[] _array;  _array = NULL; }
+    if(_array!=nullptr) { delete[] _array;  _array = nullptr; }
 }
 //_____________________________________________________________________________
 /**
@@ -137,7 +137,7 @@ void setNull()
     _size = 0;
     _capacityIncrement = -1;
     _capacity = 0;
-    _array = NULL;
+    _array = nullptr;
 }
 
 
@@ -200,7 +200,7 @@ Array<T>& operator=(const Array<T> &aArray)
     _defaultValue = aArray._defaultValue;
 
     // ARRAY
-    if(_array!=NULL) delete[] _array;
+    if(_array!=nullptr) delete[] _array;
     _array = new T[_capacity];
     for(int i=0;i<_capacity;i++) _array[i] = aArray._array[i];
 
@@ -341,16 +341,16 @@ bool ensureCapacity(int aCapacity)
     // ALLOCATE THE NEW ARRAY
     int i;
     T *newArray = new T[aCapacity];
-    if(newArray==NULL) {
+    if(newArray==nullptr) {
         std::cout << "Array.ensureCapacity: ERR- failed to increase capacity.\n";
         return(false);
     }
 
     // COPY CURRENT ARRAY
-    if(_array!=NULL) {
+    if(_array!=nullptr) {
         for(i=0;i<_size;i++) newArray[i] = _array[i];
         for(i=_size;i<aCapacity;i++) newArray[i] = _defaultValue;
-        delete []_array;  _array=NULL;
+        delete []_array;  _array=nullptr;
     } else {
         for(i=0;i<aCapacity;i++) newArray[i] = _defaultValue;
     }
@@ -367,7 +367,7 @@ bool ensureCapacity(int aCapacity)
  * Trim the capacity of this array so that it is one larger than the size
  * of this array.  This is useful for reducing the amount of memory used
  * by this array.  This capacity is kept at one larger than the size so
- * that, for example, an array of characters can be treated as a NULL
+ * that, for example, an array of characters can be treated as a nullptr
  * terminated string.
  */
 void trim()
@@ -380,7 +380,7 @@ void trim()
     // ALLOCATE TEMPORARY ARRAY
     int i;
     T *array = new T[newCapacity];
-    if(array==NULL) {
+    if(array==nullptr) {
         std::cout << "Array.trim: ERR- unable to allocate temporary array.\n";
         return;
     }
@@ -549,7 +549,7 @@ int append(const Array<T> &aArray)
 int append(int aSize,const T *aArray)
 {
     if(aSize<0) return(_size);
-    if(aArray==NULL) return(_size);
+    if(aArray==nullptr) return(_size);
 
     // LOOP THROUGH THE ELEMENTS
     int i;

@@ -487,7 +487,7 @@ Component& Component::updComponent(const std::string& name) const
 const Component* Component::findComponent(const std::string& name,
     const StateVariable** rsv) const
 {
-    const Component* found = NULL;
+    const Component* found = nullptr;
     std::string::size_type front = name.find("/");
     std::string subname = name;
     std::string remainder = "";

@@ -82,7 +82,7 @@ ControlLinearNode::~ControlLinearNode()
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL value for the member variables.
+ * Set nullptr value for the member variables.
  */
 void ControlLinearNode::
 setNull()

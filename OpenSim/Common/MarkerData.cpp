@@ -647,7 +647,7 @@ void MarkerData::averageFrames(double aThreshold, double aStartTime, double aEnd
         return;
 
     int startIndex = 0, endIndex = 1;
-    double *minX = NULL, *minY = NULL, *minZ = NULL, *maxX = NULL, *maxY = NULL, *maxZ = NULL;
+    double *minX = nullptr, *minY = nullptr, *minZ = nullptr, *maxX = nullptr, *maxY = nullptr, *maxZ = nullptr;
 
     findFrameRange(aStartTime, aEndTime, startIndex, endIndex);
     MarkerFrame *averagedFrame = new MarkerFrame(*_frames[startIndex]);

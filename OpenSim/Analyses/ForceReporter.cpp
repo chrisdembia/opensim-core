@@ -56,7 +56,7 @@ ForceReporter::ForceReporter(Model *aModel) :   Analysis(aModel),
     _forceStore(1000,"ModelForces"),
     _includeConstraintForces(_includeConstraintForcesProp.getValueBool())
 {
-    // NULL
+    // nullptr
     setNull();
 
     // DESCRIPTION
@@ -113,7 +113,7 @@ ForceReporter::ForceReporter(const ForceReporter &aForceReporter):
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void ForceReporter::setNull()
 {
@@ -245,7 +245,7 @@ void ForceReporter::constructColumnLabels(const SimTK::State& s)
  */
 void ForceReporter::deleteStorage()
 {
-    //if(_forceStore!=NULL) { delete _forceStore;  _forceStore=NULL; }
+    //if(_forceStore!=nullptr) { delete _forceStore;  _forceStore=nullptr; }
 }
 
 //=============================================================================
@@ -257,7 +257,7 @@ void ForceReporter::deleteStorage()
  */
 int ForceReporter::record(const SimTK::State& s)
 {
-    if(_model==NULL) return(-1);
+    if(_model==nullptr) return(-1);
 
     // MAKE SURE ALL ForceReporter QUANTITIES ARE VALID
     _model->getMultibodySystem().realize(s, SimTK::Stage::Dynamics );

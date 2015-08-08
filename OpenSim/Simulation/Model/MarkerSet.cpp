@@ -167,7 +167,7 @@ Marker* MarkerSet::addMarker(const string& aName, const SimTK::Vec3& aOffset, Op
 {
     // If a marker by this name already exists, do nothing.
     if (contains(aName))
-        return NULL;
+        return nullptr;
 
     // Create a marker and add it to the set.
     Marker* m = new Marker();

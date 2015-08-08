@@ -70,7 +70,7 @@ void addLoadToStorage(Storage &forceStore, SimTK::Vec3 force, SimTK::Vec3 point,
 
     dataRow.setStates(0, 9, data);
 
-    Storage *forces = NULL;
+    Storage *forces = nullptr;
     Storage tempStore;
 
     if(nLoads == 0)

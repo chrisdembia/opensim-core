@@ -175,7 +175,7 @@ void simulateMuscle(
         double testTolerance,
         bool printResults)
 {
-    string prescribed = (motion == NULL) ? "." : " with Prescribed Motion.";
+    string prescribed = (motion == nullptr) ? "." : " with Prescribed Motion.";
 
     cout << "\n******************************************************" << endl;
     cout << "Test " << aMuscModel.getConcreteClassName()
@@ -233,7 +233,7 @@ void simulateMuscle(
     jointCoordinateSet[0].setRangeMin(0);
         jointCoordinateSet[0].setRangeMax(1.0);
 
-    if (motion != NULL){
+    if (motion != nullptr){
         jointCoordinateSet[0].setPrescribedFunction(*motion);
         jointCoordinateSet[0].setDefaultIsPrescribed(true);
     }
@@ -277,7 +277,7 @@ void simulateMuscle(
     // Create a prescribed controller that simply 
     //applies controls as function of time
     PrescribedController * muscleController = new PrescribedController();
-    if (control != NULL){
+    if (control != nullptr){
         muscleController->setActuators(model.updActuators());
         // Set the indiviudal muscle control functions 
         //for the prescribed muscle controller

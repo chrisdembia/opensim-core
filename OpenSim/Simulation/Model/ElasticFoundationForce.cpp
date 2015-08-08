@@ -72,7 +72,7 @@ void ElasticFoundationForce::extendAddToSystem(SimTK::MultibodySystem& system) c
             }
             ContactGeometry& geom = _model->updContactGeometrySet().get(params.getGeometry()[j]);
             contacts.addBody(set, geom.getBody().getMobilizedBody(), geom.createSimTKContactGeometry(), geom.getTransform());
-            if (dynamic_cast<ContactMesh*>(&geom) != NULL)
+            if (dynamic_cast<ContactMesh*>(&geom) != nullptr)
                 force.setBodyParameters(SimTK::ContactSurfaceIndex(contacts.getNumBodies(set)-1), 
                     params.getStiffness(), params.getDissipation(),
                     params.getStaticFriction(), params.getDynamicFriction(), params.getViscousFriction());

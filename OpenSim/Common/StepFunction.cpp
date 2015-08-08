@@ -102,7 +102,7 @@ StepFunction::StepFunction(const StepFunction &aStepFunction) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to their NULL or default values.
+ * Set all member variables to their nullptr or default values.
  */
 void StepFunction::setNull()
 {

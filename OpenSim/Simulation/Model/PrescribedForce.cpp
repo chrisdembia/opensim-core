@@ -409,7 +409,7 @@ OpenSim::Array<double> PrescribedForce::getRecordValues(const SimTK::State& stat
 void PrescribedForce::setNull()
 {
     setAuthors("Peter Eastman, Matt DeMers");
-    _body = NULL;
+    _body = nullptr;
 }
 
 void PrescribedForce::extendConnectToModel(Model& model)

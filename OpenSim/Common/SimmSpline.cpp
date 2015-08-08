@@ -86,9 +86,9 @@ SimmSpline::SimmSpline(int aN,const double *aX,const double *aY,
     }
 
     // CHECK DATA
-    if((aX==NULL)||(aY==NULL))
+    if((aX==nullptr)||(aY==nullptr))
     {
-        printf("SimmSpline: ERROR- NULL arrays for data points encountered.\n");
+        printf("SimmSpline: ERROR- nullptr arrays for data points encountered.\n");
         return;
     }
 
@@ -124,7 +124,7 @@ SimmSpline::SimmSpline(const SimmSpline &aSpline) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to their NULL or default values.
+ * Set all member variables to their nullptr or default values.
  */
 void SimmSpline::setNull()
 {
@@ -181,11 +181,11 @@ void SimmSpline::setEqual(const SimmSpline &aSpline)
  */
 void SimmSpline::init(Function* aFunction)
 {
-    if (aFunction == NULL)
+    if (aFunction == nullptr)
         return;
 
     SimmSpline* ncs = dynamic_cast<SimmSpline*>(aFunction);
-    if (ncs != NULL) {
+    if (ncs != nullptr) {
         setEqual(*ncs);
     } else {
         XYFunctionInterface xyFunc(aFunction);
@@ -195,7 +195,7 @@ void SimmSpline::init(Function* aFunction)
             // If it is not, make up two data points.
             double x[2] = {0.0, 1.0}, y[2];
             Constant* cons = dynamic_cast<Constant*>(aFunction);
-            if (cons != NULL) {
+            if (cons != nullptr) {
                 y[0] = y[1] = cons->calcValue(SimTK::Vector(0));
             } else {
                 y[0] = y[1] = 1.0;

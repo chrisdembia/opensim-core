@@ -185,10 +185,10 @@ public:
     // TASK FUNCTIONS
     Function* getTaskFunction(int aWhich) const;
     void setTaskFunctionsForVelocity(Function *aF0,
-        Function *aF1=NULL,Function *aF2=NULL);
+        Function *aF1=nullptr,Function *aF2=nullptr);
     Function* getTaskFunctionForVelocity(int aWhich) const;
     void setTaskFunctionsForAcceleration(Function *aF0,
-        Function *aF1=NULL,Function *aF2=NULL);
+        Function *aF1=nullptr,Function *aF2=nullptr);
     Function* getTaskFunctionForAcceleration(int aWhich) const;
     // TASK KINEMATICS
     double getTaskPosition(int aWhich,double aT) const;

@@ -73,7 +73,7 @@ ControlConstant::ControlConstant(const ControlConstant &aControl) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set the member data to their NULL values.
+ * Set the member data to their nullptr values.
  */
 void ControlConstant::
 setNull()

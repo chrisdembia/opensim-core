@@ -63,7 +63,7 @@ TrackingController::~TrackingController()
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void TrackingController::setNull()
 {

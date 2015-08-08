@@ -297,8 +297,8 @@ objectiveFunc(const Vector &aF, const bool new_coefficients, Real& rP) const
     // If tracking states, add in errors from them squared
     for(int t=0; t<tset.getSize(); t++){
         TrackingTask& ttask = tset.get(t);
-        StateTrackingTask* stateTask=NULL;
-        if ((stateTask=dynamic_cast<StateTrackingTask*>(&ttask))!= NULL){
+        StateTrackingTask* stateTask=nullptr;
+        if ((stateTask=dynamic_cast<StateTrackingTask*>(&ttask))!= nullptr){
             double err = stateTask->getTaskError(_saveState);
             rP+= (err * err);
 

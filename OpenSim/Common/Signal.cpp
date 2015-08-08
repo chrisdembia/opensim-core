@@ -164,8 +164,8 @@ double *sigr;
     // ERROR CHECK
     if(T==0) return(-1);
     if(N==0) return(-1);
-    if(sig==NULL) return(-1);
-    if(sigf==NULL) return(-1);
+    if(sig==nullptr) return(-1);
+    if(sigf==nullptr) return(-1);
 
     // CHECK THAT THE CUTOFF FREQUENCY IS LESS THAN HALF THE SAMPLE FREQUENCE
     fs = 1 / T;
@@ -198,7 +198,7 @@ double *sigr;
 
     // ALLOCATE MEMORY FOR sigr[]
     sigr = new double[N];
-    if(sigr==NULL) {
+    if(sigr==nullptr) {
         printf("\nSignal.lowpassIIR: ERROR- Not enough memory.\n");
         return(-1);
     }
@@ -232,7 +232,7 @@ double *sigr;
     for (i=0;i<N;i++)  sigf[i] = sigr[i];
 
     // CLEANUP
-    if(sigr!=NULL)  delete sigr;
+    if(sigr!=nullptr)  delete sigr;
 
   return(0);
 }
@@ -271,7 +271,7 @@ LowpassFIR(int M,double T,double f,int N,double *sig,double *sigf)
 
     // PAD THE SIGNAL SO FILTERING CAN BEGIN AT THE FIRST DATA POINT
     double *s = Pad(M,N,sig);
-    if(s==NULL) return(-1);
+    if(s==nullptr) return(-1);
 
     // CALCULATE THE ANGULAR CUTOFF FREQUENCY
     w = 2.0*SimTK_PI*f;
@@ -355,7 +355,7 @@ double *s;
     // ALLOCATE MEMORY FOR s
     size = N + M + M;
     s = (double *) calloc(size,sizeof(double));
-    if (s == NULL) {
+    if (s == nullptr) {
         printf("\n\nlowpass() -> Not enough memory to process your sampled data.");
         return(-1);
     }
@@ -386,7 +386,7 @@ double *s;
     }
 
     // CLEANUP
-    if(s!=NULL) delete s;
+    if(s!=nullptr) delete s;
 
   return(0);
 }
@@ -403,27 +403,27 @@ double *s;
  *  @param aPad Size of the pad-- number of points to prepend and append.
  *  @param aN Number of data points in the signal.
  *  @param aSignal Signal to be padded.
- *  @return Padded signal.  The size is aN + 2*aPad.  NULL is returned
+ *  @return Padded signal.  The size is aN + 2*aPad.  nullptr is returned
  * on an error.  The caller is responsible for deleting the returned
  * array.
  */
 double* Signal::
 Pad(int aPad,int aN,const double aSignal[])
 {
-    if(aPad<=0) return(NULL);
+    if(aPad<=0) return(nullptr);
 
     // COMPUTE FINAL SIZE
     int size = aN + 2*aPad;
     if(aPad>aN) {
         cout<<"\nSignal.Pad(double[]): ERROR- requested pad size ("<<aPad<<") is greater than the number of points ("<<aN<<").\n";
-        return(NULL);
+        return(nullptr);
     }
 
     // ALLOCATE
     double *s = new double[size];
-    if (s == NULL) {
+    if (s == nullptr) {
         printf("\n\nSignal.Pad: Failed to allocate memory.\n");
-        return(NULL);
+        return(nullptr);
     }
 
     // PREPEND

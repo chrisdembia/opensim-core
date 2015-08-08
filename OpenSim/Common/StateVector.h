@@ -70,7 +70,7 @@ private:
 // METHODS
 //=============================================================================
 public:
-    StateVector(double aT=0.0,int aN=0,const double *aData=NULL);
+    StateVector(double aT=0.0,int aN=0,const double *aData=nullptr);
     StateVector(const StateVector &aVector);
     virtual ~StateVector();
 

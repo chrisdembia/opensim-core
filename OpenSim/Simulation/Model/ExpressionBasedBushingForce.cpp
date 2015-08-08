@@ -116,8 +116,8 @@ ExpressionBasedBushingForce::ExpressionBasedBushingForce(const string&    body1N
 void ExpressionBasedBushingForce::setNull()
 {
     setAuthors("Matt DeMers");
-    _b1 = NULL;
-    _b2 = NULL;
+    _b1 = nullptr;
+    _b2 = nullptr;
     // no data members
 
 }

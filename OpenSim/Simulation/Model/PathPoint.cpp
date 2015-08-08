@@ -114,8 +114,8 @@ void PathPoint::init(const PathPoint& aPoint)
  */
 void PathPoint::setNull()
 {
-    _body = NULL;
-    _path = NULL;
+    _body = nullptr;
+    _path = nullptr;
 }
 
 //_____________________________________________________________________________
@@ -272,9 +272,9 @@ void PathPoint::getVelocity(const SimTK::State& s, SimTK::Vec3& aVelocity)
 
 PathPoint* PathPoint::makePathPointOfType(PathPoint* aPoint, const string& aNewTypeName)
 {
-    PathPoint* newPoint = NULL;
+    PathPoint* newPoint = nullptr;
 
-    if (aPoint != NULL) {
+    if (aPoint != nullptr) {
         Object* newObject = Object::newInstanceOfType(aNewTypeName);
         if (newObject) {
             newPoint = dynamic_cast<PathPoint*>(newObject);

@@ -129,7 +129,7 @@ void MovingPathPoint::init(const PathPoint& aPoint)
         double x[2], y[2];
 
         // See if you can find a coordinate to use as the default for this point.
-        const Coordinate* coord = NULL;
+        const Coordinate* coord = nullptr;
         GeometryPath* path = aPoint.getPath();
         if (path) {
             ModelComponent* comp = dynamic_cast<ModelComponent*>(path->getOwner());
@@ -177,9 +177,9 @@ void MovingPathPoint::init(const PathPoint& aPoint)
  */
 void MovingPathPoint::setNull()
 {
-    _xCoordinate = NULL;
-    _yCoordinate = NULL;
-    _zCoordinate = NULL;
+    _xCoordinate = nullptr;
+    _yCoordinate = nullptr;
+    _zCoordinate = nullptr;
 }
 
 //_____________________________________________________________________________
@@ -338,7 +338,7 @@ connectToModelAndPath(const Model& aModel, GeometryPath& aPath)
         throw Exception(msg, __FILE__, __LINE__);       
     }
 
-    if(_xCoordinate == NULL){
+    if(_xCoordinate == nullptr){
         string msg = "MovingPathPoint:: Coordinate '";
         msg += _xCoordinateName + "' governing the moving point was not found.";
         throw Exception(msg, __FILE__, __LINE__);   

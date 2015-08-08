@@ -551,7 +551,7 @@ getParameterList(double aTLower,double aTUpper,Array<int> &rList,
  * Get the minimum values allowed for the control parameters.
  *
  * @param rMins Array of minimum allowed values.
- * @param aList List of controls.  If NULL, the values for all parameters for
+ * @param aList List of controls.  If nullptr, the values for all parameters for
  * all controls in the control set are gotten.  Otherwise, the parameters for
  * the controls in the list are gotten.
  */
@@ -566,7 +566,7 @@ getParameterMins(Array<double> &rMins,const Array<int> *aList) const
     int size = getSize(false);
 
     // NO LIST
-    if(aList==NULL) {
+    if(aList==nullptr) {
         for(i=0;i<size;i++) {
             Control& control = get(i);
             for(p=0;p<control.getNumParameters();p++) {
@@ -602,7 +602,7 @@ getParameterMins(Array<double> &rMins,const Array<int> *aList) const
  * Get the maximum values allowed for the control parameters.
  *
  * @param rMaxs Array of maximum allowed values.
- * @param aList List of controls.  If NULL, the values for all parameters for
+ * @param aList List of controls.  If nullptr, the values for all parameters for
  * all controls in the control set are gotten.  Otherwise, the parameters for
  * the controls in the list are gotten.
  */
@@ -617,7 +617,7 @@ getParameterMaxs(Array<double> &rMaxs,const Array<int> *aList) const
     int size = getSize(false);
 
     // NO LIST
-    if(aList==NULL) {
+    if(aList==nullptr) {
         for(i=0;i<size;i++) {
             Control& control = get(i);
             for(p=0;p<control.getNumParameters();p++) {
@@ -658,7 +658,7 @@ getParameterMaxs(Array<double> &rMaxs,const Array<int> *aList) const
  *
  * @param rP Array of parameters values, the length of which should
  * equal the total number of parameters or the size of aList.
- * @param aList List of controls.  If NULL, the values for all parameters for
+ * @param aList List of controls.  If nullptr, the values for all parameters for
  * all controls in the control set are gotten.  Otherwise, the parameters for
  * the controls in the list are gotten.
  */
@@ -670,7 +670,7 @@ getParameterValues(double rP[],const Array<int> *aList) const
     int size = getSize(false);
 
     // NO LIST
-    if(aList==NULL) {
+    if(aList==nullptr) {
         int n;
         for(n=i=0;i<size;i++) {
             Control& control = get(i);
@@ -708,7 +708,7 @@ getParameterValues(double rP[],const Array<int> *aList) const
  *
  * @param rP Array of parameters values, the length of which should
  * equal the total number of parameters or the size of aList.
- * @param aList List of controls.  If NULL, the values for all parameters for
+ * @param aList List of controls.  If nullptr, the values for all parameters for
  * all controls in the control set are gotten.  Otherwise, the parameters for
  * the controls in the list are gotten.
  */
@@ -722,7 +722,7 @@ getParameterValues(Array<double> &rP,const Array<int> *aList) const
     int size = getSize(false);
 
     // NO LIST
-    if(aList==NULL) {
+    if(aList==nullptr) {
         for(i=0;i<size;i++) {
             Control& control = get(i);
             for(p=0;p<control.getNumParameters();p++) {
@@ -758,9 +758,9 @@ getParameterValues(Array<double> &rP,const Array<int> *aList) const
  * Set the values of the control parameters.
  *
  * @param aP Array of control parameters, the length of which should be
- * either the total number of parameters (if aList=NULL) or the same
+ * either the total number of parameters (if aList=nullptr) or the same
  * length as aList.
- * @param aList List of controls.  If NULL, the values for all parameters for
+ * @param aList List of controls.  If nullptr, the values for all parameters for
  * all controls in the control set are gotten.  Otherwise, the parameters for
  * the controls in the list are gotten.
  */
@@ -772,7 +772,7 @@ setParameterValues(const double *aP,const Array<int> *aList)
     int size = getSize(false);
 
     // NO LIST
-    if(aList==NULL) {
+    if(aList==nullptr) {
         for(sp=i=0;i<size;i++) {
             Control& control = get(i);
             for(p=0;p<control.getNumParameters();p++,sp++) {
@@ -810,9 +810,9 @@ setParameterValues(const double *aP,const Array<int> *aList)
  * Set the values of the control parameters.
  *
  * @param aP Array of control parameters, the length of which should be
- * either the total number of parameters (if aList=NULL) or the same
+ * either the total number of parameters (if aList=nullptr) or the same
  * length as aList.
- * @param aList List of controls.  If NULL, the values for all parameters for
+ * @param aList List of controls.  If nullptr, the values for all parameters for
  * all controls in the control set are gotten.  Otherwise, the parameters for
  * the controls in the list are gotten.
  */
@@ -824,7 +824,7 @@ setParameterValues(const Array<double> &aP,const Array<int> *aList)
     int size = getSize(false);
 
     // NO LIST
-    if(aList==NULL) {
+    if(aList==nullptr) {
         for(sp=i=0;i<size;i++) {
             Control& control = get(i);
             for(p=0;p<control.getNumParameters();p++,sp++) {
@@ -1057,13 +1057,13 @@ ControlSet::ExtractControl(const Storage& storage,int index)
     std::string colName = columnLabels.get(index+1);
 
     // TIME
-    double *times = NULL;
+    double *times = nullptr;
     int nTimes = storage.getTimeColumn(times);
 
     // VALUE
     int nValues = nTimes;
     int rValue;
-    double *values = NULL;
+    double *values = nullptr;
     rValue = storage.getDataColumn(index,values);
 
     // CONSTRUCT LINEAR CONTROL NODE

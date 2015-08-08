@@ -131,7 +131,7 @@ private:
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to NULL values.
+ * Set all member variables to nullptr values.
  */
 void
 setNull()
@@ -211,7 +211,7 @@ Set<T>& operator=(const Set<T> &aSet)
  *
  * @param aIndex Index of the desired element (0 <= aIndex < _size).
  * @return Reference to the array element.
- * @throws Exception if a NULL pointer is encountered.
+ * @throws Exception if a nullptr pointer is encountered.
  * @see get().
  */
 T& operator[](int aIndex) const
@@ -313,7 +313,7 @@ bool computeNewCapacity(int aMinCapacity,int &rNewCapacity)
 //_____________________________________________________________________________
 /**
  * Ensure that the capacity of this array is at least the specified amount.
- * The newly allocated array elements are initialized to NULL.
+ * The newly allocated array elements are initialized to nullptr.
  *
  * @param aCapacity Desired capacity.
  * @return true if the capacity was successfully obtained, false otherwise.
@@ -327,7 +327,7 @@ bool ensureCapacity(int aCapacity)
  * Trim the capacity of this array so that it is one larger than the size
  * of this array.  This is useful for reducing the amount of memory used
  * by this array.  This capacity is kept at one larger than the size so
- * that, for example, an array of characters can be treated as a NULL
+ * that, for example, an array of characters can be treated as a nullptr
  * terminated string.
  */
 void trim()
@@ -605,7 +605,7 @@ virtual bool set(int aIndex, T *aObject, bool preserveGroups = false)
 {
     if (!preserveGroups)
         return( _objects.set(aIndex,aObject) );
-    if (aObject != NULL && aIndex >= 0 && aIndex < _objects.getSize())
+    if (aObject != nullptr && aIndex >= 0 && aIndex < _objects.getSize())
     {
         for (int i = 0; i < _objectGroups.getSize(); i++)
             _objectGroups.get(i)->replace(_objects.get(aIndex), aObject);
@@ -647,7 +647,7 @@ virtual bool set(int aIndex, const T& aObject, bool preserveGroups = false)
  * @param aIndex Index of the desired array element.
  * @return Reference to the array element.
  * @throws Exception if (aIndex<0)||(aIndex>=_size) or if the pointer
- * at aIndex is NULL.
+ * at aIndex is nullptr.
  * @see operator[].
  */
 virtual T& get(int aIndex) const
@@ -698,8 +698,8 @@ virtual void getNames(OpenSim::Array<std::string> &rNames ) const
 {
     for(int i=0;i<_objects.getSize();i++) {
         T *obj = _objects[i];
-        if(obj==NULL) {
-            rNames.append("NULL");
+        if(obj==nullptr) {
+            rNames.append("nullptr");
         } else {
             rNames.append(obj->getName());
         }

@@ -143,7 +143,7 @@ InverseKinematicsTool::InverseKinematicsTool(const InverseKinematicsTool &aTool)
 void InverseKinematicsTool::setNull()
 {
     setupProperties();
-    _model = NULL;
+    _model = nullptr;
 }
 //_____________________________________________________________________________
 /**
@@ -291,7 +291,7 @@ bool InverseKinematicsTool::run()
         Set<MarkerWeight> markerWeights;
         SimTK::Array_<CoordinateReference> coordinateReferences;
 
-        FunctionSet *coordFunctions = NULL;
+        FunctionSet *coordFunctions = nullptr;
         // Load the coordinate data
         bool haveCoordinateFile = false;
         if(_coordinateFileName != "" && _coordinateFileName != "Unassigned"){
@@ -308,7 +308,7 @@ bool InverseKinematicsTool::run()
         for(int i=0; i < _ikTaskSet.getSize(); i++){
             if (!_ikTaskSet[i].getApply()) continue;
             if(IKCoordinateTask *coordTask = dynamic_cast<IKCoordinateTask *>(&_ikTaskSet[i])){
-                CoordinateReference *coordRef = NULL;
+                CoordinateReference *coordRef = nullptr;
                 if(coordTask->getValueType() == IKCoordinateTask::FromFile){
                      if (!coordFunctions)
                         throw Exception("InverseKinematicsTool: value for coordinate "+coordTask->getName()+" not found.");
@@ -328,7 +328,7 @@ bool InverseKinematicsTool::run()
                     coordRef = new CoordinateReference(coordTask->getName(), reference);
                 }
 
-                if(coordRef == NULL)
+                if(coordRef == nullptr)
                     throw Exception("InverseKinematicsTool: value for coordinate "+coordTask->getName()+" not found.");
                 else
                     coordRef->setWeight(coordTask->getWeight());
@@ -371,7 +371,7 @@ bool InverseKinematicsTool::run()
         SimTK::Array_<double> squaredMarkerErrors(nm, 0.0);
         SimTK::Array_<Vec3> markerLocations(nm, Vec3(0));
         
-        Storage *modelMarkerLocations = _reportMarkerLocations ? new Storage(Nframes, "ModelMarkerLocations") : NULL;
+        Storage *modelMarkerLocations = _reportMarkerLocations ? new Storage(Nframes, "ModelMarkerLocations") : nullptr;
 
         for (int i = 0; i < Nframes; i++) {
             s.updTime() = start_time + i*dt;

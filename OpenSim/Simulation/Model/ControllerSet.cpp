@@ -104,8 +104,8 @@ void ControllerSet::copyData(const ControllerSet &aControllerSet)
 {
     _actuatorSet =  aControllerSet._actuatorSet;
     const Storage *source = (Storage *)aControllerSet._controlStore;
-    if(source == NULL){
-        _controlStore =  NULL;
+    if(source == nullptr){
+        _controlStore =  nullptr;
     } else {
         _controlStore =  new Storage(*source, true);
     }
@@ -222,7 +222,7 @@ void ControllerSet::setDesiredStates( Storage* yStore)
    for(int i=0;i<getSize();i++ ) {
        if( !get(i).isDisabled() ) {
            TrackingController *controller = dynamic_cast<TrackingController *>(&get(i));
-           if(controller != NULL)
+           if(controller != nullptr)
                 controller->setDesiredStatesStorage( yStore );
        }
    }

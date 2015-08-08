@@ -94,10 +94,10 @@ ExternalForce::ExternalForce(SimTK::Xml::Element& node) : Super(node)
 void ExternalForce::setNull()
 {
     setAuthors("Ajay Seth");
-    _dataSource = NULL;
-    _appliedToBody = NULL;
-    _forceExpressedInBody = NULL;
-    _pointExpressedInBody = NULL; 
+    _dataSource = nullptr;
+    _appliedToBody = nullptr;
+    _forceExpressedInBody = nullptr;
+    _pointExpressedInBody = nullptr; 
 }
 
 
@@ -349,9 +349,9 @@ void ExternalForce::computeForce(const SimTK::State& state,
 Vec3 ExternalForce::getForceAtTime(double aTime) const  
 {
     SimTK::Vector timeAsVector(1, aTime);
-    const Function* forceX=NULL;
-    const Function* forceY=NULL;
-    const Function* forceZ=NULL;
+    const Function* forceX=nullptr;
+    const Function* forceY=nullptr;
+    const Function* forceZ=nullptr;
     if (_forceFunctions.size()==3){
         forceX=_forceFunctions[0];  forceY=_forceFunctions[1];  forceZ=_forceFunctions[2];
     }
@@ -364,9 +364,9 @@ Vec3 ExternalForce::getForceAtTime(double aTime) const
 Vec3 ExternalForce::getPointAtTime(double aTime) const
 {
     SimTK::Vector timeAsVector(1, aTime);
-    const Function* pointX=NULL;
-    const Function* pointY=NULL;
-    const Function* pointZ=NULL;
+    const Function* pointX=nullptr;
+    const Function* pointY=nullptr;
+    const Function* pointZ=nullptr;
     if (_pointFunctions.size()==3){
         pointX=_pointFunctions[0];  pointY=_pointFunctions[1];  pointZ=_pointFunctions[2];
     }
@@ -379,9 +379,9 @@ Vec3 ExternalForce::getPointAtTime(double aTime) const
 Vec3 ExternalForce::getTorqueAtTime(double aTime) const
 {
     SimTK::Vector timeAsVector(1, aTime);
-    const Function* torqueX=NULL;
-    const Function* torqueY=NULL;
-    const Function* torqueZ=NULL;
+    const Function* torqueX=nullptr;
+    const Function* torqueY=nullptr;
+    const Function* torqueZ=nullptr;
     if (_torqueFunctions.size()==3){
         torqueX=_torqueFunctions[0];    torqueY=_torqueFunctions[1];    torqueZ=_torqueFunctions[2];
     }

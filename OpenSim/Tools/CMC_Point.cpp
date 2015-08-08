@@ -83,7 +83,7 @@ CMC_Point::CMC_Point(const CMC_Point &aTask) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void CMC_Point::
 setNull()
@@ -275,7 +275,7 @@ computeErrors(const SimTK::State& s, double aT)
 
         for(int i=0;i<3;i++) {
             _inertialPTrk[i] = _pTrk[i]->calcValue(SimTK::Vector(1,aT));
-            if(_vTrk[i]==NULL) {
+            if(_vTrk[i]==nullptr) {
                 std::vector<int> derivComponents(1);
                 derivComponents[0]=0;
                 _inertialVTrk[i] = _pTrk[i]->calcDerivative(derivComponents,SimTK::Vector(1,aT));
@@ -294,7 +294,7 @@ computeErrors(const SimTK::State& s, double aT)
             pVec(i) = _pTrk[i]->calcValue(SimTK::Vector(1,aT));
         }
         _model->getSimbodyEngine().getPosition(s, *_expressBody,pVec,_inertialPTrk);
-        if(_vTrk[0]==NULL) {
+        if(_vTrk[0]==nullptr) {
             _model->getSimbodyEngine().getVelocity(s, *_expressBody,pVec,_inertialVTrk);
         } else {
             for(int i=0;i<3;i++) {
@@ -336,8 +336,8 @@ computeDesiredAccelerations(const SimTK::State& s, double aT)
     _aDes=SimTK::NaN;
 
     // CHECK
-    if(_model==NULL) return;
-    if(_pTrk[0]==NULL) return;
+    if(_model==nullptr) return;
+    if(_pTrk[0]==nullptr) return;
 
     // COMPUTE ERRORS
     computeErrors(s, aT);
@@ -349,7 +349,7 @@ computeDesiredAccelerations(const SimTK::State& s, double aT)
     for(int i=0; i<3; i++) {
         p = (_kp)[0]*_pErr[i];
         v = (_kv)[0]*_vErr[i];
-        if(_aTrk[i]==NULL) {
+        if(_aTrk[i]==nullptr) {
             std::vector<int> derivComponents(2);
             derivComponents[0]=0;
             derivComponents[1]=0;
@@ -381,8 +381,8 @@ computeDesiredAccelerations(const SimTK::State& s, double aTI,double aTF)
     _aDes=SimTK::NaN;
 
     // CHECK
-    if(_model==NULL) return;
-    if(_pTrk[0]==NULL) return;
+    if(_model==nullptr) return;
+    if(_pTrk[0]==nullptr) return;
 
     // COMPUTE ERRORS
     computeErrors(s, aTI);
@@ -394,7 +394,7 @@ computeDesiredAccelerations(const SimTK::State& s, double aTI,double aTF)
     for(int i=0; i<3; i++) {
         p = (_kp)[0]*_pErr[i];
         v = (_kv)[0]*_vErr[i];
-        if(_aTrk[i]==NULL) {
+        if(_aTrk[i]==nullptr) {
             std::vector<int> derivComponents(2);
             derivComponents[0]=0;
             derivComponents[1]=0;
@@ -428,7 +428,7 @@ void CMC_Point::
 computeAccelerations(const SimTK::State& s )
 {
     // CHECK
-    if(_model==NULL) return;
+    if(_model==nullptr) return;
 
     // ACCELERATION
     _a = 0;

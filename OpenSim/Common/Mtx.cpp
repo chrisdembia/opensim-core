@@ -40,9 +40,9 @@ using SimTK::Vec3;
 
 int Mtx::_PSpaceSize = 0;
 int Mtx::_WSpaceSize = 0;
-double** Mtx::_P1Space = NULL;
-double** Mtx::_P2Space = NULL;
-double*  Mtx::_WSpace = NULL;
+double** Mtx::_P1Space = nullptr;
+double** Mtx::_P2Space = nullptr;
+double*  Mtx::_WSpace = nullptr;
 static const double eps = std::numeric_limits<double>::epsilon();
 
 
@@ -149,8 +149,8 @@ Translate(double aX,double aY,double aZ,const double aP[3],double rP[3])
 void Mtx::
 Rotate(int aXYZ,double aRadians,const double aP[3],double rP[3])
 {
-    if(aP==NULL) return;
-    if(rP==NULL) return;
+    if(aP==nullptr) return;
+    if(rP==nullptr) return;
 
     // COPY
     double p0 = aP[0];
@@ -195,8 +195,8 @@ void Mtx::
 Rotate(const double aAxis[3],double aRadians,const double aP[3],double rP[3])
 {
     if(aAxis==0) return;
-    if(aP==NULL) return;
-    if(rP==NULL) return;
+    if(aP==nullptr) return;
+    if(rP==nullptr) return;
 
 }
 
@@ -250,7 +250,7 @@ RotateDeg(const double aAxis[3],double aDegrees,const double aP[3],double rP[3])
 int Mtx::
 Identity(int aN,double *rI)
 {
-    if(rI==NULL) return(-1);
+    if(rI==nullptr) return(-1);
     if(aN<=0) return(-1);
 
     // ASSIGN
@@ -279,9 +279,9 @@ Identity(int aN,double *rI)
 int Mtx::
 Add(int aNR,int aNC,const double *aM1,const double *aM2,double *aM)
 {
-    if(aM1==NULL) return(-1);
-    if(aM2==NULL) return(-1);
-    if(aM ==NULL) return(-1);
+    if(aM1==nullptr) return(-1);
+    if(aM2==nullptr) return(-1);
+    if(aM ==nullptr) return(-1);
     if(aNR<=0) return(-1);
     if(aNC<=0) return(-1);
 
@@ -303,9 +303,9 @@ Add(int aNR,int aNC,const double *aM1,const double *aM2,double *aM)
 int Mtx::
 Subtract(int aNR,int aNC,const double *aM1,const double *aM2,double *aM)
 {
-    if(aM1==NULL) return(-1);
-    if(aM2==NULL) return(-1);
-    if(aM ==NULL) return(-1);
+    if(aM1==nullptr) return(-1);
+    if(aM2==nullptr) return(-1);
+    if(aM ==nullptr) return(-1);
     if(aNR<=0) return(-1);
     if(aNC<=0) return(-1);
 
@@ -331,8 +331,8 @@ Subtract(int aNR,int aNC,const double *aM1,const double *aM2,double *aM)
 int Mtx::
 Multiply(int aNR,int aNC,const double *aM,double aScalar,double *rM)
 {
-    if(aM==NULL) return(-1);
-    if(rM ==NULL) return(-1);
+    if(aM==nullptr) return(-1);
+    if(rM ==nullptr) return(-1);
     if(aNR<=0) return(-1);
     if(aNC<=0) return(-1);
 
@@ -346,7 +346,7 @@ Multiply(int aNR,int aNC,const double *aM,double aScalar,double *rM)
 /**
  * Multiply two matrices.
  *
- * If the arguments are not valid (aM1,aM2,aM==NULL), then a -1 is returned.
+ * If the arguments are not valid (aM1,aM2,aM==nullptr), then a -1 is returned.
  * Othersise, 0 is returned.
  *
  * It is permissible for aM to overlap with either aM1 or aM2.
@@ -355,9 +355,9 @@ int Mtx::
 Multiply(int aNR1,int aNCR,int aNC2,const double *aM1,const double *aM2,
     double *rM)
 {
-    if(aM1==NULL) return(-1);
-    if(aM2==NULL) return(-1);
-    if(rM ==NULL) return(-1);
+    if(aM1==nullptr) return(-1);
+    if(aM2==nullptr) return(-1);
+    if(rM ==nullptr) return(-1);
     if(aNR1<=0) return(-1);
     if(aNCR<=0) return(-1);
     if(aNC2<=0) return(-1);
@@ -369,8 +369,8 @@ Multiply(int aNR1,int aNCR,int aNC2,const double *aM1,const double *aM2,
     double *m = _WSpace;
 
     // MULTIPLY
-    const double *ij1=NULL,*ij2=NULL;
-    double result,*ij=NULL;
+    const double *ij1=nullptr,*ij2=nullptr;
+    double result,*ij=nullptr;
     int r1,cr,c2;
     for(r1=0,ij=m;r1<aNR1;r1++) {
 
@@ -397,7 +397,7 @@ Multiply(int aNR1,int aNCR,int aNC2,const double *aM1,const double *aM2,
 /**
  * Compute the inverse of a matrix.
  *
- * If the arguments are not valid (aM==NULL), then -1 is returned.
+ * If the arguments are not valid (aM==nullptr), then -1 is returned.
  * If the matrix is not invertible, then -2 is returned.
  * Otherwise, 0 is returned.
  *
@@ -407,8 +407,8 @@ int Mtx::
 Invert(int aN,const double *aM,double *rMInv)
 {
     if(aN<=0) return(-1);
-    if(aM==NULL) return(-1);
-    if(rMInv==NULL) return(-1);
+    if(aM==nullptr) return(-1);
+    if(rMInv==nullptr) return(-1);
 
     // VARIABLE DECLARATIONS
     double *M,**Mp,**Mr,**Ip,**Ir,*Mrj,*Irj,*Mij,*Iij,d;
@@ -488,7 +488,7 @@ Invert(int aN,const double *aM,double *rMInv)
 /**
  * Transpose a matrix.
  *
- * If the arguments are invalid (e.g.,aM==NULL), then a -1 is returned.
+ * If the arguments are invalid (e.g.,aM==nullptr), then a -1 is returned.
  * Othersise, 0 is returned.
  *
  * It is permissible for aM to overlap in memory with aMT.
@@ -498,8 +498,8 @@ Transpose(int aNR,const int aNC,const double *aM,double *rMT)
 {
     if(aNR<=0) return(-1);
     if(aNC<=0) return(-1);
-    if(aM==NULL) return(-1);
-    if(rMT==NULL) return(-1);
+    if(aM==nullptr) return(-1);
+    if(rMT==nullptr) return(-1);
 
     // ENSURE WORKSPACE CAPACITY
     int n = aNR*aNC;
@@ -577,7 +577,7 @@ FindIndex(int aIndex,double aTime,int aNT,double *aT)
 {
     // ERROR CHECK
     if(aNT<=1) return(-1);
-    if(aT==NULL) return(-1);
+    if(aT==nullptr) return(-1);
 
     // MAKE SURE aIndex IS VALID
     if((aIndex>=aNT)||(aIndex<0)) aIndex=0;
@@ -618,7 +618,7 @@ FindIndex(int aIndex,double aTime,int aNT,double *aT)
 int Mtx::
 FindIndexLess(int aNX,double *aX,double aValue)
 {
-    if(aX==NULL) return(-1);
+    if(aX==nullptr) return(-1);
 
     int i,index=-1;
     for(i=0;i<aNX;i++) {
@@ -644,7 +644,7 @@ FindIndexLess(int aNX,double *aX,double aValue)
 int Mtx::
 FindIndexGreater(int aNX,double *aX,double aValue)
 {
-    if(aX==NULL) return(-1);
+    if(aX==nullptr) return(-1);
 
     int i,index=-1;
     for(i=aNX-1;i>=0;i--) {
@@ -736,11 +736,11 @@ EnsureWorkSpaceCapacity(int aN)
         _WSpaceSize = aN;
 
         // DELETE EXISTING ALLOCATION
-        if(_WSpace!=NULL) delete[] _WSpace;
+        if(_WSpace!=nullptr) delete[] _WSpace;
 
         // W
         _WSpace = new double[_WSpaceSize];
-        if(_WSpace==NULL) { _WSpaceSize=0;  return(-1); }
+        if(_WSpace==nullptr) { _WSpaceSize=0;  return(-1); }
     }
 
     return(0);
@@ -760,16 +760,16 @@ EnsurePointerSpaceCapacity(int aN)
         _PSpaceSize = aN;
 
         // DELETE EXISTING ALLOCATIONS
-        if(_P1Space!=NULL) delete[] _P1Space;
-        if(_P2Space!=NULL) delete[] _P2Space;
+        if(_P1Space!=nullptr) delete[] _P1Space;
+        if(_P2Space!=nullptr) delete[] _P2Space;
 
         // P1
         _P1Space = new double*[_PSpaceSize];
-        if(_P1Space==NULL) { _PSpaceSize=0;  return(-1); }
+        if(_P1Space==nullptr) { _PSpaceSize=0;  return(-1); }
 
         // P2
         _P2Space = new double*[aN];
-        if(_P2Space==NULL) { delete[] _P1Space;  _PSpaceSize=0;  return(-1); }
+        if(_P2Space==nullptr) { delete[] _P1Space;  _PSpaceSize=0;  return(-1); }
     }
 
     return(0);
@@ -781,9 +781,9 @@ EnsurePointerSpaceCapacity(int aN)
 void Mtx::
 FreeWorkAndPointerSpaces()
 {
-    if(_WSpace!=NULL) { delete[] _WSpace;  _WSpace=NULL; }
-    if(_P1Space!=NULL) { delete[] _P1Space;  _P1Space=NULL; }
-    if(_P2Space!=NULL) { delete[] _P2Space;  _P2Space=NULL; }
+    if(_WSpace!=nullptr) { delete[] _WSpace;  _WSpace=nullptr; }
+    if(_P1Space!=nullptr) { delete[] _P1Space;  _P1Space=nullptr; }
+    if(_P2Space!=nullptr) { delete[] _P2Space;  _P2Space=nullptr; }
     _WSpaceSize = 0;
     _PSpaceSize = 0;
 }

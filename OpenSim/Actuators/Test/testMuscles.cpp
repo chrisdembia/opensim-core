@@ -199,7 +199,7 @@ void simulateMuscle(
         double testTolerance,
         bool printResults)
 {
-    string prescribed = (motion == NULL) ? "." : " with Prescribed Motion.";
+    string prescribed = (motion == nullptr) ? "." : " with Prescribed Motion.";
 
     cout << "\n******************************************************" << endl;
     cout << "Test " << aMuscModel.getConcreteClassName() 
@@ -260,7 +260,7 @@ void simulateMuscle(
         jointCoordinateSet[0].setRangeMin(0); 
         jointCoordinateSet[0].setRangeMax(1.0);
     
-    if(motion != NULL){
+    if(motion != nullptr){
         jointCoordinateSet[0].setPrescribedFunction(*motion);
         jointCoordinateSet[0].setDefaultIsPrescribed(true);
     }
@@ -302,7 +302,7 @@ void simulateMuscle(
     // Create a prescribed controller that simply 
     //applies controls as function of time
     PrescribedController * muscleController = new PrescribedController();
-    if(control != NULL){
+    if(control != nullptr){
         muscleController->setActuators(model.updActuators());
         // Set the indiviudal muscle control functions 
         //for the prescribed muscle controller
@@ -533,10 +533,10 @@ void simulateMuscle(
         Storage *musclePwrSto       
             = muscleAnalysis->getMusclePowerStorage();
 
-        double *fiberActivePwrDat  = NULL;
-        double *fiberPassivePwrDat = NULL;
-        double *tendonPwrDat       = NULL;
-        double *musclePwrDat       = NULL;
+        double *fiberActivePwrDat  = nullptr;
+        double *fiberPassivePwrDat = nullptr;
+        double *tendonPwrDat       = nullptr;
+        double *musclePwrDat       = nullptr;
 
         fiberActivePwrSto->getDataColumn(   "#1",fiberActivePwrDat);
         fiberPassivePwrSto->getDataColumn(  "#1",fiberPassivePwrDat);
@@ -617,7 +617,7 @@ void simulateMuscle(
     Sine motion(0.1, SimTK::Pi, 0);
 
     // concentric
-    //simulateMuscle(muscle, x0, act0, NULL, &control, accuracy);
+    //simulateMuscle(muscle, x0, act0, nullptr, &control, accuracy);
     // eccentric 
     simulateMuscle(muscle, x0, act0, &motion, &control, accuracy,false);
 }*/
@@ -653,7 +653,7 @@ void testRigidTendonMuscle()
     simulateMuscle(muscle, 
         x0, 
         act0, 
-        NULL, 
+        nullptr, 
         &control, 
         IntegrationAccuracy,
         SimulationTest,
@@ -705,7 +705,7 @@ void testThelen2003Muscle_Deprecated()
     simulateMuscle( muscle, 
                     x0, 
                     act0, 
-                    NULL, 
+                    nullptr, 
                     &control, 
                     IntegrationAccuracy,
                     SimulationTest,

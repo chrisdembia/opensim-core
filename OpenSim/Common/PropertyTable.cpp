@@ -125,7 +125,7 @@ updAbstractPropertyByIndex(int index) {
 const AbstractProperty& PropertyTable::
 getAbstractPropertyByName(const std::string& name) const {
     const AbstractProperty* p = getPropertyPtr(name);
-    if (p == NULL) throw OpenSim::Exception
+    if (p == nullptr) throw OpenSim::Exception
         ("PropertyTable::getAbstractPropertyByName(): Property " 
         + name + " not found.");
     return *p;
@@ -134,7 +134,7 @@ getAbstractPropertyByName(const std::string& name) const {
 AbstractProperty& PropertyTable::
 updAbstractPropertyByName(const std::string& name) {
     AbstractProperty* p = updPropertyPtr(name);
-    if (p == NULL) throw OpenSim::Exception
+    if (p == nullptr) throw OpenSim::Exception
         ("PropertyTable::updAbstractPropertyByName(): Property " 
         + name + " not found.");
     return *p;

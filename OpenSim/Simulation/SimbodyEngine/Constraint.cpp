@@ -219,14 +219,14 @@ Array<std::string> Constraint::getRecordLabels() const
     for(int i=0; i<ncb; ++i){
         const SimTK::MobilizedBody &b = simConstraint.getMobilizedBodyFromConstrainedBody(SimTK::ConstrainedBodyIndex(i));
         const SimTK::MobilizedBodyIndex &bx =  b.getMobilizedBodyIndex();
-        Body *bod = NULL;
+        Body *bod = nullptr;
         for(int j=0; j<bodies.getSize(); ++j ){
             if(bodies[j].getMobilizedBodyIndex() == bx){
                 bod = &bodies[j];
                 break;
             }
         }
-        if(bod == NULL){
+        if(bod == nullptr){
             throw Exception("Constraint "+getName()+" does not have an idenitfiable body index.");
         }
         string prefix = getName()+"_"+bod->getName();

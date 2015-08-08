@@ -106,7 +106,7 @@ double MuscleActivationDynamics::clampToValidInterval(double val) const
 void MuscleActivationDynamics::setNull()
 {
     setAuthors("Thomas Uchida, Ajay Seth, Michael Sherman");
-    _excitationGetter = NULL;
+    _excitationGetter = nullptr;
 }
 
 void MuscleActivationDynamics::constructProperties()

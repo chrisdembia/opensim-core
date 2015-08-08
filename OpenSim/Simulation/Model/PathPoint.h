@@ -118,7 +118,7 @@ public:
     GeometryPath* getPath() const { return _path; }
 
     virtual void scale(const SimTK::State& s, const SimTK::Vec3& aScaleFactors);
-    virtual const WrapObject* getWrapObject() const { return NULL; }
+    virtual const WrapObject* getWrapObject() const { return nullptr; }
 
     virtual bool isActive(const SimTK::State& s) const { return true; }
     virtual void connectToModelAndPath(const Model& aModel, GeometryPath& aPath);

@@ -95,17 +95,17 @@ VectorFunctionForActuators(const VectorFunctionForActuators &aVectorFunction) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to NULL values.
+ * Set all member variables to nullptr values.
  */
 void VectorFunctionForActuators::
 setNull()
 {
     _ti = 0.0;
     _tf = 0.0;
-    _CMCActuatorSystem    = NULL;
-    _CMCActuatorSubsystem = NULL;
-    _model             = NULL;
-    _integrator        = NULL;
+    _CMCActuatorSystem    = nullptr;
+    _CMCActuatorSubsystem = nullptr;
+    _model             = nullptr;
+    _integrator        = nullptr;
 }
 
 //_____________________________________________________________________________

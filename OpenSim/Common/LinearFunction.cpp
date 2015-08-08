@@ -99,7 +99,7 @@ LinearFunction::LinearFunction(const LinearFunction &aLinearFunction) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to their NULL or default values.
+ * Set all member variables to their nullptr or default values.
  */
 void LinearFunction::setNull()
 {

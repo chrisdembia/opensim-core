@@ -177,7 +177,7 @@ int OptimizationTarget::
 CentralDifferencesConstraint(const OptimizationTarget *aTarget,
     double *dx,const Vector &x,Matrix &jacobian)
 {
-    if(aTarget==NULL) return(-1);
+    if(aTarget==nullptr) return(-1);
 
     // INITIALIZE CONTROLS
     int nx = aTarget->getNumParameters(); if(nx<=0) return(-1);
@@ -227,7 +227,7 @@ int OptimizationTarget::
 CentralDifferences(const OptimizationTarget *aTarget,
     double *dx,const Vector &x,Vector &dpdx)
 {
-    if(aTarget==NULL) return(-1);
+    if(aTarget==nullptr) return(-1);
 
     // CONTROLS
     int nx = aTarget->getNumParameters();  if(nx<=0) return(-1);
@@ -279,7 +279,7 @@ int OptimizationTarget::
 ForwardDifferences(const OptimizationTarget *aTarget,
     double *dx,const Vector &x,Vector &dpdx)
 {
-    if(aTarget==NULL) return(-1);
+    if(aTarget==nullptr) return(-1);
 
     // CONTROLS
     int nx = aTarget->getNumParameters();  if(nx<=0) return(-1);

@@ -89,7 +89,7 @@ VectorFunctionUncoupledNxN(const VectorFunctionUncoupledNxN &aVectorFunction) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to NULL values.
+ * Set all member variables to nullptr values.
  */
 void VectorFunctionUncoupledNxN::
 setNull()

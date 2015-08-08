@@ -152,7 +152,7 @@ void DefaultGeometry::generateDecorations
                 if (type == "WrapCylinder") {
                     const WrapCylinder* cylinder = 
                         dynamic_cast<const WrapCylinder*>(&wrapObjects[j]);
-                    if (cylinder != NULL) {
+                    if (cylinder != nullptr) {
                         Transform X_GW = X_GB*cylinder->getTransform()*ztoy;
                         geometry.push_back(
                             DecorativeCylinder(cylinder->getRadius(), 
@@ -164,7 +164,7 @@ void DefaultGeometry::generateDecorations
                 else if (type == "WrapEllipsoid") {
                     const WrapEllipsoid* ellipsoid = 
                         dynamic_cast<const WrapEllipsoid*>(&wrapObjects[j]);
-                    if (ellipsoid != NULL) {
+                    if (ellipsoid != nullptr) {
                         Transform X_GW = X_GB*ellipsoid->getTransform();
                         geometry.push_back(
                             DecorativeEllipsoid(ellipsoid->getRadii())
@@ -175,7 +175,7 @@ void DefaultGeometry::generateDecorations
                 else if (type == "WrapSphere") {
                     const WrapSphere* sphere = 
                         dynamic_cast<const WrapSphere*>(&wrapObjects[j]);
-                    if (sphere != NULL) {
+                    if (sphere != nullptr) {
                         Transform X_GW = X_GB*sphere->getTransform();
                         geometry.push_back(
                             DecorativeSphere(sphere->getRadius())
@@ -206,7 +206,7 @@ void DefaultGeometry::generateDecorations
             if (type == "ContactSphere" && displayPref == 4) {
                 ContactSphere* sphere = 
                     dynamic_cast<ContactSphere*>(&contactGeometries.get(i));
-                if (sphere != NULL) {
+                if (sphere != nullptr) {
                     Transform X_GW = X_GB*sphere->getTransform();
                     geometry.push_back(
                         DecorativeSphere(sphere->getRadius())

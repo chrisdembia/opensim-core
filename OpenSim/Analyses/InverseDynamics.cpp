@@ -64,7 +64,7 @@ InverseDynamics::~InverseDynamics()
 InverseDynamics::InverseDynamics(Model *aModel) :
     Analysis(aModel),
     _useModelForceSet(_useModelForceSetProp.getValueBool()),
-    _modelWorkingCopy(NULL),
+    _modelWorkingCopy(nullptr),
     _numCoordinateActuators(0)
 {
     setNull();
@@ -83,7 +83,7 @@ InverseDynamics::InverseDynamics(Model *aModel) :
 InverseDynamics::InverseDynamics(const InverseDynamics &aInverseDynamics):
     Analysis(aInverseDynamics),
     _useModelForceSet(_useModelForceSetProp.getValueBool()),
-    _modelWorkingCopy(NULL),
+    _modelWorkingCopy(nullptr),
     _numCoordinateActuators(aInverseDynamics._numCoordinateActuators)
 {
     setNull();
@@ -127,9 +127,9 @@ setNull()
 
     // OTHER VARIABLES
     _useModelForceSet = true;
-    _storage = NULL;
+    _storage = nullptr;
     _ownsForceSet = false;
-    _forceSet = NULL;
+    _forceSet = nullptr;
     _numCoordinateActuators = 0;
 
     setName("InverseDynamics");
@@ -225,7 +225,7 @@ allocateStorage()
 void InverseDynamics::
 deleteStorage()
 {
-    delete _storage; _storage = NULL;
+    delete _storage; _storage = nullptr;
 }
 
 //=============================================================================
@@ -452,7 +452,7 @@ begin(SimTK::State& s )
             
             for(int i=0; i<saveForces->getSize(); i++){
                 const Force& f=saveForces->get(i);
-                if ((dynamic_cast<const Muscle*>(&saveForces->get(i)))==NULL)
+                if ((dynamic_cast<const Muscle*>(&saveForces->get(i)))==nullptr)
                     as.append(saveForces->get(i).clone());
             }
         }

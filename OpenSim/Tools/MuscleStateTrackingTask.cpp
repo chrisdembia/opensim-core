@@ -73,7 +73,7 @@ MuscleStateTrackingTask::MuscleStateTrackingTask(const MuscleStateTrackingTask& 
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void MuscleStateTrackingTask::
 setNull()

@@ -426,14 +426,14 @@ ReadCharacters(istream &aIS,int aNChar)
 FILE* IO::
 OpenFile(const string &aFileName,const string &aMode)
 {
-    FILE *fp = NULL;
+    FILE *fp = nullptr;
 
     // OPEN THE FILE
     fp = fopen(aFileName.c_str(),aMode.c_str());
-    if(fp==NULL) {
+    if(fp==nullptr) {
         printf("IO.OpenFile(const string&,const string&): failed to open %s\n",
          aFileName.c_str());
-        return(NULL);
+        return(nullptr);
     }
 
     return(fp);
@@ -448,7 +448,7 @@ OpenInputFile(const string &aFileName,ios_base::openmode mode)
     ifstream *fs = new ifstream(aFileName.c_str(), ios_base::in | mode);
     if(!fs || !(*fs)) {
         printf("IO.OpenInputFile(const string&,openmode mode): failed to open %s\n", aFileName.c_str());
-        return(NULL);
+        return(nullptr);
     }
 
     return(fs);
@@ -459,7 +459,7 @@ OpenOutputFile(const string &aFileName,ios_base::openmode mode)
     ofstream *fs = new ofstream(aFileName.c_str(), ios_base::out | mode);
     if(!fs || !(*fs)) {
         printf("IO.OpenOutputFile(const string&,openmode mode): failed to open %s\n", aFileName.c_str());
-        return(NULL);
+        return(nullptr);
     }
 
     return(fs);
@@ -498,7 +498,7 @@ chDir(const string &aDirName)
 //_____________________________________________________________________________
 /**
  * Get current working directory. Potentially platform dependent.
-  * @return working directory on success, NULL on error
+  * @return working directory on success, nullptr on error
 */
 string IO::
 getCwd()

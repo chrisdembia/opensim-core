@@ -124,13 +124,13 @@ public:
     to the stored AbstractProperty object if present, otherwise null. **/
     const AbstractProperty* getPropertyPtr(const std::string& name) const {
         const int ix = findPropertyIndex(name);
-        return ix < 0 ? NULL : &getAbstractPropertyByIndex(ix); 
+        return ix < 0 ? nullptr : &getAbstractPropertyByIndex(ix); 
     }
     /** Look up a property by name and return a pointer providing writable
     access to the stored AbstractProperty object if present, otherwise null. **/
     AbstractProperty* updPropertyPtr(const std::string& name) {
         const int ix = findPropertyIndex(name);
-        return ix < 0 ? NULL : &updAbstractPropertyByIndex(ix); 
+        return ix < 0 ? nullptr : &updAbstractPropertyByIndex(ix); 
     }
 
     /** Return the number of properties currently in this table. If this

@@ -97,7 +97,7 @@ void Marker::setFrameName(const string& aName)
 const string& Marker::getFrameName() const
 {
     //if (_bodyNameProp.getValueIsDefault())
-    //  return NULL;
+    //  return nullptr;
 
     return getReferenceFrame().getName();
 }

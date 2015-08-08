@@ -95,7 +95,7 @@ Storage::Storage(int aCapacity,const string &aName) :
     StorageInterface(aName),
     _storage(StateVector())
 {
-    // SET NULL STATES
+    // SET nullptr STATES
     setNull();
 
     // CAPACITY
@@ -118,12 +118,12 @@ Storage::Storage(const string &aFileName, bool readHeadersOnly) :
     StorageInterface(aFileName),
     _storage(StateVector())
 {
-    // SET NULL STATES
+    // SET nullptr STATES
     setNull();
 
     // OPEN FILE
     ifstream *fp = IO::OpenInputFile(aFileName);
-    if(fp==NULL) throw Exception("Storage: ERROR- failed to open file " + aFileName, __FILE__,__LINE__);
+    if(fp==nullptr) throw Exception("Storage: ERROR- failed to open file " + aFileName, __FILE__,__LINE__);
 
     int nr=0,nc=0;
     if (!parseHeaders(*fp, nr, nc)) throw Exception("Storage: ERROR- failed to parse headers of file " + aFileName, __FILE__,__LINE__);
@@ -210,7 +210,7 @@ Storage::Storage(const Storage &aStorage,bool aCopyData) :
     StorageInterface(aStorage),
     _storage(StateVector())
 {
-    // NULL THE DATA
+    // nullptr THE DATA
     setNull();
 
     // CAPACITY
@@ -244,7 +244,7 @@ Storage(const Storage &aStorage,int aStateIndex,int aN,
      StorageInterface(aStorage),
     _storage(StateVector())
 {
-    // NULL THE DATA
+    // nullptr THE DATA
     setNull();
 
     // CAPACITY
@@ -387,7 +387,7 @@ getWriteSIMMHeader() const
  * The header token is used to mark the end of the header
  * portion of an Storage when an Storage is saved in a file.
  * 
- * If the header token is NULL, a default header token is used.
+ * If the header token is nullptr, a default header token is used.
  *
  * @param aToken Header token.
  */
@@ -483,7 +483,7 @@ getStateIndex(const std::string &aColumnName, int startIndex) const
  * The first column is almost always "Time."  The other columns
  * correspond to the separate elements of a state vector (StateVector).
  *
- * If the labels string is set to NULL, the following default labels
+ * If the labels string is set to nullptr, the following default labels
  * will be used when the Storage instance is saved to file:
  *
  * time state_0 state_1 state_2 ...
@@ -495,8 +495,8 @@ parseColumnLabels(const char *aLabels)
 {
     _columnLabels.setSize(0);
 
-    // HANDLE NULL POINTER
-    if(aLabels==NULL) return;
+    // HANDLE nullptr POINTER
+    if(aLabels==nullptr) return;
 
     // HANDLE ZERO LENGTH STRING
     int len = (int)strlen(aLabels);
@@ -514,13 +514,13 @@ parseColumnLabels(const char *aLabels)
 
     // Parse 
     char *token = strtok(labelsCopy,DEFAULT_HEADER_SEPARATOR );
-    while(token!=NULL)
+    while(token!=nullptr)
     {
         // Append column label
         _columnLabels.append(token);
 
         // Get next label 
-        token = strtok( NULL, DEFAULT_HEADER_SEPARATOR );
+        token = strtok( nullptr, DEFAULT_HEADER_SEPARATOR );
     }
 
     delete[] labelsCopy;
@@ -630,12 +630,12 @@ getSmallestNumberOfStates() const
 /**
  * Get the last states stored.
  *
- * @return Statevector.  If no state vector is stored, NULL is returned.
+ * @return Statevector.  If no state vector is stored, nullptr is returned.
  */
 StateVector* Storage::
 getLastStateVector() const
 {
-    StateVector *vec = NULL;
+    StateVector *vec = nullptr;
     try {
         vec = &_storage.updLast();
     } catch(const Exception&) {
@@ -649,7 +649,7 @@ getLastStateVector() const
  *
  * @param aTimeIndex Time index at which to get the state vector:
  * 0 <= aTimeIndex < _storage.getSize().
- * @return Statevector. If no valid statevector exists at aTimeIndex, NULL
+ * @return Statevector. If no valid statevector exists at aTimeIndex, nullptr
  * is returned.
  */
 StateVector* Storage::
@@ -700,7 +700,7 @@ getLastTime() const
 double Storage::
 getMinTimeStep() const
 {
-    double *time=NULL;
+    double *time=nullptr;
     int n = getTimeColumn(time);
     double dtmin =  SimTK::Infinity;
     for(int i=1; i<n; i++) {
@@ -743,8 +743,8 @@ getTime(int aTimeIndex,double &rTime,int aStateIndex) const
 /**
  * Get the times for a specified state.
  *
- * @param rTime Array where times are set.  If rTime is sent in as NULL,
- * memory is allocated.  If rTime is setn in as non-NULL, it is assumed that
+ * @param rTime Array where times are set.  If rTime is sent in as nullptr,
+ * memory is allocated.  If rTime is setn in as non-nullptr, it is assumed that
  * enough memory has been allocated at rTime to hold _storage.getSize() doubles.
  * @param aStateIndex Index of the state for which to get the times.
  * By default, aStateIndex has a value of -1, which means disregard whether
@@ -759,7 +759,7 @@ getTimeColumn(double *&rTimes,int aStateIndex) const
     if(_storage.getSize()<=0) return(0);
 
     // ALLOCATE MEMORY
-    if(rTimes==NULL) {
+    if(rTimes==nullptr) {
         rTimes = new double[_storage.getSize()];
     }
 
@@ -768,7 +768,7 @@ getTimeColumn(double *&rTimes,int aStateIndex) const
     StateVector *vec;
     for(i=nTimes=0;i<_storage.getSize();i++) {
         vec = getStateVector(i);
-        if(vec==NULL) continue;
+        if(vec==nullptr) continue;
         if(aStateIndex >= vec->getSize()) continue;
         rTimes[nTimes] = vec->getTime();
         nTimes++;
@@ -787,7 +787,7 @@ getTimeColumn(Array<double> &rTimes,int aStateIndex) const
     int i,nTimes;
     for(i=nTimes=0;i<_storage.getSize();i++) {
         StateVector *vec = getStateVector(i);
-        if(vec==NULL) continue;
+        if(vec==nullptr) continue;
         if(aStateIndex >= vec->getSize()) continue;
         rTimes[nTimes] = vec->getTime();
         nTimes++;
@@ -836,7 +836,7 @@ getData(int aTimeIndex,int aStateIndex,double &rValue) const
 
     // ASSIGNMENT
     StateVector *vec = getStateVector(aTimeIndex);
-    if(vec==NULL) return(0);
+    if(vec==nullptr) return(0);
     return( vec->getDataValue(aStateIndex,rValue) );
 }
 //_____________________________________________________________________________
@@ -853,7 +853,7 @@ getData(int aTimeIndex,int aStateIndex,int aN,double **rData) const
 
     // GET STATEVECTOR
     StateVector *vec = getStateVector(aTimeIndex);
-    if(vec==NULL) return(0);
+    if(vec==nullptr) return(0);
     if(vec->getSize()<=0) return(0);
 
     // NUMBER OF STATES TO GET
@@ -864,7 +864,7 @@ getData(int aTimeIndex,int aStateIndex,int aN,double **rData) const
     int N = n - aStateIndex;
 
     // ALLOCATE MEMORY
-    if(*rData==NULL) *rData = new double[N];
+    if(*rData==nullptr) *rData = new double[N];
 
     // ASSIGN DATA
     int i,j;
@@ -891,7 +891,7 @@ getData(int aTimeIndex,int aStateIndex,int aN,double **rData) const
 int Storage::
 getData(int aTimeIndex,int aStateIndex,int aN,double *rData) const
 {
-    if(rData==NULL) return(0);
+    if(rData==nullptr) return(0);
     else return getData(aTimeIndex,aStateIndex,aN,&rData);
 }
 //_____________________________________________________________________________
@@ -905,7 +905,7 @@ getData(int aTimeIndex,int aStateIndex,int aN,double *rData) const
  * the data.
  * @param aN Number of states to get.
  * @param rData Pointer to an array where the returned data will be set.  The
- * size of *rData is assumed to be at least aN.  If rData comes in as NULL,
+ * size of *rData is assumed to be at least aN.  If rData comes in as nullptr,
  * memory is allocated.
  * @return Number of states.
  */
@@ -927,7 +927,7 @@ getData(int aTimeIndex,int aN,double **rData) const
 int Storage::
 getData(int aTimeIndex,int aN,double *rData) const
 {
-    if(rData==NULL) return(0);
+    if(rData==nullptr) return(0);
     else return getData(aTimeIndex,0,aN,&rData);
 }
 //_____________________________________________________________________________
@@ -974,7 +974,7 @@ getData(int aTimeIndex,int aN,SimTK::Vector& v) const
  *  @param aT Time at which to get the states.
  * @param aN Number of states to get.
  * @param rData Pointer to an array where the returned data will be set.  The
- * size of *rData is assumed to be at least aN.  If rData comes in as NULL,
+ * size of *rData is assumed to be at least aN.  If rData comes in as nullptr,
  * memory is allocated.
  * @return Number of states that were set.
  */
@@ -985,7 +985,7 @@ getDataAtTime(double aT,int aN,double **rData) const
     // FIND THE CORRECT INTERVAL FOR aT
     int i = findIndex(_lastI,aT);
     if((i<0)||(_storage.getSize()<=0)) {
-        *rData = NULL;
+        *rData = nullptr;
         return(0);
     }
 
@@ -1012,7 +1012,7 @@ getDataAtTime(double aT,int aN,double **rData) const
 
     // ALLOCATE MEMORY?
     double *y;
-    if(*rData==NULL) {
+    if(*rData==nullptr) {
         y = new double[ns];
     } else {
         y = *rData;
@@ -1057,7 +1057,7 @@ getDataAtTime(double aT,int aN,double **rData) const
 int Storage::
 getDataAtTime(double aT,int aN,double *rData) const
 {
-    if(rData==NULL) return(0);
+    if(rData==nullptr) return(0);
     else return getDataAtTime(aT,aN,&rData);
 }
 int Storage::
@@ -1083,7 +1083,7 @@ getDataAtTime(double aT,int aN,SimTK::Vector& v) const
  *
  * @param aStateIndex Index of the state (column) for which to get the data.
  * @param rData Array containing the desired data.  If rData is sent in as
- * NULL, memory is allocated.  However, if rData is sent in as a non-NULL, it
+ * nullptr, memory is allocated.  However, if rData is sent in as a non-nullptr, it
  * is assumed that rData points to a memory block that is large enough to
  * hold getSize() doubles.
  * @return Number of values set in rData.  The number of values set may be
@@ -1097,7 +1097,7 @@ getDataColumn(int aStateIndex,double *&rData) const
     if(n<=0) return(0);
 
     // ALLOCATION
-    if(rData==NULL) {
+    if(rData==nullptr) {
         rData = new double[n];
     }
 
@@ -1105,7 +1105,7 @@ getDataColumn(int aStateIndex,double *&rData) const
     int i,nData;
     for(i=nData=0;i<n;i++) {
         StateVector *vec = getStateVector(i);
-        if(vec==NULL) continue;
+        if(vec==nullptr) continue;
         if(vec->getDataValue(aStateIndex,rData[nData])) nData++;
     }
 
@@ -1123,7 +1123,7 @@ getDataColumn(int aStateIndex,Array<double> &rData) const
     int i,nData;
     for(i=nData=0;i<n;i++) {
         StateVector *vec = getStateVector(i);
-        if(vec==NULL) continue;
+        if(vec==nullptr) continue;
         if(vec->getDataValue(aStateIndex,rData[nData])) nData++;
     }
 
@@ -1173,7 +1173,7 @@ setDataColumn(int aStateIndex,const Array<double> &aData)
     // ASSIGNMENT
     for(int i=0;i<n;i++) {
         StateVector *vec = getStateVector(i);
-        if(vec==NULL) continue;
+        if(vec==nullptr) continue;
         vec->setDataValue(aStateIndex,aData[i]);
     }
 }
@@ -1191,7 +1191,7 @@ void Storage::setDataColumnToFixedValue(const std::string& columnName, double ne
     // ASSIGNMENT
     for(int i=0;i<n;i++) {
         StateVector *vec = getStateVector(i);
-        if(vec==NULL) continue;
+        if(vec==nullptr) continue;
         vec->setDataValue(aStateIndex,newValue);
     }
 
@@ -1204,7 +1204,7 @@ void Storage::setDataColumnToFixedValue(const std::string& columnName, double ne
  *
  * @param aColumnName name in header of column for which to get the data.
  * @param rData Array containing the desired data.  If rData is sent in as
- * NULL, memory is allocated.  However, if rData is sent in as a non-NULL, it
+ * nullptr, memory is allocated.  However, if rData is sent in as a non-nullptr, it
  * is assumed that rData points to a memory block that is large enough to
  * hold getSize() doubles.
  * @return Number of values set in rData.  The number of values set may be
@@ -1392,7 +1392,7 @@ append(const Array<StateVector> &aStorage)
 int Storage::
 append(double aT,int aN,const double *aY,bool aCheckForDuplicateTime)
 {
-    if(aY==NULL) return(_storage.getSize());
+    if(aY==nullptr) return(_storage.getSize());
     if(aN<0) return(_storage.getSize());
 
     // APPEND
@@ -1569,10 +1569,10 @@ s */
 void Storage::
 add(Storage *aStorage)
 {
-    if(aStorage==NULL) return;
+    if(aStorage==nullptr) return;
 
     int n,N=0,nN;
-    double t,*Y=NULL;
+    double t,*Y=nullptr;
     for(int i=0;i<_storage.getSize();i++) {
 
         // GET INFO ON THIS STORAGE INSTANCE
@@ -1590,7 +1590,7 @@ add(Storage *aStorage)
     }
 
     // CLEANUP
-    if(Y!=NULL) delete[] Y;
+    if(Y!=nullptr) delete[] Y;
 }
 
 //-----------------------------------------------------------------------------
@@ -1654,10 +1654,10 @@ s */
 void Storage::
 subtract(Storage *aStorage)
 {
-    if(aStorage==NULL) return;
+    if(aStorage==nullptr) return;
 
     int n,N=0,nN;
-    double t,*Y=NULL;
+    double t,*Y=nullptr;
     for(int i=0;i<_storage.getSize();i++) {
 
         // GET INFO ON THIS STORAGE INSTANCE
@@ -1675,7 +1675,7 @@ subtract(Storage *aStorage)
     }
 
     // CLEANUP
-    if(Y!=NULL) delete[] Y;
+    if(Y!=nullptr) delete[] Y;
 }
 
 //-----------------------------------------------------------------------------
@@ -1740,10 +1740,10 @@ s */
 void Storage::
 multiply(Storage *aStorage)
 {
-    if(aStorage==NULL) return;
+    if(aStorage==nullptr) return;
 
     int n,N=0,nN;
-    double t,*Y=NULL;
+    double t,*Y=nullptr;
     for(int i=0;i<_storage.getSize();i++) {
 
         // GET INFO ON THIS STORAGE INSTANCE
@@ -1761,7 +1761,7 @@ multiply(Storage *aStorage)
     }
 
     // CLEANUP
-    if(Y!=NULL) delete[] Y;
+    if(Y!=nullptr) delete[] Y;
 }
 //_____________________________________________________________________________
 /**
@@ -1839,11 +1839,11 @@ s */
 void Storage::
 divide(Storage *aStorage)
 {
-    if(aStorage==NULL) return;
+    if(aStorage==nullptr) return;
 
     int i;
     int n,N=0,nN;
-    double t,*Y=NULL;
+    double t,*Y=nullptr;
     for(i=0;i<_storage.getSize();i++) {
 
         // GET INFO ON THIS STORAGE INSTANCE
@@ -1861,7 +1861,7 @@ divide(Storage *aStorage)
     }
 
     // CLEANUP
-    if(Y!=NULL) delete[] Y;
+    if(Y!=nullptr) delete[] Y;
 }
 
 //=============================================================================
@@ -1966,7 +1966,7 @@ integrate(int aI1,int aI2,int aN,double *rArea,Storage *rStorage) const
 
     // WORKING MEMORY
     double ti,tf;
-    double *yi=NULL,*yf=NULL;
+    double *yi=nullptr,*yf=nullptr;
 
     bool functionAllocatedArea = false;
     if(!rArea) {
@@ -2081,7 +2081,7 @@ integrate(double aTI,double aTF,int aN,double *rArea,Storage *rStorage) const
 
     // SPANS MULTIPLE INTERVALS
     } else {
-        double *yi=NULL,*yf=NULL;
+        double *yi=nullptr,*yf=nullptr;
 
         // FIRST SLICE
         getDataAtTime(aTI,n,&yI);
@@ -2136,8 +2136,8 @@ computeArea(int aN,double *aArea) const
 {
     // CHECK FOR VALID OUTPUT ARRAYS
     if(aN<=0) return(0);
-    else if(aArea==NULL) return(0);
-    else return integrate(0,_storage.getSize()-1,aN,aArea,NULL);
+    else if(aArea==nullptr) return(0);
+    else return integrate(0,_storage.getSize()-1,aN,aArea,nullptr);
 }
 //_____________________________________________________________________________
 /**
@@ -2158,8 +2158,8 @@ computeArea(double aTI,double aTF,int aN,double *aArea) const
 {
     // CHECK FOR VALID OUTPUT ARRAYS
     if(aN<=0) return(0);
-    else if(aArea==NULL) return(0);
-    else return integrate(aTI,aTF,aN,aArea,NULL);
+    else if(aArea==nullptr) return(0);
+    else return integrate(aTI,aTF,aN,aArea,nullptr);
 }
 //_____________________________________________________________________________
 /**
@@ -2181,7 +2181,7 @@ computeArea(double aTI,double aTF,int aN,double *aArea) const
  *
  * @param aI1 Index of state vector at which to start integration.
  * @param aI2 Index of state vector at which to stop integration.
- * @return Storage instance of integrated results.  NULL is returned if an
+ * @return Storage instance of integrated results.  nullptr is returned if an
  * error is encountered.
  */
 Storage* Storage::
@@ -2192,10 +2192,10 @@ integrate(int aI1,int aI2) const
     integStore->setName(getName()+"_integrated");
 
     int n = getSmallestNumberOfStates();
-    int result = integrate(aI1,aI2,n,NULL,integStore);
+    int result = integrate(aI1,aI2,n,nullptr,integStore);
     if(result<=0) {
         delete integStore;
-        return NULL;
+        return nullptr;
     } else return integStore;
 }
 //_____________________________________________________________________________
@@ -2213,7 +2213,7 @@ integrate(int aI1,int aI2) const
  *
  * @param aTI Time at which to start the integration.
  * @param aTF Time at which to stop the integration.
- * @return Storage instance of integrated results.  NULL is returned if an
+ * @return Storage instance of integrated results.  nullptr is returned if an
  * error is encountered.
  */
 Storage* Storage::
@@ -2224,10 +2224,10 @@ integrate(double aTI,double aTF) const
     integStore->setName(getName()+"_integrated");
 
     int n = getSmallestNumberOfStates();
-    int result = integrate(aTI,aTF,n,NULL,integStore);
+    int result = integrate(aTI,aTF,n,nullptr,integStore);
     if(result<=0) {
         delete integStore;
-        return NULL;
+        return nullptr;
     } else return integStore;
 }
 
@@ -2299,9 +2299,9 @@ smoothSpline(int aOrder,double aCutoffFrequency)
     }
 
     // LOOP OVER COLUMNS
-    double *times=NULL;
+    double *times=nullptr;
     int nc = getSmallestNumberOfStates();
-    double *signal=NULL;
+    double *signal=nullptr;
     Array<double> filt(0.0,size);
     getTimeColumn(times,0);
     for(int i=0;i<nc;i++) {
@@ -2345,7 +2345,7 @@ lowpassIIR(double aCutoffFrequency)
 
     // LOOP OVER COLUMNS
     int nc = getSmallestNumberOfStates();
-    double *signal=NULL;
+    double *signal=nullptr;
     Array<double> filt(0.0,size);
     for(int i=0;i<nc;i++) {
         getDataColumn(i,signal);
@@ -2387,7 +2387,7 @@ lowpassFIR(int aOrder,double aCutoffFrequency)
 
     // LOOP OVER COLUMNS
     int nc = getSmallestNumberOfStates();
-    double *signal=NULL;
+    double *signal=nullptr;
     Array<double> filt(0.0,size);
     for(int i=0;i<nc;i++) {
         getDataColumn(i,signal);
@@ -2546,7 +2546,7 @@ resampleLinear(double aDT)
 
     // LOOP THROUGH THE DATA
     int ny=0;
-    double *y=NULL;
+    double *y=nullptr;
     StateVector vec;
     for(int i=0; i<nr; i++) {
         double t = ti+aDT*(double)i;
@@ -2586,7 +2586,7 @@ void Storage::interpolateAt(const Array<double> &targetTimes)
         if (fabs(actualTime - t)<1e-6) 
                 continue;
         // create a StateVector and add it
-        double *y=NULL;
+        double *y=nullptr;
         int ny=0;
         StateVector vec;
         // INTERPOLATE THE STATES
@@ -2613,7 +2613,7 @@ setOutputFileName(const std::string& aFileName)
 
     // OPEN THE FILE
     _fp = IO::OpenFile(aFileName,"w");
-    if(_fp==NULL) throw(Exception("Could not open file "+aFileName));
+    if(_fp==nullptr) throw(Exception("Could not open file "+aFileName));
     // WRITE THE HEADER
     int n=0,nTotal=0;
     n = writeHeader(_fp);
@@ -2643,7 +2643,7 @@ print(const string &aFileName,const string &aMode, const string& aComment) const
 {
     // OPEN THE FILE
     FILE *fp = IO::OpenFile(aFileName,aMode);
-    if(fp==NULL) return(false);
+    if(fp==nullptr) return(false);
 
     // WRITE THE HEADER
     int n=0,nTotal=0;
@@ -2718,10 +2718,10 @@ print(const string &aFileName,double aDT,const string &aMode) const
     // CHECK FOR VALID DT
     if(aDT<=0) return(0);
 
-    if (_fp!= NULL) fclose(_fp);
+    if (_fp!= nullptr) fclose(_fp);
     // OPEN THE FILE
     FILE *fp = IO::OpenFile(aFileName,aMode);
-    if(fp==NULL) return(-1);
+    if(fp==nullptr) return(-1);
 
     // HOW MANY TIME STEPS?
     double ti = getFirstTime();
@@ -2767,7 +2767,7 @@ print(const string &aFileName,double aDT,const string &aMode) const
 
     // LOOP THROUGH THE DATA
     int i,ny=0;
-    double t,*y=NULL;
+    double t,*y=nullptr;
     StateVector vec;
     for(t=ti,i=0;i<nr;i++,t=ti+aDT*(double)i) {
 
@@ -2786,7 +2786,7 @@ print(const string &aFileName,double aDT,const string &aMode) const
 
     // CLEANUP
     fclose(fp);
-    if(y!=NULL) { delete[] y;  y=NULL; }
+    if(y!=nullptr) { delete[] y;  y=nullptr; }
 
     return(nTotal);
 }
@@ -2809,7 +2809,7 @@ printResult(const Storage *aStorage,const std::string &aName,
 int Storage::
 writeHeader(FILE *rFP,double aDT) const
 {
-    if(rFP==NULL) return(-1);
+    if(rFP==nullptr) return(-1);
 
     // COMPUTE ATTRIBUTES
     int nr,nc;
@@ -2840,7 +2840,7 @@ writeHeader(FILE *rFP,double aDT) const
 int Storage::
 writeSIMMHeader(FILE *rFP,double aDT, const char *aComment) const
 {
-    if(rFP==NULL) return(-1);
+    if(rFP==nullptr) return(-1);
 
     // COMMENT
     // NOTE: avoid writing empty comment because SIMM seems to screw up parsing
@@ -2886,7 +2886,7 @@ writeSIMMHeader(FILE *rFP,double aDT, const char *aComment) const
 int Storage::
 writeDescription(FILE *rFP) const
 {
-    if(rFP==NULL) return(-1);
+    if(rFP==nullptr) return(-1);
 
     // DESCRIPTION
     string descrip = getDescription();
@@ -2911,7 +2911,7 @@ writeDescription(FILE *rFP) const
 int Storage::
 writeColumnLabels(FILE *rFP) const
 {
-    if(rFP==NULL) return(-1);
+    if(rFP==nullptr) return(-1);
 
     if(_columnLabels.getSize()) {
         fprintf(rFP,"%s",_columnLabels[0].c_str());

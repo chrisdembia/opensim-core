@@ -71,7 +71,7 @@ PropertyBoolArray(const string &aName,
     Property_Deprecated(Property_Deprecated::BoolArray,aName), _array(0)
 {
     if(aSize<=0) return;
-    if(aArray==NULL) return;
+    if(aArray==nullptr) return;
     _array.append(aSize,aArray);
 }
 //_____________________________________________________________________________
@@ -166,7 +166,7 @@ setValue(int aSize,const bool aArray[])
 {
     _array.setSize(0);
     if(aSize<=0) return;
-    if(aArray==NULL) return;
+    if(aArray==nullptr) return;
     _array.append(aSize,aArray);
 }
 //_____________________________________________________________________________

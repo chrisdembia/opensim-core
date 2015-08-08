@@ -116,7 +116,7 @@ void TransformAxis::connectToJoint(const Joint& aJoint)
  */
 void TransformAxis::setNull()
 {
-    _joint = NULL;
+    _joint = nullptr;
 }
 
 //_____________________________________________________________________________

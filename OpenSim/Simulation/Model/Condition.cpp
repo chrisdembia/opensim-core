@@ -43,7 +43,7 @@ using namespace OpenSim;
  */
 Condition::Condition() : Object(),
     _isDisabled(_isDisabledProp.getValueBool()),
-    _model(NULL)
+    _model(nullptr)
 {
     setNull();
     setupProperties();
@@ -67,7 +67,7 @@ Condition::~Condition()
 Condition::Condition(const Condition &aCondition) :
    Object(aCondition),
     _isDisabled(_isDisabledProp.getValueBool()),
-    _model(NULL)
+    _model(nullptr)
 {
     setNull();
     setupProperties();

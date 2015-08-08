@@ -102,7 +102,7 @@ setNull()
 {
     setupProperties();
 
-    _model = NULL;
+    _model = nullptr;
     _pErrLast.setSize(0);
     _pErr.setSize(0);
     _vErrLast.setSize(0);
@@ -193,7 +193,7 @@ setFunctions(FunctionSet &aFuncSet)
         // OBJECT
         TrackingTask& ttask = get(i);
 
-        if (dynamic_cast<StateTrackingTask*>(&ttask)!=NULL) {
+        if (dynamic_cast<StateTrackingTask*>(&ttask)!=nullptr) {
             StateTrackingTask& sTask = dynamic_cast<StateTrackingTask&>(ttask);
             if (aFuncSet.contains(sTask.getName())){
                 sTask.setTaskFunctions(&aFuncSet.get(sTask.getName()));
@@ -205,7 +205,7 @@ setFunctions(FunctionSet &aFuncSet)
             continue;
         }
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -214,7 +214,7 @@ setFunctions(FunctionSet &aFuncSet)
         if(name.empty()) continue;
 
         // FIND FUNCTION(S)
-        f[0] = f[1] = f[2] = NULL;
+        f[0] = f[1] = f[2] = nullptr;
         nTrk = task.getNumTaskFunctions();
         iFunc = aFuncSet.getIndex(name,iFunc);
         if (iFunc < 0){
@@ -234,11 +234,11 @@ setFunctions(FunctionSet &aFuncSet)
             } catch(const Exception& x) {
                 x.print(cout);
             }
-            if(f[j]==NULL) break;
+            if(f[j]==nullptr) break;
             if(name == f[j]->getName()) {
                 iFunc++;
             } else {
-                f[j] = NULL;
+                f[j] = nullptr;
                 break;
             }
         }
@@ -279,7 +279,7 @@ setFunctionsForVelocity(FunctionSet &aFuncSet)
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -291,7 +291,7 @@ setFunctionsForVelocity(FunctionSet &aFuncSet)
         const Coordinate& coord = coords.get(name);
 
         // FIND FUNCTION(S)
-        f[0] = f[1] = f[2] = NULL;
+        f[0] = f[1] = f[2] = nullptr;
         nTrk = task.getNumTaskFunctions();
         iFunc = aFuncSet.getIndex(coord.getSpeedName(),iFunc);
 
@@ -311,7 +311,7 @@ setFunctionsForVelocity(FunctionSet &aFuncSet)
             } catch(const Exception& x) {
                 x.print(cout);
             }
-            if(f[j]==NULL) break;
+            if(f[j]==nullptr) break;
         }
         task.setTaskFunctionsForVelocity(f[0],f[1],f[2]);
     }
@@ -332,7 +332,7 @@ getNumActiveTaskFunctions() const
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -376,7 +376,7 @@ setFunctionsForAcceleration(FunctionSet &aFuncSet)
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -387,7 +387,7 @@ setFunctionsForAcceleration(FunctionSet &aFuncSet)
         const Coordinate& coord = coords.get(name);
 
         // FIND FUNCTION(S)
-        f[0] = f[1] = f[2] = NULL;
+        f[0] = f[1] = f[2] = nullptr;
         nTrk = task.getNumTaskFunctions();
         iFunc = aFuncSet.getIndex(coord.getSpeedName(),iFunc);
 
@@ -407,7 +407,7 @@ setFunctionsForAcceleration(FunctionSet &aFuncSet)
             } catch(const Exception& x) {
                 x.print(cout);
             }
-            if(f[j]==NULL) break;
+            if(f[j]==nullptr) break;
         }
         task.setTaskFunctionsForAcceleration(f[0],f[1],f[2]);
     }
@@ -434,7 +434,7 @@ getTaskPositions(double aT)
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -465,7 +465,7 @@ getTaskVelocities(double aT)
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -496,7 +496,7 @@ getTaskAccelerations(double aT)
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -531,7 +531,7 @@ getPositionGains()
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -562,7 +562,7 @@ getVelocityGains()
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -593,7 +593,7 @@ getAccelerationGains()
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -670,7 +670,7 @@ getWeights()
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -738,7 +738,7 @@ recordErrorsAsLastErrors()
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -782,7 +782,7 @@ computeErrors(const SimTK::State& s, double aT)
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -818,7 +818,7 @@ computeDesiredAccelerations(const SimTK::State& s, double aT)
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -862,7 +862,7 @@ computeDesiredAccelerations(const SimTK::State& s, double aTI,double aTF)
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);
@@ -899,7 +899,7 @@ computeAccelerations(const SimTK::State& s)
         TrackingTask& ttask = get(i);
 
         // If CMC_Task process same way as pre 2.0.2
-        if (dynamic_cast<CMC_Task*>(&ttask)==NULL) 
+        if (dynamic_cast<CMC_Task*>(&ttask)==nullptr) 
             continue;
 
         CMC_Task& task = dynamic_cast<CMC_Task&>(ttask);

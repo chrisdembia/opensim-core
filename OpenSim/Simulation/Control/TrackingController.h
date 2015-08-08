@@ -103,7 +103,7 @@ private:
     // and not even by subclasses of this class.
 
     /**
-     * This method sets all member variables to default (e.g., NULL) values.
+     * This method sets all member variables to default (e.g., nullptr) values.
      */
     void setNull();
 

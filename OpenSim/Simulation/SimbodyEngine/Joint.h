@@ -424,7 +424,7 @@ protected:
     /** Utility method to assign body and coordinate indices from the underlying
         MultibodySystem from a newly created MobilizedBody. Assign its mobilities
         to OpenSim::Coordinates that belong to this Joint and the body index
-        to the Body being mobilized by this Joint. If the Body is NULL then we
+        to the Body being mobilized by this Joint. If the Body is nullptr then we
         assume that we are constructing intermediate MobilizedBodies and indices
         are assigned to corresponding coordinates, but not to a Body. If a Body
         is provided we assume that Joint creator has provided the correct child

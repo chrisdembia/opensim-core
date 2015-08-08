@@ -43,7 +43,7 @@ AssemblySolver::AssemblySolver
     _coordinateReferencesp(coordinateReferences)
 {
     setAuthors("Ajay Seth");
-    _assembler = NULL;
+    _assembler = nullptr;
     
     _constraintWeight = constraintWeight;
 

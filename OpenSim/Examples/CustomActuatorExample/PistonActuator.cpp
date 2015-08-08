@@ -55,8 +55,8 @@ PistonActuator::~PistonActuator()
  */
 PistonActuator::PistonActuator( string aBodyNameA, string aBodyNameB) :
     ScalarActuator(),
-    _bodyA(NULL),
-    _bodyB(NULL)
+    _bodyA(nullptr),
+    _bodyB(nullptr)
 {
     constructProperties();
 
@@ -221,7 +221,7 @@ void PistonActuator::computeForce(const SimTK::State& s,
     if(!_model) return;
     const SimbodyEngine& engine = getModel().getSimbodyEngine();
     
-    if(_bodyA ==NULL || _bodyB ==NULL)
+    if(_bodyA ==nullptr || _bodyB ==nullptr)
         return;
     
     /* store _pointA and _pointB positions in the global frame.  If not

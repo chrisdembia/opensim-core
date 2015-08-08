@@ -104,8 +104,8 @@ FunctionBasedBushingForce::FunctionBasedBushingForce(const string&    body1Name,
 void FunctionBasedBushingForce::setNull()
 {
     setAuthors("Matt DeMers");
-    _b1 = NULL;
-    _b2 = NULL;
+    _b1 = nullptr;
+    _b2 = nullptr;
     // no data members
 }
 

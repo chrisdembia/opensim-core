@@ -290,7 +290,7 @@ double InducedAccelerationsSolver::
 {
     const SimTK::State& s_solver = getSolvedState(s);
 
-    const Coordinate* coord = NULL; 
+    const Coordinate* coord = nullptr; 
     int ind = _modelCopy.getCoordinateSet().getIndex(coordName);
     if(ind < 0){
         std::string msg = "InducedAccelerationsSolver::";
@@ -308,7 +308,7 @@ const SimTK::SpatialVec& InducedAccelerationsSolver::
 {
     const SimTK::State& s_solver = getSolvedState(s);
 
-    const Body* body = NULL; 
+    const Body* body = nullptr; 
     int ind = _modelCopy.getBodySet().getIndex(bodyName);
     if(ind < 0){
         std::string msg = "InducedAccelerationsSolver::";

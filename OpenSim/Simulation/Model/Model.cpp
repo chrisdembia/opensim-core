@@ -91,7 +91,7 @@ Model::Model() :
     _coordinateSet(CoordinateSet()),
     _useVisualizer(false),
     _allControllersEnabled(true),
-    _system(NULL),
+    _system(nullptr),
     _workingState()
 {
     constructInfrastructure();    setNull();
@@ -108,7 +108,7 @@ Model::Model(const string &aFileName, const bool finalize) :
     _coordinateSet(CoordinateSet()),
     _useVisualizer(false),
     _allControllersEnabled(true),
-    _system(NULL),
+    _system(nullptr),
     _workingState()
 {   
     constructInfrastructure();
@@ -218,15 +218,15 @@ void Model::setNull()
     _useVisualizer = false;
     _allControllersEnabled = true;
 
-    _system = NULL;
-    _matter = NULL;
+    _system = nullptr;
+    _matter = nullptr;
 
-    _forceSubsystem = NULL;
-    _contactSubsystem = NULL;
-    _gravityForce = NULL;
+    _forceSubsystem = nullptr;
+    _contactSubsystem = nullptr;
+    _gravityForce = nullptr;
 
-    _modelViz = NULL;
-    _assemblySolver = NULL;
+    _modelViz = nullptr;
+    _assemblySolver = nullptr;
 
     _validationLog="";
 
@@ -1036,7 +1036,7 @@ void Model::equilibrateMuscles(SimTK::State& state)
     for (int i = 0; i < get_ForceSet().getSize(); i++)
     {
         Muscle* muscle = dynamic_cast<Muscle*>(&get_ForceSet().get(i));
-        if (muscle != NULL && !muscle->isDisabled(state)){
+        if (muscle != nullptr && !muscle->isDisabled(state)){
             try{
                 muscle->equilibrate(state);
             }
@@ -1126,7 +1126,7 @@ int Model::getNumMuscleStates() const {
     int n = 0;
     for(int i=0;i<get_ForceSet().getSize();i++){
         Muscle *mus = dynamic_cast<Muscle*>( &get_ForceSet().get(i) );
-        if(mus!=NULL) {
+        if(mus!=nullptr) {
             n += mus->getNumStateVariables();
         }
     }
@@ -1144,7 +1144,7 @@ int Model::getNumProbeStates() const {
     int n = 0;
     for(int i=0;i<get_ProbeSet().getSize();i++){
         Probe *p = dynamic_cast<Probe*>( &get_ProbeSet().get(i) );
-        if(p!=NULL) {
+        if(p!=nullptr) {
             n += p->getNumInternalMeasureStates();
         }
     }
@@ -1307,9 +1307,9 @@ void Model::addAnalysis(Analysis *aAnalysis)
  */
 void Model::removeAnalysis(Analysis *aAnalysis, bool deleteIt)
 {
-    // CHECK FOR NULL
-    if(aAnalysis==NULL) {
-        cout << "Model.removeAnalysis:  ERROR- NULL analysis.\n" << endl;
+    // CHECK FOR nullptr
+    if(aAnalysis==nullptr) {
+        cout << "Model.removeAnalysis:  ERROR- nullptr analysis.\n" << endl;
     }
     if (!deleteIt){
         bool saveStatus = _analysisSet.getMemoryOwner();
@@ -1329,9 +1329,9 @@ void Model::removeAnalysis(Analysis *aAnalysis, bool deleteIt)
  */
 void Model::removeController(Controller *aController)
 {
-    // CHECK FOR NULL
-    if(aController==NULL) {
-        cout << "Model.removeController:  ERROR- NULL controller.\n" << endl;
+    // CHECK FOR nullptr
+    if(aController==nullptr) {
+        cout << "Model.removeController:  ERROR- nullptr controller.\n" << endl;
     }
 
     upd_ControllerSet().remove(aController);

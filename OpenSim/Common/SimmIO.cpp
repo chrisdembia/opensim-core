@@ -449,7 +449,7 @@ void OpenSim::convertString(string& aString, bool aPrependUnderscore)
 
 string OpenSim::getCurrentTimeString()
 {
-   time_t t = time(NULL);
+   time_t t = time(nullptr);
 
     char buf[100];
    strftime(buf, 100, "%m/%d/%Y %I:%M:%S %p", localtime(&t));

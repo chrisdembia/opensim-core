@@ -128,12 +128,12 @@ CMC::CMC(const CMC &aController) :
 CMC::CMC(Model *aModel,CMC_TaskSet *aTaskSet) :
     _paramList(-1) , _f(0.0)
 {
-    // NULL
+    // nullptr
     setNull();
 
     // TRACK OBJECTS
     _taskSet = aTaskSet;
-    if(_taskSet==NULL) {
+    if(_taskSet==nullptr) {
         std::string msg="CMC.CMC: ERR- no track objects.\n";
         throw(new Exception(msg));
     }
@@ -196,23 +196,23 @@ CMC::~CMC()
 
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void CMC::
 setNull()
 {
-    _optimizer = NULL;
-    _target = NULL;
-    _taskSet = NULL;
+    _optimizer = nullptr;
+    _target = nullptr;
+    _taskSet = nullptr;
     _dt = 0.0;
     _lastDT = 0.0;
     _restoreDT = false;
     _tf = 1.0e12;
     _targetDT = 1.0e-3;
     _checkTargetTime = false;
-    _pErrStore = NULL;
-    _vErrStore = NULL;
-    _stressTermWeightStore = NULL;
+    _pErrStore = nullptr;
+    _vErrStore = nullptr;
+    _stressTermWeightStore = nullptr;
     _useCurvatureFilter = false;
     _verbose = false;
     _paramList.setSize(0);
@@ -731,14 +731,14 @@ computeControls(SimTK::State& s, ControlSet &controlSet)
     FunctionSet *uSet = _predictor->getCMCActSubsys()->getSpeedTrajectories();
     Array<double> qDesired(0.0,nq),uDesired(0.0,nu);
     qSet->evaluate(qDesired,0,tiReal);
-    if(uSet!=NULL) {
+    if(uSet!=nullptr) {
         uSet->evaluate(uDesired,0,tiReal);
     } else {
         qSet->evaluate(uDesired,1,tiReal);
     }
     Array<double> qCorrection(0.0,nq),uCorrection(0.0,nu);
-       const Vector& q = s.getQ();
-       const Vector& u = s.getU();
+    const Vector& q = s.getQ();
+    const Vector& u = s.getU();
 
     for(i=0;i<nq;i++) qCorrection[i] = q[i] - qDesired[i];
     for(i=0;i<nu;i++) uCorrection[i] = u[i] - uDesired[i];
@@ -897,8 +897,50 @@ computeControls(SimTK::State& s, ControlSet &controlSet)
         try {
             _optimizer->optimize(fVector);
         }
-        catch (const SimTK::Exception::Base& ex) {
+        catch (const SimTK::Exception::OptimizerFailed& ex) {
             cout << ex.getMessage() << endl;
+
+            // Compute the error in the constraints.
+            SimTK::Vector constraintDefect;
+            _target->constraintFunc(fVector, true, constraintDefect);
+            
+            const double constraintTolTODO = 1e-5;
+            
+            bool constraintsSatisfied = true;
+            for (const auto& defect : constraintDefect) {
+                if (std::abs(defect) > constraintTolTODO) {
+                    constraintsSatisfied = false;
+                }
+            }
+            
+            if (!constraintsSatisfied) {
+                cout << endl;
+                cout <<
+                    "  task                                          violation"
+                    << endl;
+                cout <<
+                    "  --------------------------------------------- ---------"
+                    << endl;
+                for (int iconstr = 0; iconstr < constraintDefect.size(); ++iconstr)
+                {
+                    if (std::abs(constraintDefect[iconstr]) >
+                            constraintTolTODO) {
+                        // TODO check if the task is enabled.
+                        const auto& task = _taskSet->get(iconstr);
+                        const string& taskName = task.getName();
+                        cout << "  ";
+                        cout << std::setw(45) << std::left << taskName;
+                        cout << " " << constraintDefect[iconstr] << endl;
+                    }
+                }
+            }
+            /*
+            cout << "For more information, re-run with verbose output "
+                    "(<use_verbose_printing> setting "
+                    "in CMCTool XML setup file)." << endl;
+             */
+            
+            //cout << "TODO check which coordinates are locked. 'did you mean to have this locked?' TODO only evaluate constraint function for fast target." << endl;
             cout << "OPTIMIZATION FAILED..." << endl;
             cout<<endl;
 
@@ -906,13 +948,14 @@ computeControls(SimTK::State& s, ControlSet &controlSet)
             msg << "CMC.computeControls: ERROR- Optimizer could not find a solution." << endl;
             msg << "Unable to find a feasible solution at time = " << s.getTime() << "." << endl;
             msg << "Model cannot generate the forces necessary to achieve the target acceleration." << endl;
-            msg << "Possible issues: 1. not all model degrees-of-freedom are actuated, " << endl;
-            msg << "2. there are tracking tasks for locked coordinates, and/or" << endl;
-            msg << "3. there are unnecessary control constraints on reserve/residual actuators." << endl;
+            msg << "Possible issues:" << endl;
+            msg << "  1. not all model degrees-of-freedom are actuated, " << endl;
+            msg << "  2. there are tracking tasks for locked coordinates, and/or" << endl;
+            msg << "  3. there are unnecessary control constraints on reserve/residual actuators." << endl;
                    
             cout<<"\n"<<msg.str()<<endl<<endl;
 
-         throw(new OpenSim::Exception(msg.str(), __FILE__,__LINE__));
+            throw OpenSim::Exception(msg.str(), __FILE__, __LINE__);
         }
     } else {
         // Got a direct solution, don't need to run optimizer

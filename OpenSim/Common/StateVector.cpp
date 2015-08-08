@@ -304,7 +304,7 @@ add(double aValue)
 void StateVector::
 add(int aN,double aY[])
 {
-    if(aY==NULL) return;
+    if(aY==nullptr) return;
     int i,n=aN;
     if(n>_data.getSize()) n = _data.getSize();
     for(i=0;i<n;i++)  _data[i] += aY[i];
@@ -335,7 +335,7 @@ add(int aN,double aValue)
 void StateVector::
 add(StateVector *aStateVector)
 {
-    if(aStateVector==NULL) return;
+    if(aStateVector==nullptr) return;
 
     // GET SIZE
     int n = aStateVector->getSize();
@@ -376,7 +376,7 @@ subtract(double aValue)
 void StateVector::
 subtract(int aN,double aY[])
 {
-    if(aY==NULL) return;
+    if(aY==nullptr) return;
     int i,n=aN;
     if(n>_data.getSize()) n = _data.getSize();
     for(i=0;i<n;i++)  _data[i] -= aY[i];
@@ -390,7 +390,7 @@ subtract(int aN,double aY[])
 void StateVector::
 subtract(StateVector *aStateVector)
 {
-    if(aStateVector==NULL) return;
+    if(aStateVector==nullptr) return;
 
     // GET SIZE
     int n = aStateVector->getSize();
@@ -431,7 +431,7 @@ multiply(double aValue)
 void StateVector::
 multiply(int aN,double aY[])
 {
-    if(aY==NULL) return;
+    if(aY==nullptr) return;
     int i,n=aN;
     if(n>_data.getSize()) n = _data.getSize();
     for(i=0;i<n;i++)  _data[i] *= aY[i];
@@ -445,7 +445,7 @@ multiply(int aN,double aY[])
 void StateVector::
 multiply(StateVector *aStateVector)
 {
-    if(aStateVector==NULL) return;
+    if(aStateVector==nullptr) return;
 
     // GET SIZE
     int n = aStateVector->getSize();
@@ -493,7 +493,7 @@ divide(double aValue)
 void StateVector::
 divide(int aN,double aY[])
 {
-    if(aY==NULL) return;
+    if(aY==nullptr) return;
     int i,n=aN;
     if(n>_data.getSize()) n = _data.getSize();
     for(i=0;i<n;i++) {  
@@ -511,7 +511,7 @@ divide(int aN,double aY[])
 void StateVector::
 divide(StateVector *aStateVector)
 {
-    if(aStateVector==NULL) return;
+    if(aStateVector==nullptr) return;
 
     // GET SIZE
     int n = aStateVector->getSize();
@@ -543,7 +543,7 @@ int StateVector::
 print(FILE *fp) const
 {
     // CHECK FILE POINTER
-    if(fp==NULL) {
+    if(fp==nullptr) {
         printf("StateVector.print(FILE*): null file pointer.\n");
         return(-1);
     }

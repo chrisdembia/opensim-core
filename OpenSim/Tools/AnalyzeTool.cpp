@@ -134,7 +134,7 @@ AnalyzeTool::AnalyzeTool(Model& aModel) :
  *
  * Copy constructors for all Tools only copy the non-XML variable
  * members of the object; that is, the object's DOMnode and XMLDocument
- * are not copied but set to NULL.  The reason for this is that for the
+ * are not copied but set to nullptr.  The reason for this is that for the
  * object and all its derived classes to establish the correct connection
  * to the XML document nodes, the the object would need to reconstruct based
  * on the XML document not the values of the object's member variables.
@@ -192,7 +192,7 @@ setNull()
     _speedsFileName = "";
     _lowpassCutoffFrequency = -1.0;
 
-    _statesStore = NULL;
+    _statesStore = nullptr;
 
     _printResultFiles = true;
     _replaceForceSet = false;
@@ -364,7 +364,7 @@ getStatesStorage()
 void AnalyzeTool::
 loadStatesFromFile(SimTK::State& s)
 {
-    delete _statesStore; _statesStore = NULL;
+    delete _statesStore; _statesStore = nullptr;
     if(_statesFileNameProp.isValidFileName()) {
         if(_coordinatesFileNameProp.isValidFileName()) cout << "WARNING: Ignoring " << _coordinatesFileNameProp.getName() << " since " << _statesFileNameProp.getName() << " is also set" << endl;
         if(_speedsFileNameProp.isValidFileName()) cout << "WARNING: Ignoring " << _speedsFileNameProp.getName() << " since " << _statesFileNameProp.getName() << " is also set" << endl;
@@ -388,7 +388,7 @@ loadStatesFromFile(SimTK::State& s)
             coordinatesStore.lowpassIIR(_lowpassCutoffFrequency);
         }
 
-        Storage *qStore=NULL, *uStore=NULL;
+        Storage *qStore=nullptr, *uStore=nullptr;
 
         _model->getSimbodyEngine().formCompleteStorages( s, coordinatesStore,qStore,uStore);
 
@@ -428,7 +428,7 @@ setStatesFromMotion(const SimTK::State& s, const Storage &aMotion, bool aInDegre
         motionCopy.lowpassIIR(_lowpassCutoffFrequency);
     }
 
-    Storage *qStore=NULL, *uStore=NULL;
+    Storage *qStore=nullptr, *uStore=nullptr;
     _model->getSimbodyEngine().formCompleteStorages(s,motionCopy,qStore,uStore);
 
     _model->getSimbodyEngine().convertDegreesToRadians(*qStore);
@@ -451,7 +451,7 @@ verifyControlsStates()
 
     // DO WE HAVE STATES?
     // States
-    if(_statesStore==NULL) {
+    if(_statesStore==nullptr) {
         string msg = "analyzeTool.verifyControlsStates: ERROR- a storage object containing "
                             "the time histories of states was not specified.";
         throw Exception(msg,__FILE__,__LINE__);
@@ -507,7 +507,7 @@ bool AnalyzeTool::run(bool plotting)
     //cout<<"Running analyze tool "<<getName()<<"."<<endl;
 
     // CHECK FOR A MODEL
-    if(_model==NULL) {
+    if(_model==nullptr) {
         string msg = "ERROR- A model has not been set.";
         cout<<endl<<msg<<endl;
         throw(Exception(msg,__FILE__,__LINE__));

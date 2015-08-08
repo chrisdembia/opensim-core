@@ -55,7 +55,7 @@ using namespace SimTK;
 InverseDynamicsTool::~InverseDynamicsTool()
 {
     if (_coordinateValues) {
-        delete _coordinateValues; _coordinateValues=NULL; 
+        delete _coordinateValues; _coordinateValues=nullptr; 
     }
 }
 //_____________________________________________________________________________
@@ -121,9 +121,9 @@ InverseDynamicsTool::InverseDynamicsTool(const InverseDynamicsTool &aTool) :
 void InverseDynamicsTool::setNull()
 {
     setupProperties();
-    _model = NULL;
+    _model = nullptr;
     _lowpassCutoffFrequency = -1.0;
-    _coordinateValues = NULL;
+    _coordinateValues = nullptr;
 }
 //_____________________________________________________________________________
 /**
@@ -186,7 +186,7 @@ operator=(const InverseDynamicsTool &aTool)
     _lowpassCutoffFrequency = aTool._lowpassCutoffFrequency;
     _outputGenForceFileName = aTool._outputGenForceFileName;
     _outputBodyForcesAtJointsFileName = aTool._outputBodyForcesAtJointsFileName;
-    _coordinateValues = NULL;
+    _coordinateValues = nullptr;
 
     return(*this);
 }
@@ -262,8 +262,8 @@ bool InverseDynamicsTool::run()
         const CoordinateSet &coords = _model->getCoordinateSet();
         int nq = _model->getNumCoordinates();
 
-        FunctionSet *coordFunctions = NULL;
-        //Storage *coordinateValues = NULL;
+        FunctionSet *coordFunctions = nullptr;
+        //Storage *coordinateValues = nullptr;
 
         if(hasCoordinateValues()){
             if(_lowpassCutoffFrequency>=0) {
@@ -427,7 +427,7 @@ bool InverseDynamicsTool::run()
 
 bool InverseDynamicsTool::hasCoordinateValues()
 {
-    if (_coordinateValues!= NULL) // Coordinates has been set from GUI
+    if (_coordinateValues!= nullptr) // Coordinates has been set from GUI
         return true;
     // Try constructing cooridnates from specified file
     if(_coordinatesFileName != "" && _coordinatesFileName != "Unassigned"){

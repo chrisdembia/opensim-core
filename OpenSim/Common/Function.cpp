@@ -50,7 +50,7 @@ using SimTK::Vector;
  */
 Function::~Function()
 {
-    if (_function != NULL)
+    if (_function != nullptr)
         delete _function;
 }
 //_____________________________________________________________________________
@@ -58,7 +58,7 @@ Function::~Function()
  * Default constructor.
  */
 Function::Function() :
-    _function(NULL)
+    _function(nullptr)
 {
     setNull();
 }
@@ -70,7 +70,7 @@ Function::Function() :
  */
 Function::Function(const Function &aFunction) :
     Object(aFunction),
-    _function(NULL)
+    _function(nullptr)
 {
 }
 
@@ -80,7 +80,7 @@ Function::Function(const Function &aFunction) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to NULL values.
+ * Set all member variables to nullptr values.
  */
 void Function::
 setNull()
@@ -111,9 +111,9 @@ operator=(const Function &aFunction)
 //=============================================================================
 Function* Function::makeFunctionOfType(Function* aFunction, const string& aNewTypeName)
 {
-    Function* newFunction = NULL;
+    Function* newFunction = nullptr;
 
-    if (aFunction != NULL) {
+    if (aFunction != nullptr) {
         Object* newObject = Object::newInstanceOfType(aNewTypeName);
         if (newObject) {
             newFunction = dynamic_cast<Function*>(newObject);
@@ -162,35 +162,35 @@ evaluateTotalSecondDerivative(double aX,double aDxdt,double aD2xdt2)
 */
 double Function::calcValue(const Vector& x) const
 {
-    if (_function == NULL)
+    if (_function == nullptr)
         _function = createSimTKFunction();
     return _function->calcValue(x);
 }
 
 double Function::calcDerivative(const std::vector<int>& derivComponents, const Vector& x) const
 {
-    if (_function == NULL)
+    if (_function == nullptr)
         _function = createSimTKFunction();
     return _function->calcDerivative(derivComponents, x);
 }
 
 int Function::getArgumentSize() const
 {
-    if (_function == NULL)
+    if (_function == nullptr)
         _function = createSimTKFunction();
     return _function->getArgumentSize();
 }
 
 int Function::getMaxDerivativeOrder() const
 {
-    if (_function == NULL)
+    if (_function == nullptr)
         _function = createSimTKFunction();
     return _function->getMaxDerivativeOrder();
 }
 
 void Function::resetFunction()
 {
-    if (_function != NULL)
+    if (_function != nullptr)
         delete _function;
-    _function = NULL;
+    _function = nullptr;
 }

@@ -67,12 +67,12 @@ RootSolver(VectorFunctionUncoupledNxN *aFunc)
 //-----------------------------------------------------------------------------
 //_____________________________________________________________________________
 /**
- * Set all member variables to NULL values.
+ * Set all member variables to nullptr values.
  */
 void RootSolver::
 setNull()
 {
-    _function = NULL;
+    _function = nullptr;
 }
 
 

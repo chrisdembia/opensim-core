@@ -31,7 +31,7 @@ namespace OpenSim {
 ContactMesh::ContactMesh() :
     ContactGeometry(),
     _filename(_filenameProp.getValueStr()),
-    _geometry(NULL)
+    _geometry(nullptr)
 {
     setNull();
     setupProperties();
@@ -40,7 +40,7 @@ ContactMesh::ContactMesh() :
 ContactMesh::ContactMesh(const std::string& filename, const SimTK::Vec3& location, const SimTK::Vec3& orientation, Body& body) :
     ContactGeometry(location, orientation, body),
     _filename(_filenameProp.getValueStr()),
-    _geometry(NULL)
+    _geometry(nullptr)
 {
     setNull();
     setupProperties();
@@ -60,7 +60,7 @@ ContactMesh::ContactMesh(const std::string& filename, const SimTK::Vec3& locatio
 ContactMesh::ContactMesh(const std::string& filename, const SimTK::Vec3& location, const SimTK::Vec3& orientation, Body& body, const std::string& name) :
     ContactGeometry(location, orientation, body),
     _filename(_filenameProp.getValueStr()),
-    _geometry(NULL)
+    _geometry(nullptr)
 {
     setNull();
     setupProperties();
@@ -78,7 +78,7 @@ ContactMesh::ContactMesh(const std::string& filename, const SimTK::Vec3& locatio
 ContactMesh::ContactMesh(const ContactMesh& geom) :
     ContactGeometry(geom),
     _filename(_filenameProp.getValueStr()),
-    _geometry(NULL)
+    _geometry(nullptr)
 {
     setNull();
     setupProperties();
@@ -105,14 +105,14 @@ void ContactMesh::setFilename(const std::string& filename)
 {
     _filename = filename;
     _filenameProp.setValueIsDefault(false);
-    if (_geometry != NULL)
+    if (_geometry != nullptr)
         delete _geometry;
-    _geometry = NULL;
+    _geometry = nullptr;
 }
 
 void ContactMesh::loadMesh(const std::string& filename)
 {
-    if (_geometry==NULL){
+    if (_geometry==nullptr){
         SimTK::PolygonalMesh mesh;
         std::ifstream file;
         assert (_model);
@@ -138,7 +138,7 @@ void ContactMesh::loadMesh(const std::string& filename)
 
 SimTK::ContactGeometry ContactMesh::createSimTKContactGeometry()
 {
-    if (_geometry == NULL)
+    if (_geometry == nullptr)
         loadMesh(_filename);
     return *_geometry;
 }

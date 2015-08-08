@@ -228,7 +228,7 @@ private:
     // Clear out all the data fields in the base class. There should be one
     // line here for each data member below.
     void setNull() {
-        _model = NULL;
+        _model = nullptr;
     }
 protected:
     /** The model this component belongs to. */

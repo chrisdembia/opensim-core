@@ -70,8 +70,8 @@ public:
 {
     for(int i=0;i<_objects.getSize();i++) {
         Coordinate *obj = _objects[i];
-        if(obj==NULL) {
-            rNames.append("NULL");
+        if(obj==nullptr) {
+            rNames.append("nullptr");
         } else {
             rNames.append(obj->getSpeedName());
         }

@@ -82,14 +82,14 @@ ControlSetController::ControlSetController(const ControlSetController &aControll
 
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void ControlSetController::setNull()
 {
     setupProperties();
 
-    _model = NULL;
-    _controlSet = NULL;
+    _model = nullptr;
+    _controlSet = nullptr;
 
 
 }
@@ -159,7 +159,7 @@ operator=(const ControlSetController &aController)
 // compute the control value for all actuators this Controller is responsible for
 void ControlSetController::computeControls(const SimTK::State& s, SimTK::Vector& controls)  const
 {
-    SimTK_ASSERT( _controlSet , "ControlSetController::computeControls controlSet is NULL");
+    SimTK_ASSERT( _controlSet , "ControlSetController::computeControls controlSet is nullptr");
 
     std::string actName = "";
     int index = -1;
@@ -183,7 +183,7 @@ void ControlSetController::computeControls(const SimTK::State& s, SimTK::Vector&
 
 double ControlSetController::getFirstTime() const {
     Array<int> controlList;
-   SimTK_ASSERT( _controlSet , "ControlSetController::getFirstTime controlSet is NULL");
+   SimTK_ASSERT( _controlSet , "ControlSetController::getFirstTime controlSet is nullptr");
 
 //    std::cout << " ncontrols= "<< _controlSet->getSize() << std::endl<<std::endl;
     _controlSet->getControlList( "ControlLinear" , controlList );
@@ -213,7 +213,7 @@ void ControlSetController::extendFinalizeFromProperties()
     Super::extendFinalizeFromProperties();
 
     SimTK_ASSERT(_controlsFileName != "",
-        "ControlSetController::extendFinalizeFromProperties controlsFileName is NULL");
+        "ControlSetController::extendFinalizeFromProperties controlsFileName is nullptr");
 
     if (_controlsFileName != "Unassigned") {
         //        std::cout<<"\n\nControlSetController::extendConnectToModel(): Loading controls from file "<<_controlsFileName<<"."<<std::endl;
@@ -224,7 +224,7 @@ void ControlSetController::extendFinalizeFromProperties()
         else
             _controlSet = new ControlSet(_controlsFileName);
     }
-    else if (_controlSet == NULL) {
+    else if (_controlSet == nullptr) {
         std::cout << " ControlSetController::extendFinalizeFromProperties(): no Control Set Specified" << std::endl;
         setDisabled(true);
         return;  // no more wiring is needed
@@ -232,7 +232,7 @@ void ControlSetController::extendFinalizeFromProperties()
 
     // Make sure that we are controlling all the actuators that the control set specifies
     std::string ext = ".excitation";
-    for (int i = 0; _controlSet != NULL && i<_controlSet->getSize(); i++){
+    for (int i = 0; _controlSet != nullptr && i<_controlSet->getSize(); i++){
         std::string actName = _controlSet->get(i).getName();
         if (actName.length()>ext.length() && !(actName.compare(actName.length() - ext.length(), ext.length(), ".excitation"))){
             actName.erase(actName.length() - ext.length(), ext.length());

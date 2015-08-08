@@ -404,7 +404,7 @@ static int load_Rxyz(double q[3],double Rxyz[9]) {
 /*====== SOLVE THE SYSTEM OF LINEAR EQUATIONS:  A(NxN)*X(Nx1)=B(Nx1) ========*/
 /*===========================================================================*/
 static int quick_solve_linear(int N,double A[],double X[],double B[]) {
-    static double *MTX=NULL,**Mtx=NULL;
+    static double *MTX=nullptr,**Mtx=nullptr;
     static int mtxsize=0;
     double **Mr,*Mrj,*Mij,*Xr,*Br,d;
     int r,i,j,n;
@@ -415,7 +415,7 @@ static int quick_solve_linear(int N,double A[],double X[],double B[]) {
     if(mtxsize<N*(N+1)) {   mtxsize=N*(N+1);
         MTX=(double *)  malloc(mtxsize*sizeof(double));
         Mtx=(double **) malloc(N*sizeof(double *));
-        if(Mtx==NULL) { fprintf(stderr,"\nOut of memory.\n\n"); exit(0); }
+        if(Mtx==nullptr) { fprintf(stderr,"\nOut of memory.\n\n"); exit(0); }
     }
     /*====================================================================*/
 

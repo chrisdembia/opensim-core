@@ -71,7 +71,7 @@ PropertyStrArray(const string &aName,
     Property_Deprecated(Property_Deprecated::StrArray,aName), _array("")
 {
     if(aSize<=0) return;
-    if(aArray==NULL) return;
+    if(aArray==nullptr) return;
     _array.append(aSize,aArray);
 }
 //_____________________________________________________________________________
@@ -166,7 +166,7 @@ setValue(int aSize,const string *aArray)
 {
     _array.setSize(0);
     if(aSize<=0) return;
-    if(aArray==NULL) return;
+    if(aArray==nullptr) return;
     _array.append(aSize,aArray);
 }
 //_____________________________________________________________________________

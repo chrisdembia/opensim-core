@@ -77,7 +77,7 @@ PrescribedController::~PrescribedController()
 }
 
 /*
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void PrescribedController::setNull()
 {

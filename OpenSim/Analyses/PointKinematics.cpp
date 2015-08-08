@@ -51,7 +51,7 @@ const int PointKinematics::BUFFER_LENGTH = PointKinematicsBUFFER_LENGTH;
  */
 PointKinematics::~PointKinematics()
 {
-    if(_dy!=NULL) { delete[] _dy;  _dy=NULL; }
+    if(_dy!=nullptr) { delete[] _dy;  _dy=nullptr; }
     deleteStorage();
 }
 //_____________________________________________________________________________
@@ -63,14 +63,14 @@ PointKinematics::~PointKinematics()
  */
 PointKinematics::PointKinematics(Model *aModel) :
 Analysis(aModel),
-_body(NULL),
-_relativeToBody(NULL),
+_body(nullptr),
+_relativeToBody(nullptr),
 _bodyName(_bodyNameProp.getValueStr()),
 _relativeToBodyName(_relativeToBodyNameProp.getValueStr()),
 _point(_pointProp.getValueDblVec()),
 _pointName(_pointNameProp.getValueStr())
 {
-    // NULL
+    // nullptr
     setNull();
 
     // STORAGE
@@ -99,8 +99,8 @@ _pointName(_pointNameProp.getValueStr())
  */
 PointKinematics::PointKinematics(const std::string &aFileName):
 Analysis(aFileName, false),
-_body(NULL),
-_relativeToBody(NULL),
+_body(nullptr),
+_relativeToBody(nullptr),
 _bodyName(_bodyNameProp.getValueStr()),
 _relativeToBodyName(_relativeToBodyNameProp.getValueStr()),
 _point(_pointProp.getValueDblVec()),
@@ -150,11 +150,11 @@ void PointKinematics::
 setNull()
 {
     // POINTERS
-    _dy = NULL;
-    _kin = NULL;
-    _pStore = NULL;
-    _vStore = NULL;
-    _aStore = NULL;
+    _dy = nullptr;
+    _kin = nullptr;
+    _pStore = nullptr;
+    _vStore = nullptr;
+    _aStore = nullptr;
 
     // OTHER VARIABLES
 
@@ -290,9 +290,9 @@ allocateStorage()
 void PointKinematics::
 deleteStorage()
 {
-    if(_aStore!=NULL) { delete _aStore;  _aStore=NULL; }
-    if(_vStore!=NULL) { delete _vStore;  _vStore=NULL; }
-    if(_pStore!=NULL) { delete _pStore;  _pStore=NULL; }
+    if(_aStore!=nullptr) { delete _aStore;  _aStore=nullptr; }
+    if(_vStore!=nullptr) { delete _vStore;  _vStore=nullptr; }
+    if(_pStore!=nullptr) { delete _pStore;  _pStore=nullptr; }
 }
 
 
@@ -356,9 +356,9 @@ void PointKinematics::
 setBody(Body* aBody)
 {
     // CHECK
-    if (aBody==NULL) {
+    if (aBody==nullptr) {
         printf("PointKinematics.setBody:  WARN- invalid body pointer %p.\n", aBody);
-        _body = NULL;
+        _body = nullptr;
         return;
     }
 
@@ -371,9 +371,9 @@ void PointKinematics::
 setRelativeToBody(Body* aBody)
 {
     // CHECK
-    if (aBody==NULL) {
+    if (aBody==nullptr) {
         printf("PointKinematics.setRelativeToBody:  WARN- invalid body pointer %p.\n", aBody);
-        _body = NULL;
+        _body = nullptr;
         return;
     }
 
@@ -439,9 +439,9 @@ setPointName(const string &aName)
 {
     _pointName = aName;
     constructColumnLabels();
-    if(_aStore!=NULL) _aStore->setColumnLabels(getColumnLabels());
-    if(_vStore!=NULL) _vStore->setColumnLabels(getColumnLabels());
-    if(_pStore!=NULL) _pStore->setColumnLabels(getColumnLabels());
+    if(_aStore!=nullptr) _aStore->setColumnLabels(getColumnLabels());
+    if(_vStore!=nullptr) _vStore->setColumnLabels(getColumnLabels());
+    if(_pStore!=nullptr) _pStore->setColumnLabels(getColumnLabels());
 }
 //_____________________________________________________________________________
 /**

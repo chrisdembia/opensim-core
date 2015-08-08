@@ -98,7 +98,7 @@ MultiplierFunction::MultiplierFunction(const MultiplierFunction &aFunction) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to their NULL or default values.
+ * Set all member variables to their nullptr or default values.
  */
 void MultiplierFunction::setNull()
 {
@@ -167,7 +167,7 @@ double MultiplierFunction::calcDerivative(const std::vector<int>& derivComponent
     if (_osFunction)
         return _osFunction->calcDerivative(derivComponents, x) * _scale;
     else {
-        throw Exception("MultiplierFunction::calcDerivative(): _osFunction is NULL.");
+        throw Exception("MultiplierFunction::calcDerivative(): _osFunction is nullptr.");
         return 0.0;
     }
 }
@@ -177,7 +177,7 @@ double MultiplierFunction::calcValue(const SimTK::Vector& x) const
     if (_osFunction)
         return _osFunction->calcValue(x) * _scale;
     else {
-        throw Exception("MultiplierFunction::calcValue(): _osFunction is NULL.");
+        throw Exception("MultiplierFunction::calcValue(): _osFunction is nullptr.");
         return 0.0;
     }
 }
@@ -187,7 +187,7 @@ int MultiplierFunction::getArgumentSize() const
     if (_osFunction)
         return _osFunction->getArgumentSize();
     else {
-        throw Exception("MultiplierFunction::getArgumentSize(): _osFunction is NULL.");
+        throw Exception("MultiplierFunction::getArgumentSize(): _osFunction is nullptr.");
         return 0;
     }
 }
@@ -197,7 +197,7 @@ int MultiplierFunction::getMaxDerivativeOrder() const
     if (_osFunction)
         return _osFunction->getMaxDerivativeOrder();
     else {
-        throw Exception("MultiplierFunction::getMaxDerivativeOrder(): _osFunction is NULL.");
+        throw Exception("MultiplierFunction::getMaxDerivativeOrder(): _osFunction is nullptr.");
         return 0;
     }
 }

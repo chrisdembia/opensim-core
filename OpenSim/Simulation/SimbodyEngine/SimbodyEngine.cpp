@@ -109,12 +109,12 @@ void SimbodyEngine::copyData(const SimbodyEngine &aEngine)
 
 //_____________________________________________________________________________
 /**
- * Set NULL values for all the variable members of this class.
+ * Set nullptr values for all the variable members of this class.
  */
 void SimbodyEngine::setNull()
 {
     setAuthors("Frank C. Anderson, Ajay Seth");
-    _model = NULL;
+    _model = nullptr;
 }
     
 
@@ -569,7 +569,7 @@ void SimbodyEngine::convertAnglesToDirectionCosines(double aE1, double aE2, doub
  */
 void SimbodyEngine::convertAnglesToDirectionCosines(double aE1, double aE2, double aE3, double *rDirCos) const
 {
-    if(rDirCos==NULL) return;
+    if(rDirCos==nullptr) return;
     
     Vec3 angs(aE1, aE2, aE3);
     Rotation aRot; 
@@ -639,7 +639,7 @@ void SimbodyEngine::convertDirectionCosinesToQuaternions(double aDirCos[3][3], d
  */
 void SimbodyEngine::convertDirectionCosinesToQuaternions(double *aDirCos, double *rQ1, double *rQ2, double *rQ3, double *rQ4) const
 {
-    if(aDirCos==NULL) return;
+    if(aDirCos==nullptr) return;
     Quaternion quat = Rotation(Rotation::getAs(aDirCos)).convertRotationToQuaternion();
     *rQ1 = quat[0];
     *rQ2 = quat[1];
@@ -675,7 +675,7 @@ void SimbodyEngine::convertQuaternionsToDirectionCosines(double aQ1, double aQ2,
  */
 void SimbodyEngine::convertQuaternionsToDirectionCosines(double aQ1, double aQ2, double aQ3, double aQ4, double *rDirCos) const
 {
-    if(rDirCos==NULL) return;
+    if(rDirCos==nullptr) return;
     Rotation R;
     R.setRotationFromQuaternion(Quaternion(Vec4(aQ1, aQ2, aQ3, aQ4)));
 

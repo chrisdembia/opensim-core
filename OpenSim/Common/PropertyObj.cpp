@@ -47,7 +47,7 @@ using namespace std;
  */
 PropertyObj::~PropertyObj()
 {
-    if(_value!=NULL) { delete _value;  _value=NULL; }
+    if(_value!=nullptr) { delete _value;  _value=nullptr; }
 }
 //_____________________________________________________________________________
 /**
@@ -116,7 +116,7 @@ PropertyObj& PropertyObj::
 operator=(const PropertyObj &aProperty)
 {
     Property_Deprecated::operator =(aProperty);
-    if(_value!=NULL) { delete _value;  _value=NULL; }
+    if(_value!=nullptr) { delete _value;  _value=nullptr; }
     _value = aProperty.getValueObj().clone();
     return(*this);
 }

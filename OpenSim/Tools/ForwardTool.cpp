@@ -52,7 +52,7 @@ using namespace OpenSim;
 ForwardTool::~ForwardTool()
 {
 
-    if(_yStore!=NULL) delete _yStore;
+    if(_yStore!=nullptr) delete _yStore;
 
 }
 //_____________________________________________________________________________
@@ -97,7 +97,7 @@ ForwardTool::ForwardTool(const string &aFileName,bool aUpdateFromXMLNode,bool aL
  *
  * Copy constructors for all Tools only copy the non-XML variable
  * members of the object; that is, the object's DOMnode and XMLDocument
- * are not copied but set to NULL.  The reason for this is that for the
+ * are not copied but set to nullptr.  The reason for this is that for the
  * object and all its derived classes to establish the correct connection
  * to the XML document nodes, the the object would need to reconstruct based
  * on the XML document not the values of the object's member variables.
@@ -153,7 +153,7 @@ void ForwardTool::setNull()
     _replaceForceSet = false;   // default should be false for Forward.
 
     // INTERNAL WORK VARIABLES
-    _yStore = NULL;
+    _yStore = nullptr;
 
     // Start parsing log as empty. 
     _parsingLog="";
@@ -236,7 +236,7 @@ bool ForwardTool::run()
 {
     cout<<"Running tool "<<getName()<<"."<<endl;
     // CHECK FOR A MODEL
-    if(_model==NULL) {
+    if(_model==nullptr) {
         string msg = "ERROR- A model has not been set.";
         cout<<endl<<msg<<endl;
         throw(Exception(msg,__FILE__,__LINE__));
@@ -294,11 +294,11 @@ bool ForwardTool::run()
     int numStateVariables = _model->getNumStateVariables();
     Array<double> rawData = Array<double>(0.0, numStateVariables);
     // SET THE INITIAL STATES
-    if(_yStore!=NULL) _yStore->getData(startIndexForYStore,numStateVariables,&rawData[0]);
+    if(_yStore!=nullptr) _yStore->getData(startIndexForYStore,numStateVariables,&rawData[0]);
     if(startIndexForYStore >= 0) {
         _yStore->getData(startIndexForYStore,numStateVariables,&rawData[0]);
     }
-    if (_yStore!=NULL || startIndexForYStore >= 0){
+    if (_yStore!=nullptr || startIndexForYStore >= 0){
         Array<std::string> stateNames = _model->getStateVariableNames();
         for (int i=0; i<numStateVariables; i++)
             _model->setStateVariableValue(s, stateNames[i], rawData[i]);
@@ -375,7 +375,7 @@ int ForwardTool::determineInitialTimeFromStatesStorage(double &rTI)
 {
     int index = -1;
     double ti;
-    if(_yStore!=NULL) {
+    if(_yStore!=nullptr) {
         index = _yStore->findIndex(rTI);
         if(index<0) {
             rTI = _yStore->getFirstTime();
@@ -398,7 +398,7 @@ int ForwardTool::determineInitialTimeFromStatesStorage(double &rTI)
 
 void ForwardTool::loadStatesStorage (std::string& statesFileName, Storage*& rYStore) const {
     // Initial states
-    rYStore = NULL;
+    rYStore = nullptr;
     if(_statesFileName!="") {
         cout<<"\nLoading states from file "<<_statesFileName<<"."<<endl;
         Storage temp(statesFileName);

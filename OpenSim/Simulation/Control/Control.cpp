@@ -86,7 +86,7 @@ Control::Control(const Control &aControl) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set the member variables to their NULL values.
+ * Set the member variables to their nullptr values.
  */
 void Control::
 setNull()

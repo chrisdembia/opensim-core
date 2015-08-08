@@ -487,7 +487,7 @@ void simulateModelWithCables(const string &modelFile, double finalTime)
             ObstacleInfo obs;
             obs.bodyName = pp.getBodyName();
             obs.X_BS.setP(pp.getLocation());
-            obs.wrapObjectPtr=NULL;
+            obs.wrapObjectPtr=nullptr;
             obs.P_S.setToNaN(); // not used for viapoint
             obs.Q_S.setToNaN(); // not used for viapoint
             obs.isVia = true;

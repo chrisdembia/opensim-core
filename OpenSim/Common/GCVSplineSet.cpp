@@ -91,12 +91,12 @@ GCVSplineSet::
 GCVSplineSet(int aDegree,const Storage *aStore,double aErrorVariance)
 {
     setNull();
-    if(aStore==NULL) return;
+    if(aStore==nullptr) return;
     setName(aStore->getName());
 
     // CAPACITY
     StateVector *vec = aStore->getStateVector(0);
-    if(vec==NULL) return;
+    if(vec==nullptr) return;
     ensureCapacity(2*vec->getSize());
 
     // CONSTRUCT
@@ -109,7 +109,7 @@ GCVSplineSet(int aDegree,const Storage *aStore,double aErrorVariance)
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to NULL values.
+ * Set all member variables to nullptr values.
  */
 void GCVSplineSet::
 setNull()
@@ -127,7 +127,7 @@ setNull()
 void GCVSplineSet::
 construct(int aDegree,const Storage *aStore,double aErrorVariance)
 {
-    if(aStore==NULL) return;
+    if(aStore==nullptr) return;
 
     // DESCRIPTION
     setDescription(aStore->getDescription());
@@ -139,7 +139,7 @@ construct(int aDegree,const Storage *aStore,double aErrorVariance)
 
     // LOOP THROUGHT THE STATES
     int nTime=1,nData=1;
-    double *times=NULL,*data=NULL;
+    double *times=nullptr,*data=nullptr;
     GCVSpline *spline;
     //printf("GCVSplineSet.construct:  contructing splines...\n");
     for(int i=0;nData>0;i++) {
@@ -177,8 +177,8 @@ construct(int aDegree,const Storage *aStore,double aErrorVariance)
     //printf("\n%d splines constructed.\n\n",i);
 
     // CLEANUP
-    if(times!=NULL) delete[] times;
-    if(data!=NULL) delete[] data;
+    if(times!=nullptr) delete[] times;
+    if(data!=nullptr) delete[] data;
 }
 
 
@@ -190,7 +190,7 @@ construct(int aDegree,const Storage *aStore,double aErrorVariance)
  * Get the function at a specified index.
  *
  * @param aIndex Index of the desired function:  0 <= aIndex < getSize().
- * @return Function at index aIndex.  If aIndex is not value NULL is returned.
+ * @return Function at index aIndex.  If aIndex is not value nullptr is returned.
  */
 GCVSpline* GCVSplineSet::
 getGCVSpline(int aIndex) const
@@ -213,26 +213,26 @@ getGCVSpline(int aIndex) const
  * the second derivative of the spline, etc.
  * @param aDX Spacing of the data points in the independent variable.  If
  * negative the spacing of the independent variable is taken from the
- * original data, as determined from the first non-NULL spline in the set.
+ * original data, as determined from the first non-nullptr spline in the set.
  * aDX has a default value of -1.
  * @return Storage object.  If a valid storage object cannot be constructed
- * NULL is returned.
+ * nullptr is returned.
  * @see Storage
  */
 Storage* GCVSplineSet::
 constructStorage(int aDerivOrder,double aDX)
 {
-    if(aDerivOrder<0) return(NULL);
-    if(getSize()<=0) return(NULL);
+    if(aDerivOrder<0) return(nullptr);
+    if(getSize()<=0) return(nullptr);
 
-    // GET FIRST NON-NULL SPLINE
+    // GET FIRST NON-nullptr SPLINE
     GCVSpline *spl;
     int n = getSize();
     for(int i=0;i<n;i++) {
         spl = getGCVSpline(i);
-        if(spl!=NULL) break;
+        if(spl!=nullptr) break;
     }
-    if(spl==NULL) return(NULL);
+    if(spl==nullptr) return(nullptr);
 
     // HOW MANY X STEPS
     double xRange = getMaxX() - getMinX();
@@ -263,7 +263,7 @@ constructStorage(int aDerivOrder,double aDX)
     labels.append("time");
     for(int i=0;i<n;i++) {
         spline = getGCVSpline(i);
-        if(spline==NULL) {
+        if(spline==nullptr) {
             char cName[32];
             sprintf(cName,"data_%d",i);
             labels.append(std::string(cName));

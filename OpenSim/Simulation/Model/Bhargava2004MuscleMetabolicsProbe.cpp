@@ -970,7 +970,7 @@ void Bhargava2004MuscleMetabolicsProbe_MetabolicMuscleParameter::setNull()
     // will be set (by the metabolic probes) to the calculated mass based on
     // the muscle's Fmax, optimal fiber length, specific tension & muscle density. 
     _muscMass = SimTK::NaN;
-    _musc = NULL;
+    _musc = nullptr;
 }
 
 void Bhargava2004MuscleMetabolicsProbe_MetabolicMuscleParameter::

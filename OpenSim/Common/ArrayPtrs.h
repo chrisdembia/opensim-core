@@ -101,7 +101,7 @@ virtual ~ArrayPtrs()
 
     // ARRAY
     delete[] _array;
-    _array = NULL;
+    _array = nullptr;
 }
 //_____________________________________________________________________________
 /**
@@ -143,7 +143,7 @@ void setNull()
     _size = 0;
     _capacityIncrement = -1;
     _capacity = 0;
-    _array = NULL;
+    _array = nullptr;
 }
 
 public:
@@ -158,11 +158,11 @@ public:
  */
 void clearAndDestroy()
 {
-    if(_array==NULL) return;
+    if(_array==nullptr) return;
     
     int i;
     for(i=0;i<_size;i++) {
-        delete _array[i];  _array[i]=NULL;
+        delete _array[i];  _array[i]=nullptr;
     }
 
     _size = 0;
@@ -201,10 +201,10 @@ ArrayPtrs<T>& operator=(const ArrayPtrs<T> &aArray)
 
     // ARRAY
     int i;
-    if(_array!=NULL) delete[] _array;
+    if(_array!=nullptr) delete[] _array;
     _array = new T*[_capacity];
     for(i=0;i<_size;i++) {
-        if(aArray._array[i]!=NULL)  _array[i] = aArray._array[i]->clone();
+        if(aArray._array[i]!=nullptr)  _array[i] = aArray._array[i]->clone();
     }
 
     // TAKE OWNERSHIP OF MEMORY
@@ -253,7 +253,7 @@ bool operator==(const ArrayPtrs<T> &aArray) const
  *
  * @param aIndex Index of the desired element (0 <= aIndex < _size).
  * @return Reference to the array element.
- * @throws Exception if a NULL pointer is encountered.
+ * @throws Exception if a nullptr pointer is encountered.
  * @see get().
  */
 T* operator[](int aIndex) const
@@ -284,8 +284,8 @@ friend std::ostream& operator<<(std::ostream &aOut,const ArrayPtrs<T> &aArray)
     for(i=0;i<aArray.getSize();i++)  {
         aOut << " ";
         obj = aArray[i];
-        if(obj==NULL) {
-            aOut << "NULL";
+        if(obj==nullptr) {
+            aOut << "nullptr";
         } else {
             // The following line is having trouble compiling on IRIX.
             //aOut << *obj;
@@ -380,7 +380,7 @@ bool computeNewCapacity(int aMinCapacity,int &rNewCapacity)
 //_____________________________________________________________________________
 /**
  * Ensure that the capacity of this array is at least the specified amount.
- * The newly allocated array elements are initialized to NULL.
+ * The newly allocated array elements are initialized to nullptr.
  *
  * @param aCapacity Desired capacity.
  * @return true if the capacity was successfully obtained, false otherwise.
@@ -394,18 +394,18 @@ bool ensureCapacity(int aCapacity)
     // ALLOCATE THE NEW ARRAY
     int i;
     T **newArray = new T*[aCapacity];
-    if(newArray==NULL) {
+    if(newArray==nullptr) {
         std::cout << "ArrayPtrs.ensureCapacity: ERR- failed to increase capacity.\n";
         return(false);
     }
 
     // COPY CURRENT ARRAY
-    if(_array!=NULL) {
+    if(_array!=nullptr) {
         for(i=0;i<_size;i++) newArray[i] = _array[i];
-        for(i=_size;i<aCapacity;i++) newArray[i] = NULL;
+        for(i=_size;i<aCapacity;i++) newArray[i] = nullptr;
         delete[] _array;
     } else {
-        for(i=0;i<aCapacity;i++) newArray[i] = NULL;
+        for(i=0;i<aCapacity;i++) newArray[i] = nullptr;
     }
     
     // REASSIGN
@@ -420,7 +420,7 @@ bool ensureCapacity(int aCapacity)
  * Trim the capacity of this array so that it is one larger than the size
  * of this array.  This is useful for reducing the amount of memory used
  * by this array.  This capacity is kept at one larger than the size so
- * that, for example, an array of characters can be treated as a NULL
+ * that, for example, an array of characters can be treated as a nullptr
  * terminated string.
  */
 void trim()
@@ -435,7 +435,7 @@ void trim()
 
     // ALLOCATE NEW ARRAY
     _array = new T*[newCapacity];
-    if(_array==NULL) {
+    if(_array==nullptr) {
         std::cout << "ArrayPtrs.trim: ERR- unable to allocate array.\n";
         return;
     }
@@ -443,7 +443,7 @@ void trim()
     // RESET PREVIOUS VALUES
     int i;
     for(i=0;i<_size;i++) _array[i] = array[i];
-    _array[_size] = NULL;
+    _array[_size] = nullptr;
 
     // SET CORRECT CAPACITY
     _capacity = newCapacity;
@@ -518,9 +518,9 @@ bool setSize(int aSize)
     if(aSize<_size) {
         int i;
         for(i=(_size-1);i>=aSize;i--) {
-            if(_array[i]!=NULL) {
+            if(_array[i]!=nullptr) {
                 if(getMemoryOwner()) { delete _array[i]; }
-                _array[i] = NULL;
+                _array[i] = nullptr;
             }
         }
         _size = aSize;
@@ -616,8 +616,8 @@ int getIndex(const std::string &aName,int aStartIndex=0) const
  */
 bool append(T *aObject)
 {
-    if(aObject==NULL) {
-        std::cout<<"ArrayPtrs.append: ERR- NULL pointer."<<std::endl;
+    if(aObject==nullptr) {
+        std::cout<<"ArrayPtrs.append: ERR- nullptr pointer."<<std::endl;
         return(false);
     }
 
@@ -678,9 +678,9 @@ bool append(ArrayPtrs<T> &aArray)
  */
 bool insert(int aIndex,T *aObject)
 {
-    // NULL POINTER
-    if(aObject==NULL) {
-        std::cout<<"ArrayPtrs.insert: ERR- NULL pointer."<<std::endl;
+    // nullptr POINTER
+    if(aObject==nullptr) {
+        std::cout<<"ArrayPtrs.insert: ERR- nullptr pointer."<<std::endl;
         return(false);
     }
 
@@ -745,7 +745,7 @@ bool remove(int aIndex)
     }
 
     // DELETE CURRENT OBJECT
-    if(getMemoryOwner()&&(_array[aIndex]!=NULL)) delete _array[aIndex];
+    if(getMemoryOwner()&&(_array[aIndex]!=nullptr)) delete _array[aIndex];
 
     // SHIFT ARRAY
     int i;
@@ -753,7 +753,7 @@ bool remove(int aIndex)
     for(i=aIndex;i<_size;i++) {
         _array[i] = _array[i+1];
     }
-    _array[_size] = NULL;
+    _array[_size] = nullptr;
 
     return(true);
 }
@@ -808,7 +808,7 @@ bool set(int aIndex,T *aObject)
     }
 
     // SET
-    if(getMemoryOwner() && (_array[aIndex]!=NULL)) delete _array[aIndex];
+    if(getMemoryOwner() && (_array[aIndex]!=nullptr)) delete _array[aIndex];
     _array[aIndex] = aObject;
 
     return(true);
@@ -826,7 +826,7 @@ bool set(int aIndex,T *aObject)
  * @param aIndex Array index of the desired object.
  * @return Pointer to the desired object.
  * @throws Exception if (aIndex<0)||(aIndex>=_size) or if the pointer
- * at aIndex is NULL.
+ * at aIndex is nullptr.
  * @see operator[].
  */
 T* get(int aIndex)
@@ -834,8 +834,8 @@ T* get(int aIndex)
     if((aIndex<0)||(aIndex>=_size)) {
         throw(Exception("ArrayPtrs.get: Array index out of bounds."));
     }
-    if(_array[aIndex]==NULL) {
-        throw(Exception("ArrayPtrs.get: NULL pointer.",
+    if(_array[aIndex]==nullptr) {
+        throw(Exception("ArrayPtrs.get: nullptr pointer.",
             __FILE__,__LINE__));
     }
 
@@ -854,7 +854,7 @@ T* get(int aIndex)
  * @param aIndex Array index of the desired object.
  * @return Pointer to the desired object.
  * @throws Exception if (aIndex<0)||(aIndex>=_size) or if the pointer
- * at aIndex is NULL.
+ * at aIndex is nullptr.
  * @see operator[].
  */
 #ifndef SWIG
@@ -863,8 +863,8 @@ const T* get(int aIndex) const
     if((aIndex<0)||(aIndex>=_size)) {
         throw(Exception("ArrayPtrs.get: Array index out of bounds."));
     }
-    if(_array[aIndex]==NULL) {
-        throw(Exception("ArrayPtrs.get: NULL pointer.",
+    if(_array[aIndex]==nullptr) {
+        throw(Exception("ArrayPtrs.get: nullptr pointer.",
             __FILE__,__LINE__));
     }
 

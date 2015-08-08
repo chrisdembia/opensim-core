@@ -55,7 +55,7 @@ CMC_Orientation::~CMC_Orientation()
  */
 CMC_Orientation::CMC_Orientation()
 {
-    // NULL
+    // nullptr
     setNull();
 }
 
@@ -65,7 +65,7 @@ CMC_Orientation::CMC_Orientation()
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void CMC_Orientation::
 setNull()

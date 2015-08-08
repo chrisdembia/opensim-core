@@ -1502,7 +1502,7 @@ template <class T> friend class ComponentMeasure;
         Coordinate component of the elbow joint that connects the forearm body in 
         linear time (linear search for name at each component level. Whereas
         supplying "elbow_flexion" requires a tree search.
-        Returns NULL if Component of that specified name cannot be found. 
+        Returns nullptr if Component of that specified name cannot be found. 
         If the name provided is a component's state variable name and a
         StateVariable pointer is provided, the pointer will be set to the 
         StateVariable object that was found. This facilitates the getting and setting
@@ -1614,7 +1614,7 @@ protected:
     class StateVariable {
         friend void Component::addStateVariable(StateVariable* sv) const;
     public:
-        StateVariable() : name(""), owner(NULL),
+        StateVariable() : name(""), owner(nullptr),
             subsysIndex(SimTK::InvalidIndex), varIndex(SimTK::InvalidIndex),
             sysYIndex(SimTK::InvalidIndex), hidden(true) {}
         explicit StateVariable(const std::string& name, //state var name

@@ -362,7 +362,7 @@ public:
      * If assemble is being called due to a coordinate set value, provide the option
      * to weight that coordinate value more heavily if specified.
      */
-    void assemble(SimTK::State& state, const Coordinate *coord = NULL, double weight = 10);
+    void assemble(SimTK::State& state, const Coordinate *coord = nullptr, double weight = 10);
 
 
     /**

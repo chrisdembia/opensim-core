@@ -87,7 +87,7 @@ FunctionSet::FunctionSet(const string &aFileName) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set all member variables to NULL values.
+ * Set all member variables to nullptr values.
  */
 void FunctionSet::
 setNull()
@@ -106,7 +106,7 @@ setNull()
  * @param aX Value of the x independent variable.
  * @param aY Value of the y independent variable.
  * @param aZ Value of the z independent variable.
- * @return Value of the function.  If the function is NULL or undefined,
+ * @return Value of the function.  If the function is nullptr or undefined,
  * SimTK::NaN is returned.
  * @see Function
  */
@@ -135,7 +135,7 @@ evaluate(int aIndex,int aDerivOrder,double aX) const
  * @param aX Value of the x independent variable.
  * @param aY Value of the y independent variable.
  * @param aZ Value of the z independent variable.
- * @return Value of the function.  If the function is NULL or undefined,
+ * @return Value of the function.  If the function is nullptr or undefined,
  * SimTK::NaN is returned.
  * @see Function
  */

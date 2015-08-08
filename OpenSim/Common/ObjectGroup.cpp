@@ -158,7 +158,7 @@ bool ObjectGroup::contains(const string& aName) const
  */
 void ObjectGroup::add(Object* aObject)
 {
-    if (aObject != NULL) {
+    if (aObject != nullptr) {
         // check if object is already a member of this group
         if (_memberObjects.findIndex(aObject) != -1) return;
 
@@ -175,7 +175,7 @@ void ObjectGroup::add(Object* aObject)
  */
 void ObjectGroup::remove(const Object* aObject)
 {
-    if (aObject != NULL)
+    if (aObject != nullptr)
     {
         int index = _memberObjects.findIndex(const_cast<Object*>(aObject));
         if(index >= 0) {
@@ -194,7 +194,7 @@ void ObjectGroup::remove(const Object* aObject)
  */
 void ObjectGroup::replace(const Object* aOldObject, Object* aNewObject)
 {
-    if (aOldObject != NULL && aNewObject != NULL)
+    if (aOldObject != nullptr && aNewObject != nullptr)
     {
         int index = _memberObjects.findIndex(const_cast<Object*>(aOldObject));
         if(index >= 0) {

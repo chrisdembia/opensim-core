@@ -527,7 +527,7 @@ void Coordinate::setLocked(SimTK::State& s, bool aLocked) const
     }
     
     _lockedWarningGiven=false;  // reset flag in case needed later
-    SimTK::Constraint *lock = NULL;
+    SimTK::Constraint *lock = nullptr;
 
     // Get constraint
     if(_lockedConstraintIndex.isValid()){
@@ -586,7 +586,7 @@ void Coordinate::setIsPrescribed(SimTK::State& s, bool isPrescribed) const
     if(isPrescribed == this->isPrescribed(s) ) return;
     
     // The underlying SimTK constraint
-    SimTK::Constraint *prescribe = NULL;
+    SimTK::Constraint *prescribe = nullptr;
 
     // Get constraint
     if(_prescribedConstraintIndex.isValid()){

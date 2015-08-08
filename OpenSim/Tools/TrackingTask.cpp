@@ -45,15 +45,15 @@ using namespace OpenSim;
  */
 TrackingTask::~TrackingTask()
 {
-    if(_pTrk[0]!=NULL) { delete _pTrk[0];  _pTrk[0]=NULL; }
-    if(_pTrk[1]!=NULL) { delete _pTrk[1];  _pTrk[1]=NULL; }
-    if(_pTrk[2]!=NULL) { delete _pTrk[2];  _pTrk[2]=NULL; }
-    if(_vTrk[0]!=NULL) { delete _vTrk[0];  _vTrk[0]=NULL; }
-    if(_vTrk[1]!=NULL) { delete _vTrk[1];  _vTrk[1]=NULL; }
-    if(_vTrk[2]!=NULL) { delete _vTrk[2];  _vTrk[2]=NULL; }
-    if(_aTrk[0]!=NULL) { delete _aTrk[0];  _aTrk[0]=NULL; }
-    if(_aTrk[1]!=NULL) { delete _aTrk[1];  _aTrk[1]=NULL; }
-    if(_aTrk[2]!=NULL) { delete _aTrk[2];  _aTrk[2]=NULL; }
+    if(_pTrk[0]!=nullptr) { delete _pTrk[0];  _pTrk[0]=nullptr; }
+    if(_pTrk[1]!=nullptr) { delete _pTrk[1];  _pTrk[1]=nullptr; }
+    if(_pTrk[2]!=nullptr) { delete _pTrk[2];  _pTrk[2]=nullptr; }
+    if(_vTrk[0]!=nullptr) { delete _vTrk[0];  _vTrk[0]=nullptr; }
+    if(_vTrk[1]!=nullptr) { delete _vTrk[1];  _vTrk[1]=nullptr; }
+    if(_vTrk[2]!=nullptr) { delete _vTrk[2];  _vTrk[2]=nullptr; }
+    if(_aTrk[0]!=nullptr) { delete _aTrk[0];  _aTrk[0]=nullptr; }
+    if(_aTrk[1]!=nullptr) { delete _aTrk[1];  _aTrk[1]=nullptr; }
+    if(_aTrk[2]!=nullptr) { delete _aTrk[2];  _aTrk[2]=nullptr; }
 }
 //_____________________________________________________________________________
 /**
@@ -86,7 +86,7 @@ TrackingTask::TrackingTask(const TrackingTask& aTask) :
 //=============================================================================
 //_____________________________________________________________________________
 /**
- * Set NULL values for all member variables.
+ * Set nullptr values for all member variables.
  */
 void TrackingTask::
 setNull()
@@ -94,11 +94,11 @@ setNull()
     setName(DEFAULT_NAME);
     setupProperties();
 
-    _model = NULL;
+    _model = nullptr;
     _nTrk = 0;
-    _pTrk[0] = _pTrk[1] = _pTrk[2] = NULL;
-    _vTrk[0] = _vTrk[1] = _vTrk[2] = NULL;
-    _aTrk[0] = _aTrk[1] = _aTrk[2] = NULL;
+    _pTrk[0] = _pTrk[1] = _pTrk[2] = nullptr;
+    _vTrk[0] = _vTrk[1] = _vTrk[2] = nullptr;
+    _aTrk[0] = _aTrk[1] = _aTrk[2] = nullptr;
 }
 //_____________________________________________________________________________
 /**
@@ -277,11 +277,11 @@ getNumTaskFunctions() const
 void TrackingTask::setTaskFunctions(Function *aF0,
                  Function *aF1,Function *aF2)
 {
-    if(_pTrk[0]!=NULL) { delete _pTrk[0];  _pTrk[0]=NULL; }
-    if(_pTrk[1]!=NULL) { delete _pTrk[1];  _pTrk[1]=NULL; }
-    if(_pTrk[2]!=NULL) { delete _pTrk[2];  _pTrk[2]=NULL; }
+    if(_pTrk[0]!=nullptr) { delete _pTrk[0];  _pTrk[0]=nullptr; }
+    if(_pTrk[1]!=nullptr) { delete _pTrk[1];  _pTrk[1]=nullptr; }
+    if(_pTrk[2]!=nullptr) { delete _pTrk[2];  _pTrk[2]=nullptr; }
 
-    if(aF0!=NULL) _pTrk[0] = aF0->clone();
-    if(aF1!=NULL) _pTrk[1] = aF1->clone();
-    if(aF2!=NULL) _pTrk[2] = aF2->clone();
+    if(aF0!=nullptr) _pTrk[0] = aF0->clone();
+    if(aF1!=nullptr) _pTrk[1] = aF1->clone();
+    if(aF2!=nullptr) _pTrk[2] = aF2->clone();
 }

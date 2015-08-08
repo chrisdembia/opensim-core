@@ -124,11 +124,11 @@ void testPrescribedForce(OpenSim::Function* forceX, OpenSim::Function* forceY, O
 
     // Add a PrescribedForce.
     PrescribedForce force(&ball);
-    if (forceX != NULL)
+    if (forceX != nullptr)
         force.setForceFunctions(forceX, forceY, forceZ);
-    if (pointX != NULL)
+    if (pointX != nullptr)
         force.setPointFunctions(pointX, pointY, pointZ);
-    if (torqueX != NULL)
+    if (torqueX != nullptr)
         force.setTorqueFunctions(torqueX, torqueY, torqueZ);
 
     counter++;
@@ -192,7 +192,7 @@ void testNoForce()
     times.push_back(1.0);
     accel.push_back(gravity_vec);
     angularAccel.push_back(Vec3(0));
-    testPrescribedForce(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, times, accel, angularAccel);
+    testPrescribedForce(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, times, accel, angularAccel);
 }
 
 void testForceAtOrigin()
@@ -217,7 +217,7 @@ void testForceAtOrigin()
     forceY->addPoint(0, 0);
     forceY->addPoint(1, 1);
     forceZ->addPoint(0, 0);
-    testPrescribedForce(forceX, forceY, forceZ, NULL, NULL, NULL, NULL, NULL, NULL, times, accel, angularAccel);
+    testPrescribedForce(forceX, forceY, forceZ, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, times, accel, angularAccel);
 }
 
 void testForceAtPoint()
@@ -239,7 +239,7 @@ void testForceAtPoint()
     pointX->addPoint(0, 1);
     pointY->addPoint(0, -1);
     pointZ->addPoint(0, 0);
-    testPrescribedForce(forceX, forceY, forceZ, pointX, pointY, pointZ, NULL, NULL, NULL, times, accel, angularAccel);
+    testPrescribedForce(forceX, forceY, forceZ, pointX, pointY, pointZ, nullptr, nullptr, nullptr, times, accel, angularAccel);
 }
 
 void testTorque()
@@ -257,5 +257,5 @@ void testTorque()
     torqueX->addPoint(0, 1);
     torqueY->addPoint(0, 0.5);
     torqueZ->addPoint(0, 0);
-    testPrescribedForce(NULL, NULL, NULL, NULL, NULL, NULL, torqueX, torqueY, torqueZ, times, accel, angularAccel);
+    testPrescribedForce(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, torqueX, torqueY, torqueZ, times, accel, angularAccel);
 }

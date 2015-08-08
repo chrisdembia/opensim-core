@@ -118,7 +118,7 @@ public:
     // TASK FUNCTIONS
     int getNumTaskFunctions() const;
     virtual void setTaskFunctions(Function *aF0,
-        Function *aF1=NULL,Function *aF2=NULL);
+        Function *aF1=nullptr,Function *aF2=nullptr);
 //=============================================================================
 };  // END of class TrackingTask
 //=============================================================================
