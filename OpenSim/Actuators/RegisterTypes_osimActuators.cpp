@@ -87,7 +87,7 @@ OSIMACTUATORS_API void RegisterTypes_osimActuators()
     Object::registerType( Thelen2003Muscle() );
     Object::registerType( Thelen2003Muscle_Deprecated() );
     Object::registerType( Schutte1993Muscle_Deprecated() );
-    Object::registerType( Delp1990Muscle_Deprecated() );
+//    Object::registerType( Delp1990Muscle_Deprecated() );
     Object::registerType( SpringGeneralizedForce() );
     Object::registerType( RigidTendonMuscle() );
 
@@ -116,7 +116,7 @@ OSIMACTUATORS_API void RegisterTypes_osimActuators()
     Object::renameType("Force", "PointActuator");
     Object::renameType("Torque", "TorqueActuator");
     Object::renameType("Schutte1993Muscle", "Schutte1993Muscle_Deprecated");
-    Object::renameType("Delp1990Muscle", "Delp1990Muscle_Deprecated");
+//    Object::renameType("Delp1990Muscle", "Delp1990Muscle_Deprecated");
 
     //Object::RenameType("Thelen2003Muscle", "Thelen2003Muscle_Deprecated");
 

@@ -20,14 +20,18 @@
  * See the License for the specific language governing permissions and        *
  * limitations under the License.                                             *
  * -------------------------------------------------------------------------- */
-#include <stdint.h>
-#include <OpenSim/Simulation/Manager/Manager.h>
-#include <OpenSim/Simulation/Control/ControlSetController.h>
-#include <OpenSim/Simulation/Model/Model.h>
-#include <OpenSim/Common/LoadOpenSimLibrary.h>
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
+//#include <stdint.h>
+//#include <OpenSim/Simulation/Manager/Manager.h>
+//#include <OpenSim/Simulation/Control/ControlSetController.h>
+//#include <OpenSim/Simulation/Model/Model.h>
+//#include <OpenSim/Common/LoadOpenSimLibrary.h>
+//#include <OpenSim/Simulation/osimSimulation.h>
+//#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
+#include <OpenSim/Auxiliary/getRSS.h>
+#include <Simbody.h>
+#include <iostream>
 
-using namespace OpenSim;
+//using namespace OpenSim;
 using namespace std;
 
 //==============================================================================
@@ -43,21 +47,26 @@ void testStates(const string& modelFile);
 //==============================================================================
 void testMemoryUsage(const string& modelFile);
 
-static const int MAX_N_TRIES = 100;
+static const int MAX_N_TRIES = 500;
 
 int main()
 {
     try {
-        LoadOpenSimLibrary("osimActuators");
-        testStates("arm26.osim");
-        testMemoryUsage("arm26.osim");
-        testMemoryUsage("PushUpToesOnGroundWithMuscles.osim");
+        volatile SimTK::Matrix m(100, 500);
+        //SimTK::MultibodySystem sys;
+//        volatile OpenSim::Array<double> a(100, 500);
+        std::cout << getCurrentRSS()/1024 << " " << getCurrentRSS()/1024 << " " << getCurrentRSS()/1024 << " " << getCurrentRSS()/1024 << std::endl;
+        return 0;
+        //LoadOpenSimLibrary("osimActuators");
+        //testStates("arm26.osim");
+//        testMemoryUsage("arm26.osim");
+//        testMemoryUsage("PushUpToesOnGroundWithMuscles.osim");
     }
-    catch (const Exception& e) {
-        cout << "testInitState failed: ";
-        e.print(cout); 
-        return 1;
-    }
+//    catch (const Exception& e) {
+//        cout << "testInitState failed: ";
+//        e.print(cout); 
+//        return 1;
+//    }
     catch (const std::exception& e) {
         cout << "testInitState failed: " << e.what() << endl;
         return 1;
@@ -65,7 +74,7 @@ int main()
     cout << "Done" << endl;
     return 0;
 }
-
+/*
 //==============================================================================
 // Test Cases
 //==============================================================================
@@ -154,6 +163,7 @@ void testMemoryUsage(const string& modelFile)
     // Setup OpenSim model
     // base footprint
     size_t mem0 = getCurrentRSS( );
+
     Model model(modelFile);
 
     size_t model_size = getCurrentRSS( )-mem0;
@@ -166,7 +176,7 @@ void testMemoryUsage(const string& modelFile)
     // also time how long initializing the state takes
     clock_t startTime = clock();
 
-    //cout << "Initial memory use: " << mem1/1024 << "KB." << endl;
+    cout << "Initial memory use: " << mem1/1024 << "KB." << endl;
 
 
     for(int i=0; i< MAX_N_TRIES; ++i){
@@ -176,7 +186,7 @@ void testMemoryUsage(const string& modelFile)
     // new footprint after MAX_N_TRIES
     size_t mem2 = getCurrentRSS( );
     // change
-    int64_t delta = mem2-mem1;
+    int64_t delta = int64_t(mem2)-int64_t(mem1);
     int64_t leak = delta/MAX_N_TRIES;
     long double leak_percent = 100.0 * leak/model_size;
 
@@ -199,3 +209,4 @@ void testMemoryUsage(const string& modelFile)
     ASSERT( delta < 1e8, __FILE__, __LINE__, 
         "testMemoryUsage: total estimated memory leaked > 100MB.");
 }
+*/

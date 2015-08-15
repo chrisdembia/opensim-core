@@ -97,9 +97,11 @@ size_t getCurrentRSS( )
 #elif defined(__APPLE__) && defined(__MACH__)
     /* OSX ------------------------------------------------------ */
     struct mach_task_basic_info info;
+    info.resident_size = 0;
     mach_msg_type_number_t infoCount = MACH_TASK_BASIC_INFO_COUNT;
-    if ( task_info( mach_task_self( ), MACH_TASK_BASIC_INFO,
-        (task_info_t)&info, &infoCount ) != KERN_SUCCESS )
+    kern_return_t error = task_info( mach_task_self( ), MACH_TASK_BASIC_INFO,
+        (task_info_t)&info, &infoCount );
+    if ( error != KERN_SUCCESS )
         return (size_t)0L;      /* Can't access? */
     return (size_t)info.resident_size;
 
