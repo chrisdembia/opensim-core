@@ -4,5 +4,5 @@ OpenSimCopySharedTestFiles(arm26.osim)
 
 OpenSimAddTests(
     TESTPROGRAMS ${TEST_PROGS}
-    LINKLIBS osimSimulation osimActuators
+    LINKLIBS osimSingle
     )

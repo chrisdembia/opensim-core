@@ -54,6 +54,41 @@ function(OpenSimAddLibrary)
         -DOPENSIM_${OSIMADDLIB_UKIT}_COPYRIGHT_YEARS="2005-2014"
         -DOPENSIM_${OSIMADDLIB_UKIT}_AUTHORS="${AUTHORS}"
         -DOPENSIM_${OSIMADDLIB_UKIT}_TYPE="Shared"
+        -DOPENSIM_COMMON_LIBRARY_NAME=${OSIMADDLIB_LIBRARY_NAME}
+        -DOPENSIM_COMMON_MAJOR_VERSION=${OPENSIM_MAJOR_VERSION}
+        -DOPENSIM_COMMON_MINOR_VERSION=${OPENSIM_MINOR_VERSION}
+        -DOPENSIM_COMMON_BUILD_VERSION=${OPENSIM_PATCH_VERSION}
+        -DOPENSIM_COMMON_COPYRIGHT_YEARS="2005-2014"
+        -DOPENSIM_COMMON_AUTHORS="${AUTHORS}"
+        -DOPENSIM_COMMON_TYPE="Shared"
+        -DOPENSIM_SIMULATION_LIBRARY_NAME=${OSIMADDLIB_LIBRARY_NAME}
+        -DOPENSIM_SIMULATION_MAJOR_VERSION=${OPENSIM_MAJOR_VERSION}
+        -DOPENSIM_SIMULATION_MINOR_VERSION=${OPENSIM_MINOR_VERSION}
+        -DOPENSIM_SIMULATION_BUILD_VERSION=${OPENSIM_PATCH_VERSION}
+        -DOPENSIM_SIMULATION_COPYRIGHT_YEARS="2005-2014"
+        -DOPENSIM_SIMULATION_AUTHORS="${AUTHORS}"
+        -DOPENSIM_SIMULATION_TYPE="Shared"
+        -DOPENSIM_ACTUATORS_LIBRARY_NAME=${OSIMADDLIB_LIBRARY_NAME}
+        -DOPENSIM_ACTUATORS_MAJOR_VERSION=${OPENSIM_MAJOR_VERSION}
+        -DOPENSIM_ACTUATORS_MINOR_VERSION=${OPENSIM_MINOR_VERSION}
+        -DOPENSIM_ACTUATORS_BUILD_VERSION=${OPENSIM_PATCH_VERSION}
+        -DOPENSIM_ACTUATORS_COPYRIGHT_YEARS="2005-2014"
+        -DOPENSIM_ACTUATORS_AUTHORS="${AUTHORS}"
+        -DOPENSIM_ACTUATORS_TYPE="Shared"
+        -DOPENSIM_ANALYSES_LIBRARY_NAME=${OSIMADDLIB_LIBRARY_NAME}
+        -DOPENSIM_ANALYSES_MAJOR_VERSION=${OPENSIM_MAJOR_VERSION}
+        -DOPENSIM_ANALYSES_MINOR_VERSION=${OPENSIM_MINOR_VERSION}
+        -DOPENSIM_ANALYSES_BUILD_VERSION=${OPENSIM_PATCH_VERSION}
+        -DOPENSIM_ANALYSES_COPYRIGHT_YEARS="2005-2014"
+        -DOPENSIM_ANALYSES_AUTHORS="${AUTHORS}"
+        -DOPENSIM_ANALYSES_TYPE="Shared"
+        -DOPENSIM_TOOLS_LIBRARY_NAME=${OSIMADDLIB_LIBRARY_NAME}
+        -DOPENSIM_TOOLS_MAJOR_VERSION=${OPENSIM_MAJOR_VERSION}
+        -DOPENSIM_TOOLS_MINOR_VERSION=${OPENSIM_MINOR_VERSION}
+        -DOPENSIM_TOOLS_BUILD_VERSION=${OPENSIM_PATCH_VERSION}
+        -DOPENSIM_TOOLS_COPYRIGHT_YEARS="2005-2014"
+        -DOPENSIM_TOOLS_AUTHORS="${AUTHORS}"
+        -DOPENSIM_TOOLS_TYPE="Shared"
         )
 
 
@@ -83,15 +118,9 @@ function(OpenSimAddLibrary)
 
     # Install.
     # --------
-    # Shared libraries are needed at runtime for applications, so we put them
-    # at the top level in OpenSim/bin/*.dll (Windows) or OpenSim/lib/*.so
-    # (Linux) or OpemSim/lib/*.dylib (Mac). Windows .lib files, and Linux/Mac
-    # .a static archives are only needed at link time so go in sdk/lib.
-    if(WIN32)
-        set(OSIMADDLIB_LIBRARY_DESTINATION sdk/lib)
-    else()
-        set(OSIMADDLIB_LIBRARY_DESTINATION lib)
-    endif()
+    # Shared libraries (dll, so, dylib) are needed at runtime for applications.
+    # Windows .lib files and Linux/Mac .a static archives are only needed at
+    # link time.
     install(TARGETS ${OSIMADDLIB_LIBRARY_NAME}
         EXPORT OpenSimTargets
         RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
@@ -130,7 +159,7 @@ function(OpenSimAddLibrary)
 
     if(BUILD_TESTING)
         foreach(OSIMADDLIB_TESTDIR ${OSIMADDLIB_TESTDIRS})
-            subdirs("${OSIMADDLIB_TESTDIR}")
+            add_subdirectory("${OSIMADDLIB_TESTDIR}")
         endforeach()
     endif()
 
@@ -167,7 +196,7 @@ endfunction()
 #   OpenSimAddTests(
 #       TESTPROGRAMS ${TEST_ROGRAMS}
 #       DATAFILES ${DATA_FILES}
-#       LINKLIBS osimCommon osimSimulation osimAnalyses
+#       LINKLIBS osimSingle
 #       )
 function(OpenSimAddTests)
 
