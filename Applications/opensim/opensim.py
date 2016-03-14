@@ -198,4 +198,4 @@ if __name__ == '__main__':
 
 
 
-
+# TODO print detailed model info showing the whole model hierarchy.
