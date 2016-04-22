@@ -240,6 +240,7 @@ private:
     SimTK::Array_<SimTK::Vec3> _stationPinB;
 };
 
+/*
 template <typename T>
 class ConsoleReporter_ : public ModelComponent {
     OpenSim_DECLARE_CONCRETE_OBJECT_T(ConsoleReporter_, T, Component);
@@ -284,6 +285,7 @@ private:
 
 typedef ConsoleReporter_<double> ConsoleReporter;
 typedef ConsoleReporter_<Vec3> ConsoleReporterVec3;
+*/
 typedef ConsoleReporter_<Vector_<Vec3>> ConsoleReporterVectorVec3;
 
 void integrate(const System& system, Integrator& integrator,
@@ -312,7 +314,7 @@ void createModel(Model& model) {
                              *pelvis, Vec3(0), Vec3(0),
                              *femur,  Vec3(0, 1, 0), Vec3(0));
     model.addJoint(hip);
-    hog->getCoordinateSet().get(0).setDefaultValue(0.5 * SimTK::Pi);
+    // TODO hog->getCoordinateSet().get(0).setDefaultValue(0.5 * SimTK::Pi);
     
     auto* asis = new OpenSim::Marker();
     asis->setName("asis"); asis->setReferenceFrame(*pelvis);
@@ -362,6 +364,8 @@ void testFutureIKListOutputs() {
     createModel(model);
     // model.setUseVisualizer(true);
     
+    SimTK::State s;
+    
     // DataSource
     // ----------
     auto* exp = new DataSourceVec3();
@@ -378,27 +382,29 @@ void testFutureIKListOutputs() {
     ik->setName("ik");
     model.addModelComponent(ik);
     
+    s = model.initSystem();
+    
     // Reporters
     // ---------
     auto* expRep = new ConsoleReporterVec3();
     expRep->setName("exp_computed");
     //expRep->set_enabled(false);
-    model.addModelComponent(expRep);
+    model.addComponent(expRep);
     
     auto* solution = new ConsoleReporter();
     solution->setName("coords");
     //solution->set_enabled(false);
-    model.addModelComponent(solution);
+    model.addComponent(solution);
     
     auto* modelMarkers = new ConsoleReporterVec3();
     modelMarkers->setName("model_markers");
     //modelMarkers->set_enabled(false);
-    model.addModelComponent(modelMarkers);
+    model.addComponent(modelMarkers);
     
     auto* vecRep = new ConsoleReporterVectorVec3();
     vecRep->setName("exp");
     //expRep->set_enabled(false);
-    model.addModelComponent(vecRep);
+    model.addComponent(vecRep);
     
     // A component with a non-list output
     // -----------------------------------
@@ -431,18 +437,18 @@ void testFutureIKListOutputs() {
     ik->updInput("targets").connect(hjc->getOutput("joint_center"), "hjc");
     
     // Connect up the reporters.
-    expRep->updInput("input").connect(exp->getOutput("col").getChannel("asis"));
-    expRep->updInput("input").connect(exp->getOutput("col").getChannel("psis"));
-    expRep->updInput("input").connect(hjc->getOutput("joint_center"));
+    expRep->updInput("inputs").connect(exp->getOutput("col").getChannel("asis"));
+    expRep->updInput("inputs").connect(exp->getOutput("col").getChannel("psis"));
+    expRep->updInput("inputs").connect(hjc->getOutput("joint_center"));
     // This outputs a Vector_<Vec3>.
-    vecRep->updInput("input").connect(exp->getOutput("all"));
+    vecRep->updInput("inputs").connect(exp->getOutput("all"));
     
-    modelMarkers->updInput("input").connect(ik->getOutput("model_marker_pos"));
+    modelMarkers->updInput("inputs").connect(ik->getOutput("model_marker_pos"));
     // Connect to all channels in the "coords" list output.
-    solution->updInput("input").connect(ik->getOutput("coords"));
+    solution->updInput("inputs").connect(ik->getOutput("coords"));
     hjc->dumpConnections();
     ik->dumpConnections();
-    SimTK::State& s = model.initSystem();
+    s = model.initSystem();
     
     // TODO replace with a driver / time step advancer.
     RungeKuttaMersonIntegrator integrator(model.getSystem());

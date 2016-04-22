@@ -111,17 +111,25 @@ private:
 Component::Component() : Object()
 {
     constructProperty_connectors();
+    constructProperty_components();
 }
 
 Component::Component(const std::string& fileName, bool updFromXMLNode)
 :   Object(fileName, updFromXMLNode)
 {
     constructProperty_connectors();
+    constructProperty_components();
 }
 
 Component::Component(SimTK::Xml::Element& element) : Object(element)
 {
     constructProperty_connectors();
+    constructProperty_components();
+}
+
+void Component::addComponent(Component* component) {
+    updProperty_components().adoptAndAppendValue(component);
+    finalizeFromProperties();
 }
 
 void Component::finalizeFromProperties()
@@ -288,6 +296,7 @@ void Component::disconnect()
 
 void Component::addToSystem(SimTK::MultibodySystem& system) const
 {
+    std::cout << "DEBUG adding to system " << getConcreteClassName() << " " << getName() << std::endl;
     baseAddToSystem(system);
     extendAddToSystem(system);
     componentsAddToSystem(system);
@@ -1334,15 +1343,19 @@ void Component::dumpSubcomponents(int depth) const
 
     std::cout << tabs << getConcreteClassName();
     std::cout << " '" << getName() << "'" << std::endl;
+    // TODO std::cout << tabs << "==" << std::endl;
     for (size_t i = 0; i < _memberSubcomponents.size(); ++i) {
         _memberSubcomponents[int(i)]->dumpSubcomponents(depth + 1);
     }
+    // TODO std::cout << tabs << "--" << std::endl;
     for (size_t i = 0; i < _propertySubcomponents.size(); ++i) {
         _propertySubcomponents[int(i)]->dumpSubcomponents(depth + 1);
     }
+    // TODO std::cout << tabs << "--" << std::endl;
     for (size_t i = 0; i < _adoptedSubcomponents.size(); ++i) {
         _adoptedSubcomponents[int(i)]->dumpSubcomponents(depth + 1);
     }
+    // TODO std::cout << tabs << "==" << std::endl;
 }
 
 void Component::dumpConnections() const {

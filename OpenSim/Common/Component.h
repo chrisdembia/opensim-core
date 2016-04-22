@@ -272,6 +272,8 @@ protected:
 //==============================================================================
     OpenSim_DECLARE_LIST_PROPERTY(connectors, AbstractConnector,
         "List of connectors (structural dependencies) that this component has.");
+    OpenSim_DECLARE_LIST_PROPERTY(components, Component,
+        "List of subcomponents.");
 
 public:
 //==============================================================================
@@ -471,6 +473,8 @@ public:
     C& updComponent(const std::string& name) {
         return *const_cast<C*>(&(this->template getComponent<C>(name)));
     }
+
+    void addComponent(Component*);
 
     /**
      * Get the number of "Continuous" state variables maintained by the Component
