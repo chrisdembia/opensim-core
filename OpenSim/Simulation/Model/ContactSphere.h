@@ -1,5 +1,5 @@
-#ifndef __ContactSphere_h__
-#define __ContactSphere_h__
+#ifndef OPENSIM_CONTACT_SPHERE_H_
+#define OPENSIM_CONTACT_SPHERE_H_
 /* -------------------------------------------------------------------------- *
  *                         OpenSim:  ContactSphere.h                          *
  * -------------------------------------------------------------------------- *
@@ -112,4 +112,4 @@ private:
 
 } // end of namespace OpenSim
 
-#endif // __ContactSphere_h__
+#endif // OPENSIM_CONTACT_SPHERE_H_
