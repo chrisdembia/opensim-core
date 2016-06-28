@@ -346,7 +346,7 @@ protected:
         { aCoord->_mobilizerQIndex = SimTK::MobilizerQIndex(index);}
     void setCoordinateModel(Coordinate *aCoord, Model *aModel) const {aCoord->_model = aModel;}
 
-    /** Updating XML formating to latest revision */
+    /** Updating XML formatting to latest revision */
     void updateFromXMLNode(SimTK::Xml::Element& aNode, int versionNumber) override;
 
     /** Calculate the equivalent spatial force, FB_G, acting on a mobilized body
