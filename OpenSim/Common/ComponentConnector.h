@@ -84,6 +84,8 @@ public:
 private:
     OpenSim_DECLARE_LIST_PROPERTY(connectee_name, std::string,
         "Path to the component or output this Connector should connect to.");
+    OpenSim_DECLARE_PROPERTY(is_list, bool,
+        "Can this have multiple connectees? Do not edit.");
 public:
     //--------------------------------------------------------------------------
     // CONSTRUCTION
@@ -109,6 +111,7 @@ public:
         connectAtStage(connectAtStage), _isList(isList), _owner(&owner) {
         constructProperties();
         setName(name);
+        set_is_list(isList);
     }
 
     // default copy assignment
@@ -219,6 +222,8 @@ protected:
     void restoreMembers(const Component& o, bool isList = false) {
         _owner.reset(&o);
         _isList = isList;
+        OPENSIM_THROW_IF_FRMOBJ(_isList != get_is_list(), Exception,
+                "Value of <is_list> property was edited.");
         if (!_isList) {
             OPENSIM_THROW_IF_FRMOBJ(updProperty_connectee_name().size() > 1,
                     Exception, "Connector '" + getName() + "' has multiple "
@@ -238,11 +243,13 @@ protected:
     of if this is a list connector. */
     AbstractConnector(bool isList) : _isList(isList) {
         constructProperties();
+        set_is_list(isList);
     }
 
 private:
     void constructProperties() {
         constructProperty_connectee_name();
+        constructProperty_is_list(false);
         if (!_isList) {
             updProperty_connectee_name().appendValue("");
             updProperty_connectee_name().setAllowableListSize(1);

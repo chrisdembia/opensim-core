@@ -441,8 +441,10 @@ void testSerialization(Component* instance)
         "testing_serialization_" + className + ".xml";
     instance->print(serializationFilename);
 
+    instance->dumpConnections();
     Object* deserializedInstance =
         static_cast<Object*>(Object::makeObjectFromFile(serializationFilename));
+    dynamic_cast<Component*>(deserializedInstance)->dumpConnections();
 
     if (!(*deserializedInstance == *instance))
     {

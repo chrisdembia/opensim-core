@@ -114,6 +114,8 @@ int main()
         nc = deserializedModel.getMiscModelComponentSet().getSize();
         cout << nc << " model components were deserialized from file." << endl;
 
+        deserializedModel.print("allComponentsReserialized.osim");
+
         ASSERT(testModel == deserializedModel,  
             "deserializedModel FAILED to match original model.");
 
