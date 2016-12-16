@@ -79,6 +79,7 @@ function(OpenSimAddLibrary)
     set_target_properties(${OSIMADDLIB_LIBRARY_NAME} PROPERTIES
        DEFINE_SYMBOL OSIM${OSIMADDLIB_UKIT}_EXPORTS
        FOLDER "${OSIMADDLIB_FOLDER}" # For Visual Studio.
+       FRAMEWORK TRUE
     )
 
     # Install.
@@ -93,10 +94,11 @@ function(OpenSimAddLibrary)
         set(OSIMADDLIB_LIBRARY_DESTINATION lib)
     endif()
     install(TARGETS ${OSIMADDLIB_LIBRARY_NAME}
-        EXPORT OpenSimTargets
-        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-        ARCHIVE DESTINATION "${OPENSIM_INSTALL_ARCHIVEDIR}")
+        EXPORT    OpenSimTargets
+        RUNTIME   DESTINATION "${CMAKE_INSTALL_BINDIR}"
+        LIBRARY   DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        ARCHIVE   DESTINATION "${OPENSIM_INSTALL_ARCHIVEDIR}"
+        FRAMEWORK DESTINATION "TODO")
 
     # Install headers.
     # ----------------
@@ -190,6 +192,13 @@ function(OpenSimAddTests)
             set(TEST_PATH "${CMAKE_CURRENT_BINARY_DIR}")
         endif()
 
+        if(XCTest_FOUND)
+            # On macOS, this makes our tests appear within Xcode.
+            # We look for XCTest in the root CMakeLists.txt.
+            # We create one "bundle" for all tests created by this macro.
+            # TODO             xctest_add_bundle(${TEST_NAME} ${TEST_NAME})
+        endif()
+
         # Make test targets.
         foreach(test_program ${OSIMADDTESTS_TESTPROGRAMS})
             # NAME_WE stands for "name without extension"
@@ -204,6 +213,15 @@ function(OpenSimAddTests)
             set_target_properties(${TEST_NAME} PROPERTIES
                 FOLDER "Tests"
 				)
+
+            if(XCTest_FOUND)
+                # Add each test to the bundle for this macro invocation.
+                # TODO improve name of bundle target.
+                # TODO change the testee (osimLepton)
+                xctest_add_bundle(${TEST_NAME}_xctest osimLepton
+                    ${test_program} ${OSIMADDTESTS_SOURCES})
+                xctest_add_test(${TEST_NAME}_xtest ${TEST_NAME}_xctest)
+            endif()
 
         endforeach()
 

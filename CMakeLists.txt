@@ -646,6 +646,11 @@ endif(WIN32)
 ## The following are required to uses Dart and the Cdash dashboard per Jesse
 enable_testing()
 include(CTest)
+if(XCODE)
+    # Create XCTest bundles that appear in the Xcode IDE.
+    # Note: The FindXCTest module appeared in CMake 3.3.
+    find_package(XCTest)
+endif()
 
 # Sets the number of concurrent jobs that testing can use.
 if(MSVC OR XCODE)
