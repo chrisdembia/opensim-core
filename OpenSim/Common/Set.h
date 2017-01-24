@@ -668,12 +668,22 @@ virtual T& get(int aIndex) const
  */
 T& get(const std::string &aName)
 {
-    return( *_objects.get(aName) );
+    try {
+        return *_objects.get(aName);
+    } catch (const typename OpenSim::ArrayPtrs<T>::NoObjectWithName& e) {
+        throw Exception(getConcreteClassName() + ".get(aName): " + std::string(e.what()),
+                __FILE__, __LINE__);
+    }
 }
 #ifndef SWIG
 const T& get(const std::string &aName) const
 {
-    return( *_objects.get(aName) );
+    try {
+        return *_objects.get(aName);
+    } catch (const typename OpenSim::ArrayPtrs<T>::NoObjectWithName& e) {
+        throw Exception(getConcreteClassName() + ".get(aName): " + std::string(e.what()),
+                __FILE__, __LINE__);
+    }
 }
 #endif
 //_____________________________________________________________________________

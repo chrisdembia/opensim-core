@@ -60,6 +60,19 @@ namespace OpenSim {
 
 template<class T> class ArrayPtrs
 {
+public:
+    class NoObjectWithName : public OpenSim::Exception {
+    public:
+        NoObjectWithName(const std::string& name, const std::string& where,
+                const std::string& file, int line) :
+            Exception(where + ": No object with name '" + name + "'." + 
+                (name.empty() ?
+                 " Name is empty; did you forget to specify the object's name?"
+                 : ""),
+                file, line) 
+        {}
+    };
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // DATA
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -886,12 +899,11 @@ const T* get(int aIndex) const
 T* get(const std::string &aName)
 {
     int index = getIndex(aName);
-    if(index==-1) {
-        std::string msg = "ArrayPtrs.get(aName): No object with name ";
-        msg += aName;
-        throw( Exception(msg,__FILE__,__LINE__) );
+    if (index == -1) {
+        throw NoObjectWithName(aName, "ArrayPtrs.get(aName)",
+                __FILE__, __LINE__);
     }
-    return(_array[index]);
+    return _array[index];
 }
 //_____________________________________________________________________________
 /**
@@ -909,12 +921,11 @@ T* get(const std::string &aName)
 const T* get(const std::string &aName) const
 {
     int index = getIndex(aName);
-    if(index==-1) {
-        std::string msg = "ArrayPtrs.get(aName): No object with name ";
-        msg += aName;
-        throw( Exception(msg,__FILE__,__LINE__) );
+    if (index == -1) {
+        throw NoObjectWithName(aName, "ArrayPtrs.get(aName)",
+                __FILE__, __LINE__);
     }
-    return(_array[index]);
+    return _array[index];
 }
 #endif
 //_____________________________________________________________________________

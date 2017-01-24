@@ -9,6 +9,7 @@ endif(WIN32)
 
 if(BUILD_TESTING)
 
+add_subdirectory(Exceptions)
 add_subdirectory(Components)
 add_subdirectory(ControllerExample)
 add_subdirectory(CoupledBushingForceExample)
