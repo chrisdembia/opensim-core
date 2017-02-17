@@ -34,6 +34,7 @@ OpenSimAddApplication(NAME opensim-cmd
             opensim-cmd_print-xml.h
             opensim-cmd_info.h
             opensim-cmd_update-file.h
+            opensim-cmd_make-plugin.h
             parse_arguments.h
     )
 
