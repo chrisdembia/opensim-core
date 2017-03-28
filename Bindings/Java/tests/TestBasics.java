@@ -92,13 +92,27 @@ class TestBasics {
     public static void testToyReflexController() {
         ToyReflexController controller = new ToyReflexController();
     }
+
+	public static void testJavaLogCallback() {
+		System.out.println("TESTING JAVA LOG CALLBACK");
+	//addLogCallback(new JavaLogCallback());
+		JavaLogCallback callback = new JavaLogCallback();
+		// TODO mark adopted.
+		// TODO make static function that creates a new callback internally.
+		callback.addToLogManager();
+		Model m = new Model();
+		m.finalizeFromProperties();
+		m.printBasicInfo();
+		// TODO
+	}
         
-  public static void main(String[] args) {
-      testBasics();
-      testMuscleList();
-      testToyReflexController();
+	public static void main(String[] args) {
+		testBasics();
+		testMuscleList();
+		testToyReflexController();
+		testJavaLogCallback();
       
-      System.out.println("Test finished!");
-      // TODO to cause test to fail: System.exit(-1);
-  }
+		System.out.println("Test finished!");
+		// TODO to cause test to fail: System.exit(-1);
+	}
 }

@@ -219,3 +219,11 @@ SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 %import "java_simbody.i"
 
 %include <Bindings/common.i>
+
+//%include <OpenSim/Common/LogCallback.h>
+//%include <OpenSim/Common/LogManager.h>
+// TODO wrap LogCallback.
+// TODO clean up
+//class JavaLogCallback : public OpenSim::LogCallback {
+//	void log(const std::string& str) override;
+//};

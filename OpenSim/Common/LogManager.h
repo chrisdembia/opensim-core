@@ -67,6 +67,11 @@ private:
 class OSIMCOMMON_API LogManager
 {
 public:
+    LogManager(const LogManager&) = delete;
+    LogManager(LogManager&&) = delete;
+    LogManager& operator=(const LogManager&) = delete;
+    LogManager& operator=(LogManager&&) = delete;
+
     // Expose these members so users can manipulate output formats by calling functions on LogManager::out/err
     static LogBuffer out;
     static LogBuffer err;

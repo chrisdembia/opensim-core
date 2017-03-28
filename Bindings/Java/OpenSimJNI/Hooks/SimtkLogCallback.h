@@ -24,6 +24,7 @@
 
 #include <OpenSim/Common/LogCallback.h>
 #include <OpenSim/Common/LogManager.h>
+#include <jni.h>
 #include <cstdio>
 
 namespace OpenSim {
@@ -32,7 +33,7 @@ class SimtkLogCallback : public LogCallback
 {
 public:
     virtual ~SimtkLogCallback() {}
-    virtual void log(const std::string &str) { }
+    void log(const std::string &str) override { }
 
     void addToLogManager() {
         LogManager::getInstance()->getOutBuffer()->addLogCallback(this);
@@ -44,6 +45,12 @@ public:
         LogManager::getInstance()->getErrBuffer()->removeLogCallback(this);
     }
 
+};
+
+class JavaLogCallback : public SimtkLogCallback {
+    void log(const std::string& str) override {
+        std::cout << "TODO HI DEBUG " << std::endl;
+    }
 };
 
 }
