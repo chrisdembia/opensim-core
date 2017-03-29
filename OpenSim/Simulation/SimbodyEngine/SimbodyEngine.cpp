@@ -687,7 +687,7 @@ void SimbodyEngine::convertQuaternionsToDirectionCosines(double aQ1, double aQ2,
 
 void SimbodyEngine::formEulerTransform(const SimTK::State& s, const PhysicalFrame &aBody, double *rE) const
 {
-    if (&aBody && rE)
+    if (rE)
     {
         // GET ORIENTATION OF aBody
         double ang[3], dc[3][3];

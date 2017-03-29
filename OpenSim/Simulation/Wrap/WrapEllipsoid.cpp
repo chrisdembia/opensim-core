@@ -122,7 +122,7 @@ void WrapEllipsoid::setupProperties()
 void WrapEllipsoid::connectToModelAndBody(Model& aModel, PhysicalFrame& aBody)
 {
     // Base class
-    WrapObject::connectToModelAndBody(aModel, aBody);
+    Super::connectToModelAndBody(aModel, aBody);
 
     // maybe set a parent pointer, _body = aBody;
 

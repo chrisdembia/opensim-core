@@ -142,8 +142,11 @@ void WrapDoubleCylinderObst::setupProperties()
 *
 * @param aModel simbody model
 */
-void WrapDoubleCylinderObst::connectToModelAndBody(Model& aModel, OpenSim::Body& aBody)
+void WrapDoubleCylinderObst::connectToModelAndBody(Model& aModel, PhysicalFrame& aBody)
 {
+    OPENSIM_THROW_IF(!dynamic_cast<Body*>(&aBody),
+            Exception, "Non-Body PhysicalFrames not yet supported.");
+
     // Base class
     Super::connectToModelAndBody(aModel, aBody);
 
