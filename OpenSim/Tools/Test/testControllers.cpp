@@ -31,6 +31,8 @@
 //  3. Test a CorrectionController tracking a block with an ideal actuator
 //  4. Test a PrescribedController on the arm26 model with reserves.
 //     Add tests here as new controller types are added to OpenSim
+//  5. Test that a PrescribedController uses the full path to actuator, to
+//     avoid bugs where there are multiple actuators with the same name.
 //
 //=============================================================================
 
@@ -46,20 +48,22 @@ void testCorrectionControllerOnBlock();
 void testPrescribedControllerFromFile(const std::string& modelFile,
                                       const std::string& actuatorsFile,
                                       const std::string& controlsFile);
+void testPrescribedControllerActuatorPaths();
 
 int main()
 {
     try {
-        cout << "Testing ControlSetController" << endl; 
-        testControlSetControllerOnBlock();
-        cout << "Testing PrescribedController" << endl; 
-        testPrescribedControllerOnBlock(true);
-        testPrescribedControllerOnBlock(false);
-        cout << "Testing CorrectionController" << endl; 
-        testCorrectionControllerOnBlock();
-        cout << "Testing PrescribedController from File" << endl;
-        testPrescribedControllerFromFile("arm26.osim", "arm26_Reserve_Actuators.xml",
-                                         "arm26_controls.xml");
+        // TODO cout << "Testing ControlSetController" << endl; 
+        // TODO testControlSetControllerOnBlock();
+        // TODO cout << "Testing PrescribedController" << endl; 
+        // TODO testPrescribedControllerOnBlock(true);
+        // TODO testPrescribedControllerOnBlock(false);
+        // TODO cout << "Testing CorrectionController" << endl; 
+        // TODO testCorrectionControllerOnBlock();
+        // TODO cout << "Testing PrescribedController from File" << endl;
+        // TODO testPrescribedControllerFromFile("arm26.osim", "arm26_Reserve_Actuators.xml",
+        // TODO                                  "arm26_controls.xml");
+        testPrescribedControllerActuatorPaths();
     }   
     catch (const Exception& e) {
         e.print(cerr);
@@ -415,3 +419,57 @@ void testPrescribedControllerFromFile(const std::string& modelFile,
      
     osimModel.disownAllComponents();
 }
+
+// Version 4.0 introduced subcomponents and therefore changed the way that
+// components refer to other components (using paths rather than simply the
+// name of a component). PrescribedController previously located the actuators
+// it controls using names, but this caused a bug in when a model had two
+// actuators of the same name in different parts of the tree: the controller
+// would control the first actuator it found with the correct name, even if it
+// was supposed to control the second actuator. This test ensures that this bug
+// is fixed.
+void testPrescribedControllerActuatorPaths() {
+    // Create a pendulum with two actuators, both of which have the same name
+    // but unique absolute paths.
+    Model model;
+    model.setName("mymodel");
+    // Body.
+    auto* body = new Body("body", 1, SimTK::Vec3(0), SimTK::Inertia(0));
+    model.addComponent(body);
+    // Joint.
+    auto* joint = new PinJoint("joint",
+            model.getGround(), SimTK::Vec3(0), SimTK::Vec3(0),
+            *body, SimTK::Vec3(0, 1, 0), SimTK::Vec3(0));
+    model.addComponent(joint);
+    // Actuators.
+    // The first foo is within in the body.
+    auto* actu1 = new CoordinateActuator("joint_coord_0");
+    actu1->setName("foo");
+    body->addComponent(actu1);
+    // The second foo is within the joint.
+    auto* actu2 = new CoordinateActuator("joint_coord_0");
+    actu2->setName("foo");
+    joint->addComponent(actu2);
+    // Controller.
+    auto* contr = new PrescribedController();
+    contr->addActuator(*actu1);
+    contr->addActuator(*actu2);
+    contr->prescribeControlForActuator("/mymodel/body/foo", new Constant(1.5));
+    contr->prescribeControlForActuator("/mymodel/joint/foo", new Constant(2.7));
+    model.addComponent(contr);
+
+    auto state = model.initSystem();
+
+    model.realizeDynamics(state);
+    std::cout << "DEBUG " << actu1->getActuation(state) << std::endl;
+    std::cout << "DEBUG " << actu2->getActuation(state) << std::endl;
+
+    // Manager manager(model);
+    // manager.integrate(state, 1.0);
+}
+
+
+
+
+
+

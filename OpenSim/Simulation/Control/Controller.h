@@ -66,6 +66,11 @@ public:
         "The keyword ALL indicates the controller will control all the "
         "actuators in the model" );
 
+    OpenSim_DECLARE_LIST_SOCKET(actuator_list, Actuator,
+        "The list of model actuators that this controller will control."
+        "The keyword ALL indicates the controller will control all the "
+        "actuators in the model" );
+
 //=============================================================================
 // METHODS
 //=============================================================================
