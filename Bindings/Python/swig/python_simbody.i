@@ -134,6 +134,13 @@ These typemaps work, though.
         SimTK_INDEXCHECK_ALWAYS(i, $self->size(), "Vec3.__setitem__()");
         $self->operator[](i) = value;
     }
+    std::vector<double> totuple() const {
+       std::vector<double> v($self->size());
+       for (int i = 0; i < $self->size(); ++i) {
+           v[i] = $self->get(i);
+       }
+       return v;
+    }
     //SimTK::Vec<3> __add__(const SimTK::Vec<3>& v) const {
     //    return *($self) + v;
     //}

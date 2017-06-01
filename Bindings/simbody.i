@@ -80,7 +80,13 @@ namespace SimTK {
          return new Vector_<double>{static_cast<int>(row.size()),
                                     row.data()};
      }
-
+     std::vector<double> totuple() const {
+        std::vector<double> v($self->size());
+        for (int i = 0; i < $self->size(); ++i) {
+            v[i] = $self->getElt(i, 0);
+        }
+        return v;
+     }
      RowVector_<double> transpose() {
          return $self->operator~();
      }
