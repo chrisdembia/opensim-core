@@ -45,7 +45,7 @@ class Model;
 class MovingPathPoint;
 class Muscle;
 class GeometryPath;
-class PathPoint;
+class AbstractPathPoint;
 class PathWrap;
 class ConditionalPathPoint;
 class WrapObject;
@@ -136,7 +136,7 @@ public:
     // Muscles
     double getActivation(Muscle& act);
     double getMuscleLength(Muscle& act);
-    const Array<PathPoint*>& getCurrentPath(Muscle& act);
+    const Array<AbstractPathPoint*>& getCurrentPath(Muscle& act);
     void copyMuscle(Muscle& from, Muscle& to);
     void replacePropertyFunction(OpenSim::Object& obj, OpenSim::Function* aOldFunction, OpenSim::Function* aNewFunction);
 
@@ -147,16 +147,16 @@ public:
     void setXCoordinate(MovingPathPoint& mmp, Coordinate& newCoord);
     void setYCoordinate(MovingPathPoint& mmp, Coordinate& newCoord);
     void setZCoordinate(MovingPathPoint& mmp, Coordinate& newCoord);
-    void setBody(PathPoint& pathPoint, PhysicalFrame& newBody);
+    void setBody(AbstractPathPoint& pathPoint, PhysicalFrame& newBody);
     void setCoordinate(ConditionalPathPoint& via, Coordinate& newCoord);
     void setRangeMin(ConditionalPathPoint& via, double d);
     void setRangeMax(ConditionalPathPoint& via, double d);
-    bool replacePathPoint(GeometryPath& p, PathPoint& mp, PathPoint& newPoint);
+    bool replacePathPoint(GeometryPath& p, AbstractPathPoint& mp, AbstractPathPoint& newPoint);
     void setLocation(PathPoint& mp, int i, double d);
     void setEndPoint(PathWrap& mw, int newEndPt);
     void addPathPoint(GeometryPath& p, int menuChoice, PhysicalFrame& body);
     bool deletePathPoint(GeometryPath& p, int menuChoice);
-    bool isActivePathPoint(PathPoint& mp) ; 
+    bool isActivePathPoint(AbstractPathPoint& mp) ; 
     // Muscle Wrapping
     void setStartPoint(PathWrap& mw, int newStartPt);
     void addPathWrap(GeometryPath& p, WrapObject& awo);
@@ -165,7 +165,7 @@ public:
     void deletePathWrap(GeometryPath& p, int num);
     // Markers
     void setBody(Marker& currentMarker, PhysicalFrame& newBody, bool  b);
-    int replaceMarkerSet(Model& model, MarkerSet& aMarkerSet);
+    void updateMarkerSet(Model& model, MarkerSet& aMarkerSet);
 
     void getCenterOfMassInGround(double com[3]) const {
         SimTK::Vec3 comV = _model->getMatterSubsystem().calcSystemMassCenterLocationInGround(*_configState);
@@ -367,17 +367,28 @@ public:
         pd.setValue(6, array6);
     }
     //=================Vec3 Properties, treated as three Doubles ==================
-    static double getValueVec3(const AbstractProperty& p, int index) 
-    {   
+    static double getValueVec3(const AbstractProperty& p, int index)
+    {
         const Property<SimTK::Vec3>& pd = dynamic_cast<const Property<SimTK::Vec3>&>(p);
         const SimTK::Vec3& vec3 = pd.getValue();
-        return vec3[index]; 
+        return vec3[index];
     }
-    static void setValueVec3(double v, AbstractProperty& p, int index) 
-    {   
+    static void setValueVec3(double v, AbstractProperty& p, int index)
+    {
         Property<SimTK::Vec3>& pd = dynamic_cast<Property<SimTK::Vec3>&>(p);
         pd.updValue()[index] = v;
-     }
+    }
+    static double getValueVec6(const AbstractProperty& p, int index)
+    {
+        const Property<SimTK::Vec6>& pd = dynamic_cast<const Property<SimTK::Vec6>&>(p);
+        const SimTK::Vec6& vec6 = pd.getValue();
+        return vec6[index];
+    }
+    static void setValueVec6(double v, AbstractProperty& p, int index)
+    {
+        Property<SimTK::Vec6>& pd = dynamic_cast<Property<SimTK::Vec6>&>(p);
+        pd.updValue()[index] = v;
+    }
     // ================ String arrays ===================================================
     static OpenSim::Array<std::string> getValueStringArray(const AbstractProperty& p)
     {

@@ -41,6 +41,11 @@ public:
     using Exception::Exception;
 };
 
+class InvalidColumn : public Exception {
+public:
+    using Exception::Exception;
+};
+
 class IncorrectNumColumns : public InvalidRow {
 public:
     IncorrectNumColumns(const std::string& file,
@@ -49,8 +54,25 @@ public:
                         size_t expected,
                         size_t received) :
         InvalidRow(file, line, func) {
-        std::string msg = "expected = " + std::to_string(expected);
-        msg += " received = " + std::to_string(received);
+        std::string msg = "Incorrect number of columns. ";
+        msg += "Expected = " + std::to_string(expected);
+        msg += ", Received = " + std::to_string(received);
+
+        addMessage(msg);
+    }
+};
+
+class IncorrectNumRows : public InvalidColumn {
+public:
+    IncorrectNumRows(const std::string& file,
+                     size_t line,
+                     const std::string& func,
+                     size_t expected,
+                     size_t received) :
+        InvalidColumn(file, line, func) {
+        std::string msg = "Incorrect number of rows. ";
+        msg += "Expected = " + std::to_string(expected);
+        msg += ", Received = " + std::to_string(received);
 
         addMessage(msg);
     }
@@ -85,7 +107,7 @@ public:
                    size_t line,
                    const std::string& func) :
         Exception(file, line, func) {
-        std::string msg = "Table has no column-labels. Use setColumnLabels() to"
+        std::string msg = "Table has no column labels. Use setColumnLabels() to"
                           " add labels.";
 
         addMessage(msg);
@@ -114,17 +136,20 @@ public:
     MetaDataLengthZero(const std::string& file,
                        size_t line,
                        const std::string& func,
-                       const std::string& key) :
+                       const std::string& msg) :
         Exception(file, line, func) {
-        std::string msg = "Key = " + key;
-
         addMessage(msg);
     }
 };
 
 class EmptyTable : public Exception {
 public:
-    using Exception::Exception;
+    EmptyTable(const std::string& file,
+               size_t line,
+               const std::string& func) :
+        Exception(file, line, func) {
+        addMessage("Table is empty.");
+    }
 };
 
 class KeyExists : public Exception {
@@ -293,6 +318,10 @@ public:
     void 
     setDependentsMetaData(const DependentsMetaData& dependentsMetaData);
 
+    /** Remove key-value pair associated with the given key from dependents
+    metadata.                                                                 */
+    void removeDependentsMetaDataForKey(const std::string& key);
+
     /// @} End of MetaData accessors/mutators.
 
     /// @name Column-labels related accessors/mutators.
@@ -353,7 +382,7 @@ public:
     \param last InputIterator representing the sentinel or one past the end of
                 sequence of labels.                                          
 
-    \throws MetaDataLengthZero If input sequence of labels is zero.
+    \throws MetaDataLengthZero If length of input sequence of labels is zero.
     \throws IncorrectMetaDataLength If length of the input sequence of labels is
                                     incorrect -- does not match the number of
                                     columns in the table.                     */
@@ -361,7 +390,7 @@ public:
     void setColumnLabels(InputIt first, InputIt last) {
         OPENSIM_THROW_IF(first == last, 
                          MetaDataLengthZero,
-                         "labels");
+                         "Length of provided sequence of column labels is 0.");
 
         ValueArray<std::string> labels{};
         for(auto it = first; it != last; ++it)
@@ -432,6 +461,9 @@ public:
     bool hasColumn(const size_t columnIndex) const;
 
 protected:
+    /** Append column-label.                                                  */
+    void appendColumnLabel(const std::string& columnLabel);
+    
     /** Get number of rows. Implemented by derived classes.                   */
     virtual size_t implementGetNumRows() const       = 0;
     

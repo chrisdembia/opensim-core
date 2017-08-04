@@ -63,6 +63,8 @@ public:
     /** (Read only view) Type of each row of matrix.                          */
     typedef SimTK::RowVectorView_<ETY> RowVectorView;
     /** Type of each column of matrix holding dependent data.                 */
+    typedef SimTK::Vector_<ETY>        Vector;
+    /** Type of each column of matrix holding dependent data.                 */
     typedef SimTK::VectorView_<ETY>    VectorView;
     /** Type of the matrix holding the dependent data.                        */
     typedef SimTK::Matrix_<ETY>        Matrix;
@@ -659,7 +661,8 @@ public:
                 // No "labels". So no operation.
             }
             _depData.resize(1, depRow.size());
-        } else
+        }
+        else 
             _depData.resizeKeep(_depData.nrow() + 1, _depData.ncol());
             
         _depData.updRow(_depData.nrow() - 1) = depRow;
@@ -719,6 +722,56 @@ public:
         return _depData.updRow((int)std::distance(_indData.cbegin(), iter));
     }
 
+    /** Set row at index. Equivalent to
+    ```
+    updRowAtIndex(index) = depRow;
+    ```
+
+    \throws RowIndexOutOfRange If the index is out of range.                  */
+    void setRowAtIndex(size_t index, const RowVectorView& depRow) {
+        updRowAtIndex(index) = depRow;
+    }
+
+    /** Set row at index. Equivalent to
+    ```
+    updRowAtIndex(index) = depRow;
+    ```
+
+    \throws RowIndexOutOfRange If the index is out of range.                  */
+    void setRowAtIndex(size_t index, const RowVector& depRow) {
+        updRowAtIndex(index) = depRow;
+    }
+
+    /** Set row corresponding to the given entry in the independent column.
+    This function searches the independent column for exact equality, which may 
+    not be appropriate if `ETX` is of type `double`. See 
+    TimeSeriesTable_::updNearestRow().
+    Equivalent to
+    ```
+    updRow(ind) = depRow;
+    ```
+
+    \throws KeyNotFound If the independent column has no entry with given
+                        value.                                                */
+    void setRow(const ETX& ind, const RowVectorView& depRow) {
+        updRow(ind) = depRow;
+    }
+
+    /** Set row corresponding to the given entry in the independent column.
+    This function searches the independent column for exact equality, which may 
+    not be appropriate if `ETX` is of type `double`. See 
+    TimeSeriesTable_::updNearestRow().
+    Equivalent to
+    ```
+    updRow(ind) = depRow;
+    ```
+
+    \throws KeyNotFound If the independent column has no entry with given
+                        value.                                                */
+    void setRow(const ETX& ind, const RowVector& depRow) {
+        updRow(ind) = depRow;
+    }
+
     /** Remove row at index.
 
     \throws RowIndexOutOfRange If the index is out of range.                  */
@@ -756,6 +809,138 @@ public:
     /** Get independent column.                                               */
     const std::vector<ETX>& getIndependentColumn() const {
         return _indData;
+    }
+
+    /** Append column to the DataTable_ using a sequence container.
+    \code
+    std::vector<double> col{1, 2, 3, 4};
+    table.appendColumn("new-column", col);
+    \endcode
+
+    \param columnLabel Label of the column to be added. Must not be same as the
+                       label of an existing column.
+    \param container Sequence container holding the elements of the column to be
+                     appended.
+    \throws InvalidCall If DataTable_ contains no rows at the time of this call.
+    \throws InvalidArgument If columnLabel specified already exists in the
+                            DataTable_.
+    \throws InvalidColumn If the input column contains incorrect number of 
+                          rows.                                               */
+    template<typename Container>
+    void appendColumn(const std::string& columnLabel,
+                      const Container& container) {
+        using Value = decltype(*(container.begin()));
+        using RmrefValue = typename std::remove_reference<Value>::type;
+        using RmcvRmrefValue = typename std::remove_cv<RmrefValue>::type;
+        static_assert(std::is_same<ETY, RmcvRmrefValue>::value,
+                      "The 'container' specified does not provide an iterator "
+                      "which when dereferenced provides elements that "
+                      "are of same type as elements of this table.");
+
+        appendColumn(columnLabel, container.begin(), container.end());
+    }
+
+    /** Append column to the DataTable_ using an initializer list.
+    \code
+    table.appendColumn("new-column", {1, 2, 3, 4});
+    \endcode
+
+    \param columnLabel Label of the column to be added. Must not be same as the
+                       label of an existing column.
+    \param container Sequence container holding the elements of the column to be
+                     appended.
+    \throws InvalidCall If DataTable_ contains no rows at the time of this call.
+    \throws InvalidArgument If columnLabel specified already exists in the
+                            DataTable_.
+    \throws InvalidColumn If the input column contains incorrect number of 
+                          rows.                                               */
+    void appendColumn(const std::string& columnLabel,
+                      const std::initializer_list<ETY>& container) {
+        appendColumn(columnLabel, container.begin(), container.end());
+    }
+
+    /** Append column to the DataTable_ using an iterator pair.
+    \code
+    std::vector<double> col{};
+    // ......
+    // Fill up 'col'.
+    // ......
+    table.append("new-column", col.begin(), col.end());
+    \endcode
+
+    \param columnLabel Label of the column to be added. Must not be same as the
+                       label of an existing column.
+    \param begin Iterator referring to the beginning of the range.
+    \param end Iterator referring to the end of the range.
+
+    \throws InvalidCall If DataTable_ contains no rows at the time of this call.
+    \throws InvalidArgument If columnLabel specified already exists in the
+                            DataTable_.
+    \throws InvalidColumn If the input column contains incorrect number of 
+                          rows.                                               */
+    template<typename ColIter>
+    void appendColumn(const std::string& columnLabel,
+                      ColIter begin, ColIter end) {
+        using Value = decltype(*begin);
+        using RmrefValue = typename std::remove_reference<Value>::type;
+        using RmcvRmrefValue = typename std::remove_cv<RmrefValue>::type;
+        static_assert(std::is_same<ETY, RmcvRmrefValue>::value,
+                      "The iterator 'begin' does not provide elements that are "
+                      "of same type as elements of this table.");
+
+        Vector col{static_cast<int>(std::distance(begin, end))};
+        int ind{0};
+        for(auto it = begin; it != end; ++it)
+            col[ind++] = *it;
+
+        appendColumn(columnLabel, col);
+    }
+
+    /** Append column to the DataTable_ using a SimTK::Vector.
+
+    \param columnLabel Label of the column to be added. Must not be same as the
+                       label of an existing column.
+    \param depCol Column vector to be appended to the table.
+
+    \throws InvalidCall If DataTable_ contains no rows at the time of this call.
+    \throws InvalidArgument If columnLabel specified already exists in the
+                            DataTable_.
+    \throws InvalidColumn If the input column contains incorrect number of 
+                          rows.                                               */
+    void appendColumn(const std::string& columnLabel,
+                      const Vector& depCol) {
+        appendColumn(columnLabel, depCol.getAsVectorView());
+    }
+
+    /** Append column to the DataTable_ using a SimTK::VectorView.
+
+    \param columnLabel Label of the column to be added. Must not be same as the
+                       label of an existing column.
+    \param depCol Column vector to be appended to the table.
+
+    \throws InvalidCall If DataTable_ contains no rows at the time of this call.
+    \throws InvalidArgument If columnLabel specified already exists in the
+                            DataTable_.
+    \throws InvalidColumn If the input column contains incorrect number of 
+                          rows.                                               */
+    void appendColumn(const std::string& columnLabel,
+                      const VectorView& depCol) {
+        OPENSIM_THROW_IF(getNumRows() == 0,
+                         InvalidCall,
+                         "DataTable must have one or more rows before we can "
+                         "append columns to it.");
+        OPENSIM_THROW_IF(hasColumn(columnLabel),
+                         InvalidArgument,
+                         "Column-label '" + columnLabel + "' already exists in "
+                         "the DataTable.");
+        OPENSIM_THROW_IF(depCol.nrow() != getNumRows(),
+                         IncorrectNumRows,
+                         static_cast<size_t>(getNumRows()),
+                         static_cast<size_t>(depCol.nrow()));
+        
+        _depData.resizeKeep(_depData.nrow(), _depData.ncol() + 1);
+        _depData.updCol(_depData.ncol() - 1) = depCol;
+        appendColumnLabel(columnLabel);
     }
 
     /** Get dependent column at index.
@@ -974,6 +1159,28 @@ public:
     }
 
 protected:
+    /** Convenience constructor to efficiently populate a DataTable from
+    known data. This is primarily useful for reading in large data tables
+    without having to reallocate and copy memory. NOTE derived tables
+    must validate the table according to the needs of the concrete type.
+    The virtual validateRow() overridden by derived types cannot be
+    invoked here - that is by the base class. A derived class must perform
+    its own validation by invoking its own validateRow() implementation. */
+    DataTable_(const std::vector<ETX>& indVec,
+        const SimTK::Matrix_<ETY>& depData,
+        const std::vector<std::string>& labels) {
+        OPENSIM_THROW_IF(indVec.size() != depData.nrow(), InvalidArgument,
+            "Length of independent column does not match number of rows of "
+            "dependent data.");
+        OPENSIM_THROW_IF(labels.size() != depData.ncol(), InvalidArgument,
+            "Number of labels does not match number of columns of "
+            "dependent data.");
+
+        setColumnLabels(labels);
+        _indData = indVec;
+        _depData = depData;
+    }
+
     // Implement toString.
     std::string toString_impl(std::vector<int> rows         = {},
                               std::vector<int> cols         = {},
@@ -1009,10 +1216,10 @@ protected:
             precision  = defPrecision;
         if(rows.empty())
             for(size_t i = 0u; i < getNumRows()   ; ++i)
-                rows.push_back(i);
+                rows.push_back(static_cast<int>(i));
         if(cols.empty())
             for(size_t i = 0u; i < getNumColumns(); ++i)
-                cols.push_back(i);
+                cols.push_back(static_cast<int>(i));
 
         auto toStr = [&] (const double val) {
             std::ostringstream stream{};
@@ -1027,7 +1234,7 @@ protected:
         table.push_back({std::string{}, indColLabel});
         for(int col : cols) {
             if(col < 0)
-                col += getNumColumns();
+                col += static_cast<int>(getNumColumns());
             if(numComponentsPerElement() == 1)
                 table.front().push_back(getColumnLabel(col));
             else
@@ -1040,7 +1247,7 @@ protected:
         // Fill up the rows, including row-number, time column, row data.
         for(int row : rows) {
             if(row < 0)
-                row += getNumRows();
+                row += static_cast<int>(getNumRows());
             std::vector<std::string> rowData{};
             rowData.push_back(std::to_string(row) + rowNumSepChar);
             rowData.push_back(toStr(getIndependentColumn()[row]));
@@ -1094,17 +1301,17 @@ protected:
                     width -= columnWidths[endCol];
                 }
                 result.append(columnWidths[0], fillChar);
-                for(unsigned col = beginCol; col < endCol; ++col) {
+                for(size_t col = beginCol; col < endCol; ++col) {
                     result.append(columnWidths[col] - table[0][col].length(),
                                   fillChar);
                     result.append(table[0][col]);
                 }
                 result.push_back(newlineChar);
-                for(unsigned row = beginRow; row < endRow; ++row) {
+                for(size_t row = beginRow; row < endRow; ++row) {
                     result.append(columnWidths[0] - table[row][0].length(),
                                   fillChar);
                     result.append(table[row][0]);
-                    for(unsigned col = beginCol; col < endCol; ++col) {
+                    for(size_t col = beginCol; col < endCol; ++col) {
                         result.append(columnWidths[col] -
                                       table[row][col].length(), fillChar);
                         result.append(table[row][col]);
@@ -1231,7 +1438,7 @@ protected:
 
     /** Validate metadata for independent column.                             
     
-    \throws InvalidMetaData If independent column's metadata does not contain
+    \throws MissingMetaData If independent column's metadata does not contain
                             a key named "labels".                             */
     void validateIndependentMetaData() const override {
         try {
@@ -1243,12 +1450,14 @@ protected:
 
     /** Validate metadata for dependent columns.
 
-    \throws InvalidMetaData (1) If metadata for dependent columns does not 
-                            contain a key named "labels". (2) If ValueArray
-                            for key "labels" does not have length equal to the
-                            number of columns in the table. (3) If not all
-                            entries in the metadata for dependent columns have
-                            the correct length (equal to number of columns).  */
+    \throws MissingMetaData If metadata for dependent columns does not 
+                            contain a key named "labels". 
+    \throws MetaDataLengthZero If 'labels' metadata has length 0.
+    \throws IncorrectMetaDataLength (1) If ValueArray for key "labels" does not
+                            have length equal to the number of columns in the
+                            table. (2) If not all entries in the metadata for
+                            dependent columns have the correct length (equal to
+                            number of columns).                               */
     void validateDependentsMetaData() const override {
         size_t numCols{};
         try {
@@ -1259,7 +1468,8 @@ protected:
         }
 
         OPENSIM_THROW_IF(numCols == 0,
-                         MetaDataLengthZero,"labels");
+                         MetaDataLengthZero,
+                         "Length of 'labels' metadata is 0.");
 
         OPENSIM_THROW_IF(_depData.ncol() != 0 && 
                          numCols != static_cast<unsigned>(_depData.ncol()),
@@ -1268,11 +1478,9 @@ protected:
 
         for(const std::string& key : _dependentsMetaData.getKeys()) {
             OPENSIM_THROW_IF(numCols != 
-                             _dependentsMetaData.
-                             getValueArrayForKey(key).size(),
-                             IncorrectMetaDataLength, key, numCols,
-                             _dependentsMetaData.
-                             getValueArrayForKey(key).size());
+                        _dependentsMetaData.getValueArrayForKey(key).size(),
+                        IncorrectMetaDataLength, key, numCols,
+                        _dependentsMetaData.getValueArrayForKey(key).size());
         }
     }
 

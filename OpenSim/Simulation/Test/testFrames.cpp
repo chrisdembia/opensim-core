@@ -172,6 +172,7 @@ void testPhysicalOffsetFrameOnBody()
 
     cout << "\nRunning testOffsetFrameOnBody" << endl;
     Model* pendulum = new Model("double_pendulum.osim");
+
     const OpenSim::Body& rod1 = pendulum->getBodySet().get("rod1");
 
     // The offset transform on the rod body
@@ -246,6 +247,7 @@ void testPhysicalOffsetFrameOnPhysicalOffsetFrame()
 
     cout << "\nRunning testPhysicalOffsetFrameOnPhysicalOffsetFrame" << endl;
     Model* pendulum = new Model("double_pendulum.osim");
+
     const OpenSim::Body& rod1 = pendulum->getBodySet().get("rod1");
     
     SimTK::Transform X_RO;
@@ -259,10 +261,6 @@ void testPhysicalOffsetFrameOnPhysicalOffsetFrame()
 
     //connect a second frame to the first PhysicalOffsetFrame 
     PhysicalOffsetFrame* secondFrame = offsetFrame->clone();
-    // Hack since clone does not copy internal ownership (parent) references
-    // TODO: should be removed when Component cloning preserves ownership
-    // relationships.
-    secondFrame->finalizeFromProperties();
 
     secondFrame->setName("second");
     secondFrame->setParentFrame(*offsetFrame);
@@ -314,6 +312,7 @@ void testPhysicalOffsetFrameOnBodySerialize()
 
     cout << "\nRunning testPhysicalOffsetFrameOnBodySerialize" << endl;
     Model* pendulum = new Model("double_pendulum.osim");
+
     const OpenSim::Body& rod1 = pendulum->getBodySet().get("rod1");
 
     SimTK::Transform X_RO;
@@ -527,4 +526,15 @@ void testVelocityAndAccelerationMethods()
         SimTK_TEST_EQ(v, vo);
         SimTK_TEST_EQ(a, ao);
     }
+
+    // Test convenience methods for accessing angular and linear components of
+    // velocity and acceleration.
+    SimTK_TEST_EQ(rod2.getVelocityInGround(s)[0],
+                  rod2.getAngularVelocityInGround(s));
+    SimTK_TEST_EQ(rod2.getVelocityInGround(s)[1],
+                  rod2.getLinearVelocityInGround(s));
+    SimTK_TEST_EQ(rod2.getAccelerationInGround(s)[0],
+                  rod2.getAngularAccelerationInGround(s));
+    SimTK_TEST_EQ(rod2.getAccelerationInGround(s)[1],
+                  rod2.getLinearAccelerationInGround(s));
 }

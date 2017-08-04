@@ -122,14 +122,21 @@ of the Model, called a System (SimTK::System), using Simbody. Creation of the
 System is initiated by a call to the Model's initSystem() method. The System and
 related objects are maintained in a runtime section of the Model object. You
 can also ask a Model to provide visualization using the setUseVisualizer()
-method, in which case it will allocate an maintain a ModelVisualizer.
+method, in which case it will allocate and maintain a ModelVisualizer.
 
 @authors Frank Anderson, Peter Loan, Ayman Habib, Ajay Seth, Michael Sherman
 @see ModelComponent, ModelVisualizer, SimTK::System
 **/
 
 class OSIMSIMULATION_API Model  : public ModelComponent {
-OpenSim_DECLARE_CONCRETE_OBJECT(Model, ModelComponent);
+// Note, a concrete object typically employs the OpenSim_DECLARE_CONCRETE_OBJECT
+// macro, but, for Model we do not want its clone() method to be auto-generated.
+// Instead, we want to override and customize it and so we employ the subset of
+// macros that OpenSim_DECLARE_CONCRETE_OBJECT calls, excluding one that
+// implements clone() and getConcreteClassName(), which are implemented below.
+OpenSim_OBJECT_ANY_DEFS(Model, ModelComponent);
+OpenSim_OBJECT_NONTEMPLATE_DEFS(Model, ModelComponent);
+
 public:
 //==============================================================================
 // PROPERTIES
@@ -220,18 +227,23 @@ public:
     //--------------------------------------------------------------------------
 public:
 
-    /** Default constructor creates a %Model containing only the ground Body
+    /** Default constructor creates a %Model containing only the Ground frame
     and a set of default properties. */
     Model();
 
     /** Constructor from an OpenSim XML model file. 
+    NOTE: The Model is read in (deserialized) from the model file, which means
+    the properties of the Model and its components are filled in from values in
+    the file. In order to evaluate the validity of the properties (e.g. Inertia
+    tensors, availability of Mesh files, ...) and to identify properties as
+    subcomponents of the Model, one must invoke Model::finalizeFromProperties() 
+    first. Model::initSystem() invokes finalizeFromProperties() on its way to
+    creating the System and initializing the State.
+
     @param filename     Name of a file containing an OpenSim model in XML
                         format; suffix is typically ".osim". 
-                        
-    @param finalize  whether to extendFinalizeFromProperties to create a valid OpenSim Model or not on exit, 
-                     defaults to true. If set to false only deserialization is performed.
     **/
-    explicit Model(const std::string& filename, bool finalize=true) SWIG_DECLARE_EXCEPTION;
+    explicit Model(const std::string& filename) SWIG_DECLARE_EXCEPTION;
 
     /**
      * Perform some set up functions that happen after the
@@ -249,6 +261,12 @@ public:
      */
     void cleanup();
 
+    /** Model clone() override that invokes finalizeFromProperties() 
+        on a default copy constructed Model, prior to returning the Model. */
+    Model* clone() const override;
+    
+    const std::string& getConcreteClassName() const override
+    {   return getClassName(); }
 
     //--------------------------------------------------------------------------
     // VISUALIZATION
@@ -376,12 +394,18 @@ public:
     /** Check that the underlying computational system representing the model is valid. 
         That is, is the system ready for performing calculations. */
     bool isValidSystem() const;
+
     /**
-     * create a storage (statesStorage) that has same label order as model's states
-     * with values populated from originalStorage, 0.0 for those states unspecified
-     * in the originalStorage.
+     * Create a storage (statesStorage) that has same label order as model's states
+     * with values populated from originalStorage. Use the default state value if
+     * a state is unspecified in the originalStorage. If warnUnspecifiedStates is
+     * true then a warning is printed that includes the default value used for
+     * the state value unspecified in originalStorage.
      */
-    void formStateStorage(const Storage& originalStorage, Storage& statesStorage);
+    void formStateStorage(const Storage& originalStorage, 
+                          Storage& statesStorage,
+                          bool warnUnspecifiedStates = true) const;
+
     void formQStorage(const Storage& originalStorage, Storage& qStorage);
     
     /**
@@ -415,13 +439,13 @@ public:
 
     /** Get read-only access to the internal Simbody MultibodySystem that was
     created by this %Model at the last initSystem() call. **/    
-    const SimTK::MultibodySystem& getMultibodySystem() const {return *_system; }
+    const SimTK::MultibodySystem& getMultibodySystem() const {return getSystem(); }
     /** (Advanced) Get writable access to the internal Simbody MultibodySystem 
     that was created by this %Model at the last initSystem() call. Be careful
     if you make modifications to the System because that will invalidate 
     initialization already performed by the Model. 
     @see initStateWithoutRecreatingSystem() **/    
-    SimTK::MultibodySystem& updMultibodySystem() const {return *_system; }
+    SimTK::MultibodySystem& updMultibodySystem() const {return updSystem(); }
 
     /** Get read-only access to the internal DefaultSystemSubsystem allocated
     by this %Model's Simbody MultibodySystem. **/
@@ -867,7 +891,15 @@ public:
     const MarkerSet& getMarkerSet() const { return get_MarkerSet(); }
     int replaceMarkerSet(const SimTK::State& s, const MarkerSet& aMarkerSet);
     void writeMarkerFile(const std::string& aFileName);
-    void updateMarkerSet(MarkerSet& aMarkerSet);
+
+    /**
+    * Update the markers in the model by appending the ones in the
+    * passed-in marker set. If the marker of the same name exists
+    * in the model, then replace it.
+    *
+    * @param newMarkerSet the set of markers used to update the model's set.
+    */
+    void updateMarkerSet(MarkerSet& newMarkerSet);
     int deleteUnusedMarkers(const Array<std::string>& aMarkerNames);
  
     /**
@@ -922,15 +954,16 @@ public:
      *
      * @param aOStream Output stream.
      */
-    void printBasicInfo(std::ostream &aOStream) const;
+    void printBasicInfo(std::ostream& aOStream = std::cout) const;
 
     /**
      * Print detailed information about the model.
      *
-     * @param s   the system State.
+     * @param s        the system State.
      * @param aOStream Output stream.
      */
-    void printDetailedInfo(const SimTK::State& s, std::ostream &aOStream) const;
+    void printDetailedInfo(const SimTK::State& s,
+                           std::ostream& aOStream = std::cout) const;
 
     /**
      * Model relinquishes ownership of all components such as: Bodies, Constraints, Forces, 

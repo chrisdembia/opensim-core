@@ -29,7 +29,7 @@
 %include <OpenSim/Simulation/Model/PhysicalFrame.h>
 %include <OpenSim/Simulation/Model/Ground.h>
 %include <OpenSim/Simulation/Model/OffsetFrame.h>
-%template(PhysicalFrameWithOffset)   OpenSim::OffsetFrame<OpenSim::PhysicalFrame>; 
+%template(PhysicalFrameWithOffset)   OpenSim::OffsetFrame<OpenSim::PhysicalFrame>;
 %include <OpenSim/Simulation/Model/PhysicalOffsetFrame.h>
 %template(SetFrames) OpenSim::Set<OpenSim::Frame>;
 %template(ModelComponentSetFrames) OpenSim::ModelComponentSet<OpenSim::Frame>;
@@ -163,14 +163,16 @@
 %include <OpenSim/Simulation/Model/Umberger2010MuscleMetabolicsProbe.h>
 %include <OpenSim/Simulation/Model/ModelVisualPreferences.h>
 %include <OpenSim/Simulation/Model/ModelVisualizer.h>
+%copyctor OpenSim::Model;
 %include <OpenSim/Simulation/Model/Model.h>
 
+%include <OpenSim/Simulation/Model/AbstractPathPoint.h>
 %include <OpenSim/Simulation/Model/PathPoint.h>
 %include <OpenSim/Simulation/Wrap/PathWrapPoint.h>
 %include <OpenSim/Simulation/Model/ConditionalPathPoint.h>
 %include <OpenSim/Simulation/Model/MovingPathPoint.h>
-%template(SetPathPoint) OpenSim::Set<OpenSim::PathPoint>;
-%template(ArrayPathPoint) OpenSim::Array<OpenSim::PathPoint*>;
+%template(SetPathPoint) OpenSim::Set<OpenSim::AbstractPathPoint>;
+%template(ArrayPathPoint) OpenSim::Array<OpenSim::AbstractPathPoint*>;
 %include <OpenSim/Simulation/Model/PathPointSet.h>
 
 %include <OpenSim/Simulation/Model/PointForceDirection.h>
@@ -195,16 +197,18 @@
 
 %template(ReferenceVec3) OpenSim::Reference_<SimTK::Vec3>;
 %template(ReferenceDouble) OpenSim::Reference_<double>;
-%template(ArrayCoordinateReference) SimTK::Array_<OpenSim::CoordinateReference>;
+%template(SimTKArrayCoordinateReference) SimTK::Array_<OpenSim::CoordinateReference>;
+
 
 %include <OpenSim/Simulation/MarkersReference.h>
+%template(SetMarkerWeights) OpenSim::Set<MarkerWeight>;
 %include <OpenSim/Simulation/CoordinateReference.h>
 %include <OpenSim/Simulation/AssemblySolver.h>
 %include <OpenSim/Simulation/InverseKinematicsSolver.h>
 
 %include <OpenSim/Simulation/StatesTrajectory.h>
 // This enables iterating using the getBetween() method.
-%template(IteratorRangeStatesTrajectoryIterator) 
+%template(IteratorRangeStatesTrajectoryIterator)
     SimTK::IteratorRange<OpenSim::StatesTrajectory::const_iterator>;
 %include <OpenSim/Simulation/StatesTrajectoryReporter.h>
 
@@ -224,13 +228,24 @@
 %template(JointList) OpenSim::ComponentList<const OpenSim::Joint>;
 %template(JointIterator) OpenSim::ComponentListIterator<const OpenSim::Joint>;
 
+%template(ActuatorList) OpenSim::ComponentList<const OpenSim::Actuator>;
+%template(ActuatorIterator) OpenSim::ComponentListIterator<const OpenSim::Actuator>;
+
 %template(getFrameList) OpenSim::Model::getComponentList<OpenSim::Frame>;
 %template(getBodyList) OpenSim::Model::getComponentList<OpenSim::Body>;
 %template(getMuscleList) OpenSim::Model::getComponentList<OpenSim::Muscle>;
 %template(getModelComponentList) OpenSim::Model::getComponentList<OpenSim::ModelComponent>;
 %template(getJointList) OpenSim::Model::getComponentList<OpenSim::Joint>;
+%template(getActuatorList) OpenSim::Model::getComponentList<OpenSim::Actuator>;
 
 %include <OpenSim/Actuators/osimActuatorsDLL.h>
+%include <OpenSim/Actuators/ActiveForceLengthCurve.h>
+%include <OpenSim/Actuators/FiberCompressiveForceCosPennationCurve.h>
+%include <OpenSim/Actuators/FiberCompressiveForceLengthCurve.h>
+%include <OpenSim/Actuators/FiberForceLengthCurve.h>
+%include <OpenSim/Actuators/ForceVelocityCurve.h>
+%include <OpenSim/Actuators/ForceVelocityInverseCurve.h>
+%include <OpenSim/Actuators/TendonForceLengthCurve.h>
 %include <OpenSim/Actuators/MuscleFirstOrderActivationDynamicModel.h>
 %include <OpenSim/Actuators/MuscleFixedWidthPennationModel.h>
 %include <OpenSim/Actuators/Thelen2003Muscle.h>
@@ -268,9 +283,9 @@ constructors because they have additional arguments.
     NAME(const std::string& name,
          const PhysicalFrame& parent,
          const PhysicalFrame& child) {
-        return new NAME(name, parent, child, false);
+        return new NAME(name, parent, child);
     }
-    
+
     NAME(const std::string& name,
          const PhysicalFrame& parent,
          const SimTK::Vec3& locationInParent,
@@ -279,7 +294,7 @@ constructors because they have additional arguments.
          const SimTK::Vec3& locationInChild,
          const SimTK::Vec3& orientationInChild) {
         return new NAME(name, parent, locationInParent, orientationInParent,
-                    child, locationInChild, orientationInChild, false);
+                    child, locationInChild, orientationInChild);
     }
 };
 %enddef
@@ -297,16 +312,16 @@ EXPOSE_JOINT_CONSTRUCTORS_HELPER(PlanarJoint);
     PhysicalOffsetFrame() {
         return new PhysicalOffsetFrame();
     }
-    PhysicalOffsetFrame(const PhysicalFrame& parent, 
+    PhysicalOffsetFrame(const PhysicalFrame& parent,
                         const SimTK::Transform& offset) {
         return new PhysicalOffsetFrame(parent, offset);
     }
-    PhysicalOffsetFrame(const std::string& name, 
+    PhysicalOffsetFrame(const std::string& name,
                 const PhysicalFrame& parent,
                 const SimTK::Transform& offset) {
         return new PhysicalOffsetFrame(name, parent, offset);
     }
-        
+
     PhysicalOffsetFrame(const std::string& name,
                 const std::string& parentName,
                 const SimTK::Transform& offset) {

@@ -191,15 +191,22 @@ public:
     simulation. Each new iteration should start with an empty report and so this
     function can be used to clear the report at the end of each iteration.    */
     void clearTable() {
-        auto columnLabels = _outputTable.getColumnLabels();
+        std::vector<std::string> columnLabels;
+        // Handle the case where no outputs were connected to the reporter.
+        if (_outputTable.hasColumnLabels()) {
+            columnLabels = _outputTable.getColumnLabels();
+        }
         _outputTable = TimeSeriesTable_<ValueT>{};
-        _outputTable.setColumnLabels(columnLabels);
+        if (!columnLabels.empty()) {
+            _outputTable.setColumnLabels(columnLabels);
+        }
     }
 
 protected:
     void implementReport(const SimTK::State& state) const override {
         const auto& input = this->template getInput<InputT>("inputs");
-        SimTK::RowVector_<ValueT> result(int(input.getNumConnectees()));
+        SimTK::RowVector_<ValueT> result;
+        result.resize(int(input.getNumConnectees()));
 
         for (auto idx = 0u; idx < input.getNumConnectees(); ++idx) {
               const auto& chan = input.getChannel(idx);
@@ -213,11 +220,10 @@ protected:
             OPENSIM_THROW(Exception,
                           "Attempting to update reporter with rows having "
                           "invalid timestamps. Hint: If running simulation in "
-                          "a loop, use clearTable() to clear table at the end"
+                          "a loop, use clearTable() to clear table at the end "
                           "of each loop.\n\n" + std::string{exception.what()});
         }
     }
-
 
     void extendConnect(Component& root) override {
         Super::extendConnect(root);
@@ -228,7 +234,15 @@ protected:
         for (auto idx = 0u; idx < input.getNumConnectees(); ++idx) {
             labels.push_back( input.getLabel(idx) );
         }
-        const_cast<Self*>(this)->_outputTable.setColumnLabels(labels);
+        if (!labels.empty()) {
+            const_cast<Self*>(this)->_outputTable.setColumnLabels(labels);
+        } else {
+            std::cout << "Warning: No outputs were connected to '"
+                      << this->getName() << "' of type "
+                      << getConcreteClassName() << ". You can connect outputs "
+                      "by calling addToReport()." << std::endl;
+
+        }
     }
 
 private:
@@ -305,12 +319,13 @@ private:
         }
 
         // TODO set width based on number of significant digits.
-        std::cout << std::setw(_width) << state.getTime() << "| ";
+        std::cout << std::setw(_width) << std::scientific
+                  << state.getTime() << "| ";
         for (const auto& chan : input.getChannels()) {
             const auto& value = chan->getValue(state);
             const auto& nSigFigs = chan->getOutput().getNumberOfSignificantDigits();
-            std::cout << std::setw(_width)
-                << std::setprecision(nSigFigs) << value << "| ";
+            std::cout << std::setw(_width) << std::scientific
+                      << std::setprecision(nSigFigs) << value << "| ";
         }
         std::cout << std::endl;
 
@@ -318,7 +333,7 @@ private:
     }
 
     unsigned int _printCount = 0;
-    int _width = 12;
+    int _width = 14;
 };
 
 // specialization where InputT is Vector_<T> and ValueT is Real

@@ -98,7 +98,15 @@ public:
         SimTK::Stage::Position);
     OpenSim_DECLARE_OUTPUT(velocity, SimTK::SpatialVec, getVelocityInGround,
         SimTK::Stage::Velocity);
+    OpenSim_DECLARE_OUTPUT(angular_velocity, SimTK::Vec3, getAngularVelocityInGround,
+        SimTK::Stage::Velocity);
+    OpenSim_DECLARE_OUTPUT(linear_velocity, SimTK::Vec3, getLinearVelocityInGround,
+        SimTK::Stage::Velocity);
     OpenSim_DECLARE_OUTPUT(acceleration, SimTK::SpatialVec, getAccelerationInGround,
+        SimTK::Stage::Acceleration);
+    OpenSim_DECLARE_OUTPUT(angular_acceleration, SimTK::Vec3, getAngularAccelerationInGround,
+        SimTK::Stage::Acceleration);
+    OpenSim_DECLARE_OUTPUT(linear_acceleration, SimTK::Vec3, getLinearAccelerationInGround,
         SimTK::Stage::Acceleration);
 
     //--------------------------------------------------------------------------
@@ -126,22 +134,48 @@ public:
     const SimTK::Transform&
         getTransformInGround(const SimTK::State& state) const;
 
-    /** The spatial velocity V_GF {omega; v} for this Frame in ground.
-        It can be used to compute the velocity of any stationary point on F,
-        located at r_F (Vec3), in ground, G, as:
+    /** The spatial velocity V_GF {omega; v} of this Frame, measured with
+        respect to and expressed in the ground frame. It can be used to compute
+        the velocity of any stationary point on F, located at r_F (Vec3), in
+        ground, G, as:
             v_G = V_GF[1] + SimTK::cross(V_GF[0], r_F);
         Is only valid at Stage::Velocity or higher. */
     const SimTK::SpatialVec&
         getVelocityInGround(const SimTK::State& state) const;
 
-    /** The spatial acceleration A_GF {alpha; a} for this Frame in ground.
-        It can also be used to compute the acceleration of any stationary point
-        on F, located at r_F (Vec3), in ground, G, as:
+    /** The angular velocity of this Frame, measured with respect to and
+        expressed in the ground frame (i.e., the first half of the SpatialVec
+        returned by getVelocityInGround()). */
+    const SimTK::Vec3&
+        getAngularVelocityInGround(const SimTK::State& state) const;
+
+    /** The linear velocity of this Frame, measured with respect to and
+        expressed in the ground frame (i.e., the second half of the SpatialVec
+        returned by getVelocityInGround()). */
+    const SimTK::Vec3&
+        getLinearVelocityInGround(const SimTK::State& state) const;
+
+    /** The spatial acceleration A_GF {alpha; a} of this Frame, measured with
+        respect to and expressed in the ground frame. It can also be used to
+        compute the acceleration of any stationary point on F, located at r_F
+        (Vec3), in ground, G, as:
             a_G = A_GF[1] + SimTK::cross(A_GF[0], r_F) + 
                   SimTK::cross(V_GF[0], SimTK::cross(V_GF[0], r_F));
         Is only valid at Stage::Acceleration or higher. */
     const SimTK::SpatialVec&
         getAccelerationInGround(const SimTK::State& state) const;
+
+    /** The angular acceleration of this Frame, measured with respect to and
+        expressed in the ground frame (i.e., the first half of the SpatialVec
+        returned by getAccelerationInGround()). */
+    const SimTK::Vec3&
+        getAngularAccelerationInGround(const SimTK::State& state) const;
+
+    /** The linear acceleration of this Frame, measured with respect to and
+        expressed in the ground frame (i.e., the second half of the SpatialVec
+        returned by getAccelerationInGround()). */
+    const SimTK::Vec3&
+        getLinearAccelerationInGround(const SimTK::State& state) const;
 
 
     /**
@@ -169,7 +203,7 @@ public:
     physical vector quantities such as a frame's angular velocity or an
     applied force, from one frame to another without changing the physical
     quantity. If you have a position vector and want to change the point from
-    which the position is measured, you want findLocationInAnotherFrame().
+    which the position is measured, you want findStationLocationInAnotherFrame().
 
     @param state       The state of the model.
     @param vec_F       The vector to be re-expressed.
@@ -182,9 +216,8 @@ public:
 
     /**
     Take a vector in this frame (F) and re-express the same vector
-    in Ground (G). This method is equivalent to `expressVectorInAnotherFrame()`
-    where `otherFrame` is always Ground.
-
+    in Ground (G). This method is equivalent to expressVectorInAnotherFrame()
+    where the "other Frame" is always Ground.
     @param state       The state of the model.
     @param vec_F       The vector to be re-expressed.
     @return vec_G      The expression of the vector in Ground.
@@ -212,11 +245,11 @@ public:
     /**
     Take a station located and expressed in this frame (F) and determine
     its location relative to and expressed in Ground (G). This method is
-    equivalent to `findLocationInAnotherFrame()` where `otherFrame` is 
+    equivalent to findStationLocationInAnotherFrame() where the "other Frame" is
     always Ground.
 
     Note that if you have added an OpenSim::Station, you should use the
-    Station's method `getLocationInGround(state)` instead.
+    Station's %getLocationInGround() method instead.
 
     @param state       The state of the model.
     @param station_F   The position Vec3 from frame F's origin to the station.
@@ -230,7 +263,7 @@ public:
     its velocity relative to and expressed in Ground (G).
 
     Note that if you have added an OpenSim::Station, you should use the
-    Station's method `getVelocityInGround(state)` instead.
+    Station's %getVelocityInGround() method instead.
 
     @param state       The state of the model.
     @param station_F   The position Vec3 from frame F's origin to the station.
@@ -244,7 +277,7 @@ public:
     its acceleration relative to and expressed in Ground (G).
 
     Note that if you have added an OpenSim::Station, you should use the
-    Station's method `getAccelerationInGround(state)` instead.
+    Station's %getAccelerationInGround() method instead.
 
     @param state       The state of the model.
     @param station_F   The position Vec3 from frame F's origin to the station.
@@ -268,7 +301,7 @@ public:
     */
     ///@{
     /** 
-    Find this Frame's base Frame.
+    Find this Frame's base Frame. See the "Advanced" note, above.
 
     @return baseFrame     The Frame that is the base for this Frame.
     */

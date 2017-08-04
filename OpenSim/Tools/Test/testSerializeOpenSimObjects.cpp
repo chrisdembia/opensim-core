@@ -83,9 +83,7 @@ int main()
             try {
                 testModel.addModelComponent(ModelComponent::safeDownCast(randClone));
             } //Ignore the validity of the property values
-            // TODO this should specifically handle "InvalidPropertyValue" exceptions
-            // once we have that in place.
-            catch (const std::exception&) {
+            catch (const InvalidPropertyValue&) {
                 // const string& errMsg = err.getMessage();
                 //std::cout << errMsg << std::endl;
             }
@@ -97,20 +95,7 @@ int main()
         //Serialize all the components
         testModel.print("allComponents.osim");
 
-        // The finalize flag is for testing purposes ONLY. This way we
-        // can ignore invalid properties and focus the test on serialization.
-        Model deserializedModel("allComponents.osim", false);
-
-        try {
-            deserializedModel.finalizeFromProperties();
-        }
-        //Ignore the validity of the property values
-        // TODO this should specifically handle "InvalidPropertyValue" exceptions
-        // once we have that in place.
-        catch (const std::exception&) {
-            // const string& errMsg = err.getMessage();
-            //std::cout << errMsg << std::endl;
-        }
+        Model deserializedModel("allComponents.osim");
 
         nc = deserializedModel.getMiscModelComponentSet().getSize();
         cout << nc << " model components were deserialized from file." << endl;

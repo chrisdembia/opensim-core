@@ -306,6 +306,10 @@ DelimFileAdapter<T>::extendRead(const std::string& fileName) const {
     OPENSIM_THROW_IF(!in_stream.good(),
                      FileDoesNotExist,
                      fileName);
+    
+    OPENSIM_THROW_IF(in_stream.peek() == std::ifstream::traits_type::eof(),
+                     FileIsEmpty,
+                     fileName);
 
     auto table = std::make_shared<TimeSeriesTable_<T>>();
 
@@ -321,8 +325,8 @@ DelimFileAdapter<T>::extendRead(const std::string& fileName) const {
         // We might be parsing a file with CRLF (\r\n) line endings on a
         // platform that uses only LF (\n) line endings, in which case the \r
         // is part of `line` and we must remove it manually.
-        if (line.size() && line[line.size() - 1] == '\r') 
-            line = line.substr(0, line.size() - 1);
+        if (!line.empty() && line.back() == '\r') 
+            line.pop_back();
 
         if(std::regex_match(line, endheader))
             break;
@@ -367,6 +371,8 @@ DelimFileAdapter<T>::extendRead(const std::string& fileName) const {
     // Read the line containing column labels and fill up the column labels
     // container.
     auto column_labels = nextLine();
+    OPENSIM_THROW_IF(column_labels.size() == 0, Exception,
+                     "No column labels detected in file '" + fileName + "'.");
     ++line_num;
     // Column 0 is the time column. Check and get rid of it. The data in this
     // column is maintained separately from rest of the data.

@@ -1251,22 +1251,18 @@ void Storage::getDataForIdentifier(const std::string& identifier, Array<Array<do
         rData.append(data);
     }
 }
-/**
- * Get the list of indices of columns corresponding to passed in identifier
- * Normally you provide a prefix and all column numbers that share this suffix in their header are passed back
- */
-OpenSim::Array<int>  Storage::getColumnIndicesForIdentifier(const std::string& identifier) const
+
+OpenSim::Array<int>
+Storage::getColumnIndicesForIdentifier(const std::string& identifier) const
 {
     Array<int> found;
-    int lid = (int)identifier.length();
+    const size_t lid = identifier.length();
 
-    if(lid < 1) // an empty identifier should not expect data back
+    if (lid < 1)  // Identifier is empty; return empty Array.
         return found;
 
-    int startIndex = 0;
-    int size = _columnLabels.getSize();
-    for(int i=startIndex;i<size;++i){
-        if(_columnLabels[i].compare(0,lid, identifier)==0)
+    for (int i = 0; i < _columnLabels.getSize(); ++i) {
+        if (_columnLabels[i].compare(0,lid, identifier) == 0)
             found.append(i);
     }
     return found;
@@ -2291,28 +2287,24 @@ pad(int aPadSize)
     delete[] vecs;
 }
 
-//_____________________________________________________________________________
-/**
- * Smooth spline each of the columns in the storage.  Note that as a part
- * of this operation, the storage is resampled so that the statevectors are
- * at equal spacing.
- *
- * @param aOrder Order of the spline.
- * @param aCutoffFrequency Cutoff frequency.
- */
 void Storage::
 smoothSpline(int aOrder,double aCutoffFrequency)
 {
+    int size = getSize();
     double dtmin = getMinTimeStep();
+    double avgDt = (_storage[size-1].getTime() - _storage[0].getTime()) / (size-1);
 
-    if(dtmin<SimTK::Zero) {
+    if(dtmin<SimTK::Eps) {
         cout<<"Storage.SmoothSpline: storage cannot be resampled."<<endl;
         return;
     }
 
-    // RESAMPLE
-    dtmin = resample(dtmin,aOrder);
-    int size = getSize();
+    // RESAMPLE if the sampling interval is not uniform
+    if ((avgDt - dtmin) > SimTK::Eps) {
+        dtmin = resample(dtmin, aOrder);
+        size = getSize();
+    }
+
     if(size<(2*aOrder)) {
         cout<<"Storage.SmoothSpline: too few data points to filter."<<endl;
         return;
@@ -2335,29 +2327,24 @@ smoothSpline(int aOrder,double aCutoffFrequency)
     delete[] signal;
 }
 
-
-//_____________________________________________________________________________
-/**
- * Lowpass filter each of the columns in the storage.  Note that as a part
- * of this operation, the storage is resampled so that the statevectors are
- * at equal spacing.
- *
- * @param aOrder Order of the FIR filter.
- * @param aCutoffFrequency Cutoff frequency.
- */
 void Storage::
 lowpassIIR(double aCutoffFrequency)
 {
+    int size = getSize();
     double dtmin = getMinTimeStep();
+    double avgDt = (_storage[size-1].getTime() - _storage[0].getTime()) / (size-1);
 
-    if(dtmin<SimTK::Zero) {
+    if(dtmin<SimTK::Eps) {
         cout<<"Storage.lowpassIIR: storage cannot be resampled."<<endl;
         return;
     }
 
-    // RESAMPLE
-    dtmin = resample(dtmin,5);
-    int size = getSize();
+    // RESAMPLE if the sampling interval is not uniform
+    if ((avgDt - dtmin) > SimTK::Eps) {
+        dtmin = resample(dtmin, 5);
+        size = getSize();
+    }
+
     if(size<(4)) {
         cout<<"Storage.lowpassIIR: too few data points to filter."<<endl;
         return;
@@ -2377,29 +2364,24 @@ lowpassIIR(double aCutoffFrequency)
     delete[] signal;
 }
 
-
-//_____________________________________________________________________________
-/**
- * Lowpass filter each of the columns in the storage.  Note that as a part
- * of this operation, the storage is resampled so that the statevectors are
- * at equal spacing.
- *
- * @param aOrder Order of the FIR filter.
- * @param aCutoffFrequency Cutoff frequency.
- */
 void Storage::
 lowpassFIR(int aOrder,double aCutoffFrequency)
 {
+    int size = getSize();
     double dtmin = getMinTimeStep();
+    double avgDt = (_storage[size-1].getTime() - _storage[0].getTime()) / (size-1);
 
-    if(dtmin<SimTK::Zero) {
+    if (dtmin<SimTK::Eps) {
         cout<<"Storage.lowpassFIR: storage cannot be resampled."<<endl;
         return;
     }
 
-    // RESAMPLE
-    dtmin = resample(dtmin,5);
-    int size = getSize();
+    // RESAMPLE if the sampling interval is not uniform
+    if ((avgDt - dtmin) > SimTK::Eps) {
+        dtmin = resample(dtmin, 5);
+        size = getSize();
+    }
+
     if(size<(2*aOrder)) {
         cout<<"Storage.lowpassFIR: too few data points to filter."<<endl;
         return;
@@ -2487,11 +2469,7 @@ findIndex(double aT) const
  */
 void Storage::findFrameRange(double aStartTime, double aEndTime, int& oStartFrame, int& oEndFrame) const
 {
-    if(aStartTime > aEndTime) {
-        double tmp = aStartTime;
-        aStartTime = aEndTime;
-        aEndTime = tmp;
-    }
+    SimTK_ASSERT_ALWAYS(aStartTime <= aEndTime, "Start time must be <= end time");
 
     oStartFrame = findIndex(0, aStartTime);
     oEndFrame = findIndex(getSize()-1, aEndTime);
@@ -2964,14 +2942,18 @@ void Storage::addToRdStorage(Storage& rStorage, double aStartTime, double aEndTi
     for (i = startIndex; i <= endIndex; i++)
     {
         rStorage.getTime(i, stateTime);
-        for (j = 0; j < getSize(); j++)
-        {
+        for (j = 0; j < getSize(); j++) {
             /* Assume that the first column is 'time'. */
             time = getStateVector(j)->getTime();
-            if (EQUAL_WITHIN_TOLERANCE(time, stateTime, 0.0001))
-            {
+            // The following tolerance is a hack. Previously, it used 0.0001
+            // which caused values to be duplicated in cases where time
+            // steps were within the tolerance. This method should only be
+            // used to concatenate data columns from the same simulation
+            // or analysis results.
+            if (EQUAL_WITHIN_TOLERANCE(time, stateTime, SimTK::SignificantReal)) {
                 Array<double>& states = rStorage.getStateVector(i)->getData();
-                for (int k = 1; k < numColumns; k++)    // Start at 1 to avoid duplicate time column
+                // Start at 1 to avoid duplicate time column
+                for (int k = 1; k < numColumns; k++)
                 {
                     if (_columnLabels[k] != "Unassigned")
                     {
@@ -2982,10 +2964,10 @@ void Storage::addToRdStorage(Storage& rStorage, double aStartTime, double aEndTi
                 break;
             }
         }
-        if (j == getSize())
-        {
+        if (j == getSize()) {
             stringstream errorMessage;
-            errorMessage << "Error: no coordinate data found at time " << stateTime << " in " << _fileName;
+            errorMessage << "Error: no data found at time " << stateTime 
+                << " in " << _fileName;
             throw (Exception(errorMessage.str()));
         }
     }

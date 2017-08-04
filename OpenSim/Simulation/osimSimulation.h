@@ -110,11 +110,19 @@
 #include "SimbodyEngine/Coordinate.h"
 #include "SimbodyEngine/SpatialTransform.h"
 
+#include "AssemblySolver.h"
+#include "CoordinateReference.h"
+#include "InverseDynamicsSolver.h"
+#include "InverseKinematicsSolver.h"
+#include "MarkersReference.h"
 #include "MomentArmSolver.h"
+#include "Reference.h"
+#include "Solver.h"
 #include "StatesTrajectory.h"
 #include "StatesTrajectoryReporter.h"
 
-#include "RegisterTypes_osimSimulation.h"   // to expose RegisterTypes_osimSimulation
+#include "SimulationUtilities.h"
 
+#include "RegisterTypes_osimSimulation.h"   // to expose RegisterTypes_osimSimulation
 
 #endif // _osimSimulation_h_

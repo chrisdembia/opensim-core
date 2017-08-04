@@ -204,9 +204,12 @@ public:
     void getDataForIdentifier(const std::string& identifier, Array< Array<double> >& rData, double startTime=0.0) const;
 #endif
     /**
-     * Get indices of columns corresponding to identifier, empty array if identifier is not found in labels
+     * Get indices of columns whose labels begin with the specified "identifier"
+     * (prefix). Returns an empty Array if none of the column labels begin with
+     * the identifier.
      */
-    OpenSim::Array<int>  getColumnIndicesForIdentifier(const std::string& identifier) const;
+    OpenSim::Array<int>
+        getColumnIndicesForIdentifier(const std::string& identifier) const;
 
     // STEP INTERVAL
     void setStepInterval(int aStepInterval);
@@ -283,9 +286,34 @@ public:
     int computeAverage(int aN,double *aAve) const;
     int computeAverage(double aTI,double aTF,int aN,double *aAve) const;
     void pad(int aPadSize);
-    void smoothSpline(int aOrder,double aCutoffFrequency);
-    void lowpassIIR(double aCutoffFequency);
-    void lowpassFIR(int aOrder,double aCutoffFequency);
+    /**
+    * Smooth spline each of the columns in the storage.  Note that as a part
+    * of this operation, the storage is re-sampled to obtain uniform samples
+    * unless its time steps are already uniform.
+    *
+    * @param order Order of the spline.
+    * @param cutoffFrequency Cutoff frequency of the smoothing filter.
+    */
+    void smoothSpline(int order,double cutoffFrequency);
+    /**
+    * Low-pass filter each of the columns in the storage using a 3rd order
+    * lowpass IIR Butterworth digital filter. Note that as a part of this
+    * operation, the storage is re-sampled to obtain uniform samples unless
+    * its time steps are already uniform.
+    *
+    * @param cutoffFrequency Cutoff frequency of the lowpass filter.
+    */
+    void lowpassIIR(double cutoffFrequency);
+    /**
+    * Lowpass filter each of the columns in the storage using an FIR non-
+    * recursive digital filter. Note that as a part of this operation, the
+    * storage is re-sampled to obtain uniform samples unless its time steps
+    * are already uniform.
+    *
+    * @param order Order of the FIR filter.
+    * @param cutoffFrequency Cutoff frequency.
+    */
+    void lowpassFIR(int order, double cutoffFrequency);
     // Append rows of two storages at matched time
     void addToRdStorage(Storage& rStorage, double aStartTime, double aEndTime);
     //--------------------------------------------------------------------------

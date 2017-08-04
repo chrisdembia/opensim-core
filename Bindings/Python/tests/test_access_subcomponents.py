@@ -37,7 +37,7 @@ class TestAccessSubcomponents(unittest.TestCase):
         num_joints = 0
         for joint in model.getJointList():
             num_joints += 1
-            joint.get_reverse()
+            joint.numCoordinates()
         assert num_joints == 2
 
         # Custom filtering.
@@ -77,7 +77,6 @@ class TestAccessSubcomponents(unittest.TestCase):
 
     def test_component_filter(self):
         model = osim.Model(os.path.join(test_dir, "arm26.osim"))
-
         comps = model.getMuscleList()
         comps.setFilter(osim.ComponentFilterAbsolutePathNameContainsString('BIC'))
         count = 0

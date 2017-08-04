@@ -262,8 +262,10 @@ bool InverseKinematicsTool::run()
         else
             modelFromFile = false;
 
-        _model->printBasicInfo(cout);
-
+        // although newly loaded model will be finalized
+        // there is no gaurantee that the _model has not been edited/modified
+        _model->finalizeFromProperties();
+        _model->printBasicInfo();
 
         // Do the maneuver to change then restore working directory 
         // so that the parsing code behaves properly if called from a different directory.
@@ -369,6 +371,8 @@ bool InverseKinematicsTool::run()
         if (_outputMotionFileName!= "" && _outputMotionFileName!="Unassigned"){
             kinematicsReporter.getPositionStorage()->print(_outputMotionFileName);
         }
+        // Once done, remove the analysis we added
+        _model->removeAnalysis(&kinematicsReporter);
 
         if (modelMarkerErrors) {
             Array<string> labels("", 4);

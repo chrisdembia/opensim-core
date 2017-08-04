@@ -67,8 +67,8 @@ void compareHeaders(std::ifstream& filenameA,
     std::string line{};
     while(std::getline(filenameA, line)) {
         // Get rid of the extra \r if parsing a file with CRLF line endings.
-        if (line.size() && line[line.size() - 1] == '\r')
-            line = line.substr(0, line.size() - 1);
+        if (!line.empty() && line.back() == '\r') 
+            line.pop_back();
 
         if(line.find("endheader") != std::string::npos)
             break;
@@ -90,8 +90,8 @@ void compareHeaders(std::ifstream& filenameA,
     }
     while(std::getline(filenameB, line)) {
         // Get rid of the extra \r if parsing a file with CRLF line endings.
-        if (line.size() && line[line.size() - 1] == '\r')
-            line = line.substr(0, line.size() - 1);
+        if (!line.empty() && line.back() == '\r') 
+            line.pop_back();
 
         if(line.find("endheader") != std::string::npos)
             break;
@@ -210,7 +210,7 @@ int main() {
     std::cout << "Testing STOFileAdapter::read() and STOFileAdapter::write()"
               << std::endl;
     for(const auto& filename : filenames) {
-        std::cout << " " << filename << std::endl;
+        std::cout << "  " << filename << std::endl;
         STOFileAdapter_<double> stofileadapter{};
         auto table = stofileadapter.read(filename);
         stofileadapter.write(table, tmpfile);
@@ -263,8 +263,15 @@ int main() {
     std::cout << "Testing reading/writing STOFileAdapter_<SimTK::SpatialVec>"
               << std::endl;
     testReadingWriting<SimTK::SpatialVec>();
-    std::cout << "\nAll tests passed!" << std::endl;
 
+    std::cout << "Testing exception for reading an empty file"
+              << std::endl;
+    std::string emptyFileName("testSTOFileAdapter_empty.sto");
+    std::ofstream emptyFile(emptyFileName);
+    SimTK_TEST_MUST_THROW_EXC(STOFileAdapter::read(emptyFileName), FileIsEmpty);
+    std::remove(emptyFileName.c_str());
+
+    std::cout << "\nAll tests passed!" << std::endl;
 
     return 0;
 }

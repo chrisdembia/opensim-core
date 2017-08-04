@@ -55,10 +55,16 @@
 %template(ArrayDouble) OpenSim::Array<double>;
 %template(ArrayInt) OpenSim::Array<int>;
 %template(ArrayStr) OpenSim::Array<std::string>;
+%template(ArrayVec3) OpenSim::Array<SimTK::Vec3>;
 %template(ArrayObjPtr) OpenSim::Array<OpenSim::Object*>;
 %template(ArrayPtrsObj) OpenSim::ArrayPtrs<OpenSim::Object>;
 %template(ArrayConstObjPtr) OpenSim::Array<const OpenSim::Object*>;
 %template(ArrayPtrsConstObj) OpenSim::ArrayPtrs<const OpenSim::Object>;
+
+namespace OpenSim {
+    %ignore LoadOpenSimLibraries;
+}
+%include <OpenSim/Common/LoadOpenSimLibrary.h>
 
 // Used in Component::generateDecorations.
 %include <OpenSim/Common/ModelDisplayHints.h>
@@ -174,6 +180,28 @@ namespace OpenSim {
 %ignore OpenSim::DataTable_::DataTable_(const DataTable_<double, double>&,
                                         const std::vector<std::string>&);
 %ignore OpenSim::DataTable_<double, double>::flatten;
+%extend OpenSim::DataTable_ {
+    OpenSim::DataTable_<ETX, ETY>* clone() const {
+        return new OpenSim::DataTable_<ETX, ETY>{*$self};
+    }
+}
+// A version of SWIG between 3.0.6 and 3.0.12 broke the ability to extend class
+// templates with more than 1 template parameter, so we must enumerate the
+// possible template arguments (not necesary for TimeSeriesTable's clone; that
+// template has only 1 param.).
+%define DATATABLE_CLONE(ETX, ETY)
+%extend OpenSim::DataTable_<ETX, ETY> {
+    OpenSim::DataTable_<ETX, ETY>* clone() const {
+        return new OpenSim::DataTable_<ETX, ETY>{*$self};
+    }
+}
+%enddef
+DATATABLE_CLONE(double, double)
+DATATABLE_CLONE(double, SimTK::Vec3)
+DATATABLE_CLONE(double, SimTK::UnitVec3)
+DATATABLE_CLONE(double, SimTK::Quaternion)
+DATATABLE_CLONE(double, SimTK::Vec6)
+DATATABLE_CLONE(double, SimTK::SpatialVec)
 %extend OpenSim::DataTable_<double, double> {
     DataTable_<double, SimTK::Vec3>
     packVec3() {
@@ -210,6 +238,11 @@ namespace OpenSim {
 }
 
 %ignore OpenSim::TimeSeriesTable_::TimeSeriesTable_(TimeSeriesTable_ &&);
+%extend OpenSim::TimeSeriesTable_ {
+    OpenSim::TimeSeriesTable_<ETY>* clone() const {
+        return new OpenSim::TimeSeriesTable_<ETY>{*$self};
+    }
+}
 %extend OpenSim::TimeSeriesTable_<double> {
     TimeSeriesTable_<SimTK::Vec3>
     packVec3() {
@@ -365,3 +398,5 @@ namespace OpenSim {
 %template(TableReporterVector) OpenSim::TableReporter_<SimTK::Vector, SimTK::Real>;
 %template(ConsoleReporter) OpenSim::ConsoleReporter_<SimTK::Real>;
 %template(ConsoleReporterVec3) OpenSim::ConsoleReporter_<SimTK::Vec3>;
+
+%include <OpenSim/Common/GCVSplineSet.h>

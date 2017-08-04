@@ -18,7 +18,7 @@ class TestBasics(unittest.TestCase):
     def test_version(self):
         print(osim.__version__)
 
-    def test_Thelen2003Muscle_helper_classes(self):
+    def test_muscle_helper_classes(self):
         # This test exists because some classes that Thelen2003Muscle used were
         # not accessibly in the bindings.
         muscle = osim.Thelen2003Muscle()
@@ -28,6 +28,11 @@ class TestBasics(unittest.TestCase):
 
         adm = muscle.getActivationModel()
         adm.get_activation_time_constant()
+
+        muscle = osim.Millard2012EquilibriumMuscle()
+
+        tendonFL = osim.TendonForceLengthCurve()
+        muscle.setTendonForceLengthCurve(tendonFL)
 
     def test_SimTKArray(self):
         # Initally created to test the creation of a separate simbody module.
@@ -89,4 +94,29 @@ class TestBasics(unittest.TestCase):
         ellipsoid = osim.WrapEllipsoid()
         model.getGround().addWrapObject(ellipsoid)
 
+    def test_ToyReflexController(self):
+        controller = osim.ToyReflexController()
         
+    def test_GCVSplineSet(self):
+        splineset = osim.GCVSplineSet(os.path.join(test_dir,
+            'std_subject01_walk1_ik.mot'))
+        splineset = osim.GCVSplineSet(
+                osim.TimeSeriesTable(os.path.join(test_dir,
+                    'std_subject01_walk1_ik.mot')), [], 5, 0)
+
+    def test_deserialize_tool_with_empty_model_file(self):
+        # Ensure an exception is thrown when loading an AbstractTool (e.g.,
+        # ForwardTool) setup file with an empty model_file. In particular, we
+        # want to check the case where force_set_files is not empty.
+        with self.assertRaises(RuntimeError):
+            rra = osim.ForwardTool(os.path.join(test_dir,
+                'gait2392_setup_forward_empty_model.xml'))
+
+        # No exception if we pass loadModel=False
+        rra = osim.ForwardTool(
+                os.path.join(test_dir,
+                    'gait2392_setup_forward_empty_model.xml'),
+                True, # updateFromXMLNode
+                False, # loadModel
+                )
+

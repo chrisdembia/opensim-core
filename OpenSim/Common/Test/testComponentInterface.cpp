@@ -270,9 +270,8 @@ public:
 
     double getPotentialEnergy(const SimTK::State& state) const {
         const GeneralForceSubsystem& forces = world->getForceSubsystem();
-        const Force& force = forces.getForce(fix);
-        const Force::TwoPointLinearSpring& spring = 
-            Force::TwoPointLinearSpring::downcast(force);
+        const SimTK::Force& force = forces.getForce(fix);
+        const auto& spring = SimTK::Force::TwoPointLinearSpring::downcast(force);
     
         return spring.calcPotentialEnergyContribution(state);
     }
@@ -312,7 +311,7 @@ protected:
             const MobilizedBody& b1 = matter.getMobilizedBody(MobilizedBodyIndex(1));
             const MobilizedBody& b2 = matter.getMobilizedBody(MobilizedBodyIndex(2));
 
-            Force::TwoPointLinearSpring 
+            SimTK::Force::TwoPointLinearSpring 
                 spring(forces, b1, Vec3(0.5,0,0), b2, Vec3(0.5,0,0), 10.0, 0.1);
             fix = spring.getForceIndex();
         }
@@ -690,7 +689,9 @@ void testMisc() {
                   world3.add(&bar2));
 
     cout << "Connecting theWorld:" << endl;
-    theWorld.dumpSubcomponents();
+    //theWorld.dumpSubcomponents();
+    theWorld.printSubcomponentInfo();
+    theWorld.printOutputInfo();
     theWorld.finalizeFromProperties();
     theWorld.connect();
 
@@ -753,7 +754,8 @@ void testMisc() {
     ASSERT_EQUAL(3.5, foo.getInputValue<double>(s, "fiberLength"), 1e-10);
     ASSERT_EQUAL(1.5, foo.getInputValue<double>(s, "activation"), 1e-10);
 
-    theWorld.dumpSubcomponents();
+    theWorld.printSubcomponentInfo();
+    theWorld.printOutputInfo();
 
     std::cout << "Iterate over all Components in the world." << std::endl;
     for (auto& component : theWorld.getComponentList<Component>()) {
@@ -779,7 +781,22 @@ void testMisc() {
     theWorld.print("Nested_" + modelFile);
 }
 
-
+// In order to access subcomponents in a copy, One must invoke
+// finalizeFromProperties() after copying. This test makes sure that you get an
+// exception if you did not call finalizeFromProperties() before calling a
+// method like getComponentList().
+void testExceptionsFinalizeFromPropertiesAfterCopy() {
+    TheWorld theWorld;
+    {
+        MultibodySystem system;
+        Foo* foo = new Foo();
+        theWorld.add(foo);
+    }
+    {
+        TheWorld copy = theWorld;
+        SimTK_TEST_MUST_THROW(copy.getComponentList());
+    }
+}
 
 void testListInputs() {
     MultibodySystem system;
@@ -943,7 +960,8 @@ void testComponentPathNames()
     A->add(D);
     D->add(E);
 
-    top.dumpSubcomponents();
+    top.printSubcomponentInfo();
+    top.printOutputInfo();
 
     std::string absPathC = C->getAbsolutePathName();
     ASSERT(absPathC == "/Top/A/B/C");
@@ -983,7 +1001,8 @@ void testComponentPathNames()
     F->setName("F");
     top.add(F);
 
-    top.dumpSubcomponents();
+    top.printSubcomponentInfo();
+    top.printOutputInfo();
 
     std::string fFoo1AbsPath = 
         F->getComponent<Foo>("Foo1").getAbsolutePathName();
@@ -1015,7 +1034,8 @@ void testComponentPathNames()
     fbar2.updSocket<Foo>("childFoo")
         .setConnecteeName("../Foo1");
 
-    top.dumpSubcomponents();
+    top.printSubcomponentInfo();
+    top.printOutputInfo();
     top.connect();
 }
 
@@ -1576,6 +1596,48 @@ void testTableSource() {
     std::cout << report << std::endl;
 }
 
+void testTableReporter() {
+    // TableReporter works fine even if its input has no connectees.
+    {
+        TheWorld model;
+        auto* reporter = new TableReporter();
+        reporter->set_report_time_interval(0.1);
+        model.addComponent(reporter);
+    
+        MultibodySystem system;
+        model.buildUpSystem(system);
+    
+        {
+            SimTK::State s = system.realizeTopology();
+            RungeKuttaFeldbergIntegrator integ(system);
+            integ.setAccuracy(1.0e-3);
+            TimeStepper ts(system, integ);
+            ts.initialize(s);
+            ts.stepTo(1.0);
+            std::cout << "TableReporter table after simulating:\n";
+            const auto& table = reporter->getTable();
+            SimTK_TEST_MUST_THROW_EXC(table.toString(), EmptyTable);
+        }
+
+        // Ensure that clearing the table and performing a new simulation works
+        // even if the reporter's input has no connectees.
+        reporter->clearTable();
+        std::cout << "TableReporter table after clearing:\n";
+        SimTK_TEST_MUST_THROW_EXC(reporter->getTable().toString(), EmptyTable);
+    
+        {
+            SimTK::State s = system.realizeTopology();
+            RungeKuttaFeldbergIntegrator integ(system);
+            integ.setAccuracy(1.0e-3);
+            TimeStepper ts(system, integ);
+            ts.initialize(s);
+            ts.stepTo(1.0);
+            std::cout << "TableReporter table after simulating again:\n";
+            const auto& table = reporter->getTable();
+            SimTK_TEST_MUST_THROW_EXC(table.toString(), EmptyTable);
+        }
+    }
+}
 
 const std::string dataFileNameForInputConnecteeSerialization =
         "testComponentInterface_testInputConnecteeSerialization_data.sto";
@@ -1935,6 +1997,7 @@ int main() {
 
     SimTK_START_TEST("testComponentInterface");
         SimTK_SUBTEST(testMisc);
+        SimTK_SUBTEST(testExceptionsFinalizeFromPropertiesAfterCopy);
         SimTK_SUBTEST(testListInputs);
         SimTK_SUBTEST(testListSockets);
         SimTK_SUBTEST(testComponentPathNames);
@@ -1945,6 +2008,7 @@ int main() {
         SimTK_SUBTEST(testExceptionsInputNameExistsAlready);
         SimTK_SUBTEST(testExceptionsOutputNameExistsAlready);
         SimTK_SUBTEST(testTableSource);
+        SimTK_SUBTEST(testTableReporter);
         SimTK_SUBTEST(testAliasesAndLabels);
     
         writeTimeSeriesTableForInputConnecteeSerialization();

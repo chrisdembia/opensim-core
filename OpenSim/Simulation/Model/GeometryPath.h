@@ -62,23 +62,25 @@ OpenSim_DECLARE_CONCRETE_OBJECT(GeometryPath, ModelComponent);
     //=============================================================================
     OpenSim_DECLARE_OUTPUT(length, double, getLength, SimTK::Stage::Position);
     // 
-    OpenSim_DECLARE_OUTPUT(lengthening_speed, double, getLengtheningSpeed, SimTK::Stage::Velocity);
+    OpenSim_DECLARE_OUTPUT(lengthening_speed, double, getLengtheningSpeed,
+        SimTK::Stage::Velocity);
 
 //=============================================================================
 // DATA
 //=============================================================================
-private:
-    OpenSim_DECLARE_UNNAMED_PROPERTY(PathPointSet, "The set of points defining the path");
+public:
+    OpenSim_DECLARE_UNNAMED_PROPERTY(Appearance,
+        "Default appearance attributes for this GeometryPath");
 
-    OpenSim_DECLARE_UNNAMED_PROPERTY(PathWrapSet, "The wrap objects that are associated with this path");
-    
-    OpenSim_DECLARE_OPTIONAL_PROPERTY(default_color, SimTK::Vec3, "Used to initialize the color cache variable");
+private:
+    OpenSim_DECLARE_UNNAMED_PROPERTY(PathPointSet,
+        "The set of points defining the path");
+
+    OpenSim_DECLARE_UNNAMED_PROPERTY(PathWrapSet,
+        "The wrap objects that are associated with this path");
 
     // used for scaling tendon and fiber lengths
     double _preScaleLength;
-
-    // Pointer to the Object that owns this GeometryPath object.
-    SimTK::ReferencePtr<Object> _owner;
 
     // Solver used to compute moment-arms. The GeometryPath owns this object,
     // but we cannot simply use a unique_ptr because we want the pointer to be
@@ -103,31 +105,34 @@ public:
     //--------------------------------------------------------------------------
     // UTILITY
     //--------------------------------------------------------------------------
-    PathPoint* addPathPoint(const SimTK::State& s, int aIndex, PhysicalFrame& aBody);
-    PathPoint* appendNewPathPoint(const std::string& proposedName, 
-        PhysicalFrame& aBody, const SimTK::Vec3& aPositionOnBody);
-    bool canDeletePathPoint( int aIndex);
-    bool deletePathPoint(const SimTK::State& s, int aIndex);
+    AbstractPathPoint* addPathPoint(const SimTK::State& s, int index,
+        PhysicalFrame& frame);
+    AbstractPathPoint* appendNewPathPoint(const std::string& proposedName, 
+        PhysicalFrame& frame, const SimTK::Vec3& locationOnFrame);
+    bool canDeletePathPoint( int index);
+    bool deletePathPoint(const SimTK::State& s, int index);
     
-    void moveUpPathWrap(const SimTK::State& s, int aIndex);
-    void moveDownPathWrap(const SimTK::State& s, int aIndex);
-    void deletePathWrap(const SimTK::State& s, int aIndex);
-    bool replacePathPoint(const SimTK::State& s, PathPoint* aOldPathPoint, PathPoint* aNewPathPoint); 
+    void moveUpPathWrap(const SimTK::State& s, int index);
+    void moveDownPathWrap(const SimTK::State& s, int index);
+    void deletePathWrap(const SimTK::State& s, int index);
+    bool replacePathPoint(const SimTK::State& s, AbstractPathPoint* oldPathPoint,
+        AbstractPathPoint* newPathPoint); 
 
     //--------------------------------------------------------------------------
     // GET
     //--------------------------------------------------------------------------
-    Object* getOwner() const { return _owner.get(); }
-    void setOwner(Object *anObject) {_owner = anObject; };
 
     /** If you call this prior to extendAddToSystem() it will be used to initialize
     the color cache variable. Otherwise %GeometryPath will choose its own
-    default which will be some boring shade of gray. **/
-    void setDefaultColor(const SimTK::Vec3& color) {set_default_color(color); };
+    default which varies depending on owner. **/
+    void setDefaultColor(const SimTK::Vec3& color) {
+        updProperty_Appearance().setValueIsDefault(false);
+        upd_Appearance().set_color(color); 
+    };
     /** Returns the color that will be used to initialize the color cache
     at the next extendAddToSystem() call. The actual color used to draw the path
     will be taken from the cache variable, so may have changed. **/
-    const SimTK::Vec3& getDefaultColor() const { return get_default_color(); }
+    const SimTK::Vec3& getDefaultColor() const { return get_Appearance().get_color(); }
 
     /** %Set the value of the color cache variable owned by this %GeometryPath
     object, in the cache of the given state. The value of this variable is used
@@ -148,7 +153,7 @@ public:
     void setLength( const SimTK::State& s, double length) const;
     double getPreScaleLength( const SimTK::State& s) const;
     void setPreScaleLength( const SimTK::State& s, double preScaleLength);
-    const Array<PathPoint*>& getCurrentPath( const SimTK::State& s) const;
+    const Array<AbstractPathPoint*>& getCurrentPath( const SimTK::State& s) const;
 
     double getLengtheningSpeed(const SimTK::State& s) const;
     void setLengtheningSpeed( const SimTK::State& s, double speed ) const;
@@ -210,17 +215,22 @@ private:
 
     void computePath(const SimTK::State& s ) const;
     void computeLengtheningSpeed(const SimTK::State& s) const;
-    void applyWrapObjects(const SimTK::State& s, Array<PathPoint*>& path ) const;
+    void applyWrapObjects(const SimTK::State& s, Array<AbstractPathPoint*>& path ) const;
     double calcPathLengthChange(const SimTK::State& s, const WrapObject& wo, 
                                 const WrapResult& wr, 
-                                const Array<PathPoint*>& path) const; 
+                                const Array<AbstractPathPoint*>& path) const; 
     double calcLengthAfterPathComputation
-       (const SimTK::State& s, const Array<PathPoint*>& currentPath) const;
+       (const SimTK::State& s, const Array<AbstractPathPoint*>& currentPath) const;
 
     void constructProperties();
     void namePathPoints(int aStartingIndex);
     void placeNewPathPoint(const SimTK::State& s, SimTK::Vec3& aOffset, 
-                           int aIndex, const PhysicalFrame& aBody);
+                           int index, const PhysicalFrame& frame);
+    //--------------------------------------------------------------------------
+    // Implement Object interface.
+    //--------------------------------------------------------------------------
+    /** Override of the default implementation to account for versioning. */
+    void updateFromXMLNode(SimTK::Xml::Element& aNode, int versionNumber = -1) override;
 
 //=============================================================================
 };  // END of class GeometryPath
