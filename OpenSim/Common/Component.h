@@ -573,6 +573,13 @@ public:
     * @param subcomponent is the Component to be added. */
     void addComponent(Component* subcomponent);
 
+    template <typename T, typename... Args>
+    T& add(Args&&... args) {
+        T* t = new T(std::forward<Args>(args)...);
+        addComponent(t);
+        return *t;
+    }
+
     /**
      * Get an iterator through the underlying subcomponents that this component is
      * composed of. The hierarchy of Components/subComponents forms a tree.
