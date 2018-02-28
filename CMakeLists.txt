@@ -315,28 +315,30 @@ if(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU" OR
     # gcc versions, this is the place to turn off those optimizations.
     set(GCC_OPT_DISABLE)
 
+    set(WARNINGS "-Wall")
+
     # C++
-    set(CMAKE_CXX_FLAGS_DEBUG          "-g ${GCC_INST_SET}"
+    set(CMAKE_CXX_FLAGS_DEBUG          "-g ${GCC_INST_SET} ${WARNINGS}"
       CACHE STRING "g++ Debug build compile flags" FORCE)
     set(CMAKE_CXX_FLAGS_RELEASE
-      "-DNDEBUG -O2 ${GCC_OPT_ENABLE} ${GCC_OPT_DISABLE} ${GCC_INST_SET}"
+      "-DNDEBUG -O2 ${GCC_OPT_ENABLE} ${GCC_OPT_DISABLE} ${GCC_INST_SET} ${WARNINGS}"
       CACHE STRING "g++ Release build compile flags" FORCE)
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
-      "-DNDEBUG -O2 -g ${GCC_OPT_ENABLE} ${GCC_OPT_DISABLE} ${GCC_INST_SET}"
+      "-DNDEBUG -O2 -g ${GCC_OPT_ENABLE} ${GCC_OPT_DISABLE} ${GCC_INST_SET} ${WARNINGS}"
       CACHE STRING "g++ RelWithDebInfo build compile flags" FORCE)
-    set(CMAKE_CXX_FLAGS_MINSIZEREL     "-DNDEBUG -Os ${GCC_INST_SET}"
+    set(CMAKE_CXX_FLAGS_MINSIZEREL     "-DNDEBUG -Os ${GCC_INST_SET} ${WARNINGS}"
       CACHE STRING "g++ MinSizeRel build compile flags" FORCE)
 
     # C
-    set(CMAKE_C_FLAGS_DEBUG            "-g ${GCC_INST_SET}"
+    set(CMAKE_C_FLAGS_DEBUG            "-g ${GCC_INST_SET} ${WARNINGS}"
       CACHE STRING "gcc Debug build compile flags" FORCE)
     set(CMAKE_C_FLAGS_RELEASE
-      "-DNDEBUG -O2 ${GCC_OPT_ENABLE} ${GCC_OPT_DISABLE} ${GCC_INST_SET}"
+      "-DNDEBUG -O2 ${GCC_OPT_ENABLE} ${GCC_OPT_DISABLE} ${GCC_INST_SET} ${WARNINGS}"
       CACHE STRING "gcc Release build compile flags" FORCE)
     set(CMAKE_C_FLAGS_RELWITHDEBINFO
-      "-DNDEBUG -O2 -g ${GCC_OPT_ENABLE} ${GCC_OPT_DISABLE} ${GCC_INST_SET}"
+      "-DNDEBUG -O2 -g ${GCC_OPT_ENABLE} ${GCC_OPT_DISABLE} ${GCC_INST_SET} ${WARNINGS}"
       CACHE STRING "gcc RelWithDebInfo build compile flags" FORCE)
-    set(CMAKE_C_FLAGS_MINSIZEREL       "-DNDEBUG -Os ${GCC_INST_SET}"
+    set(CMAKE_C_FLAGS_MINSIZEREL       "-DNDEBUG -Os ${GCC_INST_SET} ${WARNINGS}"
       CACHE STRING "gcc MinSizeRel build compile flags" FORCE)
 
 endif()
