@@ -791,6 +791,7 @@ void testExport() {
 int main() {
     SimTK_START_TEST("testStatesTrajectory");
 
+    /* TODO
         // actuators library is not loaded automatically (unless using clang).
         #if !defined(__clang__)
             LoadOpenSimLibrary("osimActuators");
@@ -822,6 +823,16 @@ int main() {
 
         // Export to data table.
         SimTK_SUBTEST(testExport);
+    */
+    
+    Model model("/Users/chris/repos/opensim-models/opensim-models/Models/Gait2392_Simbody/subject01_adjusted.osim");
+    std::cin.get();
+    Storage storage("/Users/chris/repos/opensim-models/opensim-models/Pipelines/Gait2392_Simbody/OutputReference/ResultsCMC/subject01_walk1_states.sto");
+    std::cin.get();
+    std::cout << "DEBUG starting loading statesTraj " << std::endl;
+    auto statesTraj = StatesTrajectory::createFromStatesStorage(model, storage);
+    std::cout << "DEBUG done loading statesTraj " << statesTraj.getSize() << std::endl;
+    std::cin.get();
 
     SimTK_END_TEST();
 }
